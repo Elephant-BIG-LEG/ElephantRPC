@@ -39,6 +39,34 @@ public class ZookeeperTest {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }finally {
+            if(zooKeeper != null){
+                try {
+                    zooKeeper.close();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testDelZK(){
+        createZK();
+        try {
+            zooKeeper.delete("/ElephantRPC",-1);
+        } catch (KeeperException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }finally {
+            if(zooKeeper != null){
+                try {
+                    zooKeeper.close();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
