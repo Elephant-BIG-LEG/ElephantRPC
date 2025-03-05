@@ -23,7 +23,8 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
         System.out.println(msg);
         ByteBuf byteBuf = (ByteBuf) msg;
         Channel channel = ctx.channel();
-        System.out.println(ctx.channel().writeAndFlush(Unpooled.copiedBuffer("hello server".getBytes(StandardCharsets.UTF_8))));
+        System.out.println(ctx.channel().writeAndFlush(Unpooled.copiedBuffer(
+                "hello server".getBytes(StandardCharsets.UTF_8))));
         System.out.println(byteBuf.toString(StandardCharsets.UTF_8));
         System.out.println(channel.remoteAddress());
     }
