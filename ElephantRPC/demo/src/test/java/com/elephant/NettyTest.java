@@ -1,10 +1,15 @@
 package com.elephant;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.CompositeByteBuf;
-import io.netty.buffer.Unpooled;
+import com.elephant.netty.client;
+import io.netty.buffer.*;
+import org.junit.Test;
 
+import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @Author: Elephant-FZY
@@ -55,5 +60,77 @@ public class NettyTest {
        ByteBuf header = byteBuf.slice(0,5);
        ByteBuf body = byteBuf.slice(0,5);
     }
+
+    /**
+     * 封装请求报文
+     * @throws IOException
+     */
+    @Test
+    public void testMessage() throws IOException {
+        ByteBuf message = Unpooled.buffer();
+
+        message.writeBytes("elephant".getBytes(StandardCharsets.UTF_8));
+        message.writeByte(1);
+        message.writeShort(125);
+        message.writeInt(256);
+        message.writeByte(1);
+        message.writeByte(0);
+        message.writeByte(2);
+        message.writeLong(251455L);
+
+        //用对象流转化为字节数据
+        client client = new client();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+        oos.writeObject(client);
+        byte[] bytes = outputStream.toByteArray();
+        message.writeBytes(bytes);
+        //打印
+        printAsBinary(message);
+    }
+    public static void printAsBinary(ByteBuf byteBuf) {
+        byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.getBytes(byteBuf.readerIndex(), bytes);
+        String binaryString = ByteBufUtil.hexDump(bytes);
+        StringBuilder formattedBinary = new StringBuilder();
+        for (int i = 0; i < binaryString.length(); i += 2) {
+            formattedBinary.append(binaryString.substring(i, i + 2)).append(" ");
+        }
+        System.out.println("Binary representation: " + formattedBinary.toString());
+    }
+
+    //解压
+    @Test
+    public void testDeCompress() throws  IOException{
+        byte[] buf = new byte[]{31, -117, 8, 0, 0, 0, 0, 0, 0, -1, 99, 102, 102, 102, 6, 0, -46, -52, -109, -125, 4, 0, 0, 0};
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+        GZIPInputStream gzipInputStream = new GZIPInputStream(bais);
+
+        byte[] bytes = gzipInputStream.readAllBytes();
+        System.out.println(buf.length + " -> " + bytes.length);
+        System.out.println(Arrays.toString(bytes));
+    }
+
+    //加密
+    @Test
+    public void testEncrypt() throws  IOException{
+        byte[] buf = new byte[]{3,3,3,3};
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(baos);
+
+
+        gzipOutputStream.write(buf);
+        gzipOutputStream.finish();
+        byte[] bytes = baos.toByteArray();
+
+        System.out.println(buf.length + " -> " + bytes.length);
+        System.out.println(Arrays.toString(bytes));
+    }
+
+
+
 
 }
