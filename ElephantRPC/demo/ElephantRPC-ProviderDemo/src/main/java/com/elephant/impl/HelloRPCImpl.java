@@ -1,4 +1,6 @@
-package com.elephant;
+package com.elephant.impl;
+
+import com.elephant.HelloRPC;
 
 /**
  * @Author: Elephant-FZY

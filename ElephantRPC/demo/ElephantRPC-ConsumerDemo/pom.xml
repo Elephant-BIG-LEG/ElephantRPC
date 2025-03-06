@@ -10,7 +10,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>ElephantRPC-ClientDemo</artifactId>
+    <artifactId>ElephantRPC-ConsumerDemo</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -23,6 +23,17 @@
             <groupId>com.elephant</groupId>
             <artifactId>ElephantRPC-API</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.elephant</groupId>
+            <artifactId>ElephantRPC-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.elephant</groupId>
+            <artifactId>ElephantRPC-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -13,7 +13,7 @@
         <module>demo</module>
         <module>ElephantRPC-framework</module>
         <module>ElephantRPC-manager</module>
-        <module>demo/ElephantRPC-ClientDemo</module>
+        <module>demo/ElephantRPC-ConsumerDemo</module>
         <module>demo/ElephantRPC-API</module>
         <module>demo/ElephantRPC-ProviderDemo</module>
         <module>ElephantRPC-framework/ElephantRPC-common</module>
@@ -30,6 +30,7 @@
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <logback.version>1.5.6</logback.version>
         <fast2Json.version>2.0.53</fast2Json.version>
+        <lombok.version>1.18.36</lombok.version>
     </properties>
 
 <!--    自动成会默认引入-->
@@ -68,6 +69,11 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fast2Json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

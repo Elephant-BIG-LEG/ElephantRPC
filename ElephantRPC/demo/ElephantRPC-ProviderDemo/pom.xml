@@ -25,5 +25,10 @@
             <artifactId>ElephantRPC-API</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.elephant</groupId>
+            <artifactId>ElephantRPC-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
