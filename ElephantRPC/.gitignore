@@ -11,6 +11,30 @@ target/
 *.iws
 *.iml
 *.ipr
+/target/
+/out
+*.iml
+#编译文件
+*.class
+
+#包文件
+*.tar.gz
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.bz2
+*.rar
+
+#日志文件
+*.log
+*.trace
+*.prof
+
+# 临时文件
+*.bak
+*.swp
+*~
 
 ### Eclipse ###
 .apt_generated
