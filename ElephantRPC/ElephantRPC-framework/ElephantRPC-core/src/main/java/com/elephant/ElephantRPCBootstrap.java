@@ -52,6 +52,7 @@ public class ElephantRPCBootstrap {
      * @return this
      */
     public ElephantRPCBootstrap protocol(ProtocolConfig protocolConfig) {
+        log.info("测试当前日志是否生效");
         if (log.isDebugEnabled()){
             log.debug("当前工程使用了:{} 协议",protocolConfig);
         }
