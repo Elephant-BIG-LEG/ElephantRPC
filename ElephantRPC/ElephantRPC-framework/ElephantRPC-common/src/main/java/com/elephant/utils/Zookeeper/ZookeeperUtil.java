@@ -35,7 +35,7 @@ public class ZookeeperUtil {
             //创建 zookeeper 实例
             final ZooKeeper zooKeeper = new ZooKeeper(connectString, timeout, event -> {
                 //只有连接成功才放行
-                if (event.getState() == Watcher.Event.KeeperState.SyncConnected) {
+                if (event.getState() == org.apache.zookeeper.Watcher.Event.KeeperState.SyncConnected) {
                     System.out.println("客户端连接成功");
                     countDownLatch.countDown();
                 }
@@ -70,7 +70,6 @@ public class ZookeeperUtil {
                 log.info("**** This Node ：【{}】has exists！！！",node.getNodePath());
                 return false;
             }
-
         } catch (KeeperException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
@@ -88,6 +87,22 @@ public class ZookeeperUtil {
         } catch (InterruptedException e) {
             log.error("Closing the zookeeper occur the exception",e);
             throw new ZookeeperException();
+        }
+    }
+
+    /**
+     * 判断节点是否存在
+     * @param zk zk 实例
+     * @param node 节点路径
+     * @param watcher watcher 实例
+     * @return true：存在 or Exception：节点不存在
+     */
+    public static Boolean exists(ZooKeeper zk,String node,Watcher watcher){
+        try {
+            return zk.exists(node,watcher) != null;
+        } catch (KeeperException | InterruptedException e) {
+            log.error("**** This zookeeper node:【{}】 occur exception！！！",node);
+            throw new ZookeeperException(e);
         }
     }
 }

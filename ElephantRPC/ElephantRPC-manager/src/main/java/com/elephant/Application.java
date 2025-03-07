@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
 import java.util.List;
 
-import static com.elephant.utils.Zookeeper.ZookeeperUtil.createNode;
-
 /**
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG

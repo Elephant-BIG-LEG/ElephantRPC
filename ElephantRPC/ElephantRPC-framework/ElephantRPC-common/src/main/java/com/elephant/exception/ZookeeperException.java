@@ -8,4 +8,10 @@ package com.elephant.exception;
  */
 public class ZookeeperException extends RuntimeException{
 
+    public ZookeeperException(Throwable cause) {
+        super(cause);
+    }
+
+    public ZookeeperException() {
+    }
 }
