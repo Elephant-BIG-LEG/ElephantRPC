@@ -21,7 +21,6 @@ public class ZookeeperUtil {
     public static ZooKeeper createZookeeper() {
         String connectString = Constant.DEFAULT_ZK_CONNECT;
         int timeout = Constant.TIME_OUT;
-
         return createZookeeper(connectString, timeout);
     }
 
@@ -61,6 +60,7 @@ public class ZookeeperUtil {
     public static Boolean createNode(ZooKeeper zooKeeper,ZookeeperNote node,Watcher watcher,CreateMode createMode){
         //创建节点
         try {
+            //不存在就创建
             if (zooKeeper.exists(node.getNodePath(), watcher) == null) {
                 String result = zooKeeper.create(node.getNodePath(), node.getData(),
                         ZooDefs.Ids.OPEN_ACL_UNSAFE,createMode);
@@ -99,6 +99,10 @@ public class ZookeeperUtil {
      */
     public static Boolean exists(ZooKeeper zk,String node,Watcher watcher){
         try {
+            // 验证路径是否合法
+            if (!node.startsWith("/") || node.contains("//")) {
+                throw new IllegalArgumentException("Invalid ZooKeeper path: " + node);
+            }
             return zk.exists(node,watcher) != null;
         } catch (KeeperException | InterruptedException e) {
             log.error("**** This zookeeper node:【{}】 occur exception！！！",node);

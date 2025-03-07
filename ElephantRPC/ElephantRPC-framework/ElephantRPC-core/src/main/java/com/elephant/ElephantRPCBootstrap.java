@@ -1,12 +1,10 @@
 package com.elephant;
 
 
-import com.elephant.utils.NetUtils;
-import com.elephant.utils.Zookeeper.ZookeeperNote;
+import com.elephant.discovery.Registry;
+import com.elephant.discovery.impl.ZookeeperRegistry;
 import com.elephant.utils.Zookeeper.ZookeeperUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
 
 
@@ -32,6 +30,9 @@ public class ElephantRPCBootstrap {
     private String appName = "default";
     private RegistryConfig registryConfig;
     private ProtocolConfig protocolConfig;
+
+    //TODO 待处理
+    private Registry registry = new ZookeeperRegistry();
 
     private int port = 8088;
 
@@ -67,8 +68,6 @@ public class ElephantRPCBootstrap {
         //这里维护一个 zookeeper 实例，当时会将 zookeeper 和当前工程耦合
         //但是希望以后可以扩展更多不同的实现
         zookeeper = ZookeeperUtil.createZookeeper();
-
-
         this.registryConfig = registryConfig;
         return this;
     }
@@ -96,29 +95,8 @@ public class ElephantRPCBootstrap {
      * @return this
      */
     public ElephantRPCBootstrap publish(ServiceConfig<?> service) {
-        //服务名称的节点
-        String parentNode = Constant.BASE_PROVIDER_PATH + "/" + service.getInterface().getName();
-        //这个节点应该是一个持久节点
-        if (ZookeeperUtil.exists(zookeeper,parentNode,null)){
-            ZookeeperNote zookeeperNote = new ZookeeperNote(parentNode,null);
-            //持久节点
-            ZookeeperUtil.createNode(zookeeper,zookeeperNote,null, CreateMode.PERSISTENT);
-        }
-
-        //创建 ** 本机 ** 的临时节点 格式: ip:port
-        //服务提供方的端口，所以我们需要一个获取 ip 的方法
-        //这个 IP 通常是需要一个局域网 ip
-        String node = parentNode + "/" + NetUtils.getIp() + ":" + port;
-        //判断该节点在不在
-        if (ZookeeperUtil.exists(zookeeper,parentNode,null)){
-            ZookeeperNote zookeeperNote = new ZookeeperNote(parentNode,null);
-            //是临时节点
-            ZookeeperUtil.createNode(zookeeper,zookeeperNote,null, CreateMode.EPHEMERAL);
-        }
-
-        if(log.isDebugEnabled()){
-            log.debug("服务{}，已被注册",service.getInterface().getName());
-        }
+        //抽象了注册中心的概念, 将服务注册到注册中心 ，这里可以扩展不同的实现
+        registry.registry(service);
         return this;
     }
 
@@ -137,7 +115,7 @@ public class ElephantRPCBootstrap {
      */
     public void start() {
         try {
-            Thread.sleep(10000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

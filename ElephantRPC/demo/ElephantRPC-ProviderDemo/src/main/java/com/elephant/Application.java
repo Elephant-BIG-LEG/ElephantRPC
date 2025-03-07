@@ -31,8 +31,6 @@ public class Application {
                 .publish(service)
                 //启动
                 .start();
-
-
     }
 
 }

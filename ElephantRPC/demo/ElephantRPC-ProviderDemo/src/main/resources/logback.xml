@@ -1,6 +1,6 @@
 <configuration>
     <!--  修改一下路径 -->
-    <property name="PATH" value="src/main/resources/log"/>
+    <property name="PATH" value="demo/ElephantRPC-ProviderDemo/src/main/resources/log"/>
     <!--控制台-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
