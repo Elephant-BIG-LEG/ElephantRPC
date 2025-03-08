@@ -2,6 +2,7 @@ package com.elephant;
 
 
 import com.elephant.discovery.Registry;
+import com.elephant.discovery.RegistryConfig;
 import com.elephant.discovery.impl.ZookeeperRegistry;
 import com.elephant.utils.Zookeeper.ZookeeperUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +32,13 @@ public class ElephantRPCBootstrap {
     private RegistryConfig registryConfig;
     private ProtocolConfig protocolConfig;
 
-    //TODO 待处理
-    private Registry registry = new ZookeeperRegistry();
+    //注册中心
+    private Registry registry;
 
     private int port = 8088;
 
     //维护一个 zookeeper 实例
-    private ZooKeeper zookeeper;
+//    private ZooKeeper zookeeper;
 
     private ElephantRPCBootstrap(){
         //构造启动引导程序，
@@ -67,8 +68,8 @@ public class ElephantRPCBootstrap {
         //TODO 为什么写在这里，而不是写在当前构造器中？？？ 这样写增加了耦合性
         //这里维护一个 zookeeper 实例，当时会将 zookeeper 和当前工程耦合
         //但是希望以后可以扩展更多不同的实现
-        zookeeper = ZookeeperUtil.createZookeeper();
-        this.registryConfig = registryConfig;
+        //尝试使用 registryConfig 获取一个注册中心，有点工厂设计模式的意思了
+        this.registry = registryConfig.getRegistry();
         return this;
     }
 

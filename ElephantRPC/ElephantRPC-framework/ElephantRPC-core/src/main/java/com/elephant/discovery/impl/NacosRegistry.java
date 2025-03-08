@@ -3,7 +3,6 @@ package com.elephant.discovery.impl;
 import com.elephant.Constant;
 import com.elephant.ServiceConfig;
 import com.elephant.discovery.AbstractRegistry;
-import com.elephant.discovery.Registry;
 import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNote;
 import com.elephant.utils.Zookeeper.ZookeeperUtil;
@@ -15,19 +14,19 @@ import org.apache.zookeeper.ZooKeeper;
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/07/21:42
- * @Description: TODO
+ * @Description: TODO 后期补充需要添加的注册中心
  */
 @Slf4j
-public class ZookeeperRegistry extends AbstractRegistry {
+public class NacosRegistry extends AbstractRegistry {
 
     //保证只有一个 ZK 实例
     private ZooKeeper zookeeper;
 
-    public ZookeeperRegistry() {
+    public NacosRegistry() {
         this.zookeeper = ZookeeperUtil.createZookeeper();
     }
 
-    public ZookeeperRegistry(String connectString,int timeout) {
+    public NacosRegistry(String connectString, int timeout) {
         this.zookeeper = ZookeeperUtil.createZookeeper(connectString,timeout);
     }
 
@@ -51,7 +50,7 @@ public class ZookeeperRegistry extends AbstractRegistry {
         String node = parentNode + "/" + NetUtils.getIp() + ":" + 8088;
         //判断该节点在不在
         if (!ZookeeperUtil.exists(zookeeper,node,null)){
-            ZookeeperNote zookeeperNote = new ZookeeperNote(node,null);
+            ZookeeperNote zookeeperNote = new ZookeeperNote(parentNode,null);
             //是临时节点
             ZookeeperUtil.createNode(zookeeper, zookeeperNote,
                     null, CreateMode.EPHEMERAL);

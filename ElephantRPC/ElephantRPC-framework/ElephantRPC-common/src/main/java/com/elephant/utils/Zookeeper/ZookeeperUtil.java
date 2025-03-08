@@ -35,7 +35,7 @@ public class ZookeeperUtil {
             final ZooKeeper zooKeeper = new ZooKeeper(connectString, timeout, event -> {
                 //只有连接成功才放行
                 if (event.getState() == Watcher.Event.KeeperState.SyncConnected) {
-                    System.out.println("客户端连接成功");
+                    log.info("**** Client connecting succeed!!!");
                     countDownLatch.countDown();
                 }
             });

@@ -1,5 +1,7 @@
 package com.elephant;
 
+import com.elephant.discovery.RegistryConfig;
+
 /**
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG

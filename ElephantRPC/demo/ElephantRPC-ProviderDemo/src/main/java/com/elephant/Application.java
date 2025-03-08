@@ -1,5 +1,6 @@
 package com.elephant;
 
+import com.elephant.discovery.RegistryConfig;
 import com.elephant.impl.HelloRPCImpl;
 
 /**
@@ -23,7 +24,7 @@ public class Application {
         ElephantRPCBootstrap.getInstance()
                 //配置名称
                 .application("first-elephantRPC-provider")
-                //配置注册中心
+                //配置注册中心 --- 使用简单工厂完成
                 .register(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 //协议
                 .protocol(new ProtocolConfig("jdk"))
