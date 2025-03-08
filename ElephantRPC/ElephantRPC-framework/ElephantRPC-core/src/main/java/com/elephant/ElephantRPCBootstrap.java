@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.ZooKeeper;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: Elephant-FZY
@@ -31,6 +34,10 @@ public class ElephantRPCBootstrap {
     private String appName = "default";
     private RegistryConfig registryConfig;
     private ProtocolConfig protocolConfig;
+
+    //维护已经发布且暴露的服务列表 key -> interface的全限定名 value -> 具体实例
+    //通常有三种方法：new、Spring 中的 beanFactory.getBean(Class) 和 手动维护
+    private static final Map<String,ServiceConfig<?>> SERVER_LIST = new ConcurrentHashMap<>(16);
 
     //注册中心
     private Registry registry;
@@ -64,11 +71,10 @@ public class ElephantRPCBootstrap {
      * @return this 当前实例
      */
     public ElephantRPCBootstrap register(RegistryConfig registryConfig) {
-
-        //TODO 为什么写在这里，而不是写在当前构造器中？？？ 这样写增加了耦合性
-        //这里维护一个 zookeeper 实例，当时会将 zookeeper 和当前工程耦合
+        //为什么写在这里，而不是写在当前构造器中？？？
+        //如果这里维护一个 zookeeper 实例，当时会将 zookeeper 和当前工程耦合
         //但是希望以后可以扩展更多不同的实现
-        //尝试使用 registryConfig 获取一个注册中心，有点工厂设计模式的意思了
+        //尝试使用 registryConfig 获取一个注册中心，使用工厂设计模式的思想
         this.registry = registryConfig.getRegistry();
         return this;
     }
@@ -98,6 +104,8 @@ public class ElephantRPCBootstrap {
     public ElephantRPCBootstrap publish(ServiceConfig<?> service) {
         //抽象了注册中心的概念, 将服务注册到注册中心 ，这里可以扩展不同的实现
         registry.registry(service);
+
+        SERVER_LIST.put(service.getInterface().getName(),service);
         return this;
     }
 
