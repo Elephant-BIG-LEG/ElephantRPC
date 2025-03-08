@@ -4,15 +4,16 @@ package com.elephant;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -140,8 +141,19 @@ public class ElephantRPCBootstrap {
                     .childHandler(new ChannelInitializer<SocketChannel>(){
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            //TODO 添加 handler
-                            socketChannel.pipeline().addLast(null);
+                            //TODO 动态添加 handler
+                            socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<>() {
+                                @Override
+                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+                                    ByteBuf byteBuf = (ByteBuf) msg;
+                                    log.info("byteBuf ---> {}",byteBuf.toString(Charset.defaultCharset()));
+
+                                    //拿到 channel 进行回信
+                                    //这样直接的写回，但是后面的请求就不会处理了
+                                    //TODO 需要添加一个 handler 进行处理【进站和出战问题】
+                                    channelHandlerContext.channel().writeAndFlush(Unpooled.copiedBuffer("收到信息了".getBytes()));
+                                }
+                            });
                         }
                     });
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();

@@ -2,6 +2,7 @@ package com.elephant;
 
 import com.elephant.discovery.NettyBootstrapInitializer;
 import com.elephant.discovery.Registry;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
@@ -82,6 +83,13 @@ public class ReferenceConfig<T> {
                                     channelFuture.completeExceptionally(promise.cause());
                                 }
                             });
+
+
+                    /**
+                     * -------------------------------封装报文--------------------------------
+                     */
+
+                    //TODO 封装报文
                     //阻塞获取channel
                     channel = channelFuture.get(3, TimeUnit.SECONDS);
                     //缓存
@@ -104,7 +112,7 @@ public class ReferenceConfig<T> {
                  * ------------------------------------异步策略---------------------------------
                  */
                 CompletableFuture<Object> completableFuture = new CompletableFuture<>();
-                channel.writeAndFlush(new Object()).addListener((ChannelFutureListener)promise ->{
+                channel.writeAndFlush(Unpooled.copiedBuffer("hello".getBytes())).addListener((ChannelFutureListener) promise ->{
                     //当前的 promise 将来返回的结果是什么 --- writeAndFlush的返回结果
                     //一旦数据被写出去，这个 promise 也就结束了
                     //但是想要的是服务端给的返回值，completableFuture.complete(promise.getNow());不能这样写。
@@ -118,8 +126,9 @@ public class ReferenceConfig<T> {
                         completableFuture.completeExceptionally(promise.cause());
                     }
                 });
-                return completableFuture.get(3,TimeUnit.SECONDS);
-
+                //TODO
+                //Object o = completableFuture.get(3,TimeUnit.SECONDS);
+                return null;
                 //TODO 线程池关闭
             }
         });
