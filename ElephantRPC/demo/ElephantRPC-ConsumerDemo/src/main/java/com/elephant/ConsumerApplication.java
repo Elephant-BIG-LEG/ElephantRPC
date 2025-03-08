@@ -1,6 +1,7 @@
 package com.elephant;
 
 import com.elephant.discovery.RegistryConfig;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: Elephant-FZY
@@ -8,6 +9,7 @@ import com.elephant.discovery.RegistryConfig;
  * @Date: 2025/03/06/17:12
  * @Description: TODO
  */
+@Slf4j
 public class ConsumerApplication {
     public static void main(String[] args) {
         //想尽一切方法获取代理对象，使用 ReferenceConfig 进行封装
@@ -28,6 +30,7 @@ public class ConsumerApplication {
 
         //使用代理对象进行远程调用
         HelloRPC helloRPC = reference.get();
-        helloRPC.sayHi("你好");
+        String sayHi = helloRPC.sayHi("你好");
+        log.info("Receiving the msg:{}",sayHi);
     }
 }

@@ -33,5 +33,4 @@ public class ProviderApplication {
                 //启动
                 .start();
     }
-
 }

@@ -67,10 +67,12 @@ public class ReferenceConfig<T> {
                 if(channel == null){
                     //sync 和 await 都是阻塞线程当前线程，获取返回值（连接的过程是异步，发送数据的过程是异步的）
                     //如果发生了异常，sync 会在线程抛出异常。await不会，异常在子线程中处理需要使用 future 中处理。
-//                    channel = NettyBootstrapInitializer.getBootstrap().connect(address).await().channel();
-//                    ElephantRPCBootstrap.CHANNEL_CACHE.put(address,channel);
+                    //channel = NettyBootstrapInitializer.getBootstrap().connect(address).await().channel();
+                    //ElephantRPCBootstrap.CHANNEL_CACHE.put(address,channel);
                     //使用 addListener 执行的异步操作
                     CompletableFuture<Channel> channelFuture = new CompletableFuture<>();
+
+                    //启动 Netty
                     NettyBootstrapInitializer.getBootstrap().connect(address).addListener(
                             (ChannelFutureListener)promise ->{
                                 if(promise.isDone()){
@@ -117,7 +119,9 @@ public class ReferenceConfig<T> {
                     //一旦数据被写出去，这个 promise 也就结束了
                     //但是想要的是服务端给的返回值，completableFuture.complete(promise.getNow());不能这样写。
                     //应该将 completableFuture 挂起并暴露，并且在得到服务提供方响应时调用 complete 方法
-                    //TODO completableFuture 挂起并暴露
+
+                    //completableFuture 挂起并暴露
+                    ElephantRPCBootstrap.PENDING_REQUEST.put(1L,completableFuture);
 //                    if(promise.isDone()){
 //                        completableFuture.complete(promise.getNow());
 //                    }
@@ -126,9 +130,10 @@ public class ReferenceConfig<T> {
                         completableFuture.completeExceptionally(promise.cause());
                     }
                 });
-                //TODO
-                //Object o = completableFuture.get(3,TimeUnit.SECONDS);
-                return null;
+                //如果没有地方处理这个 completableFuture 这里会阻塞，等待 complete 方法的执行
+                //q：需要在哪里调用这个 complete 方法得到结果 --- pipeline 最终的处理器中
+                //这里会异步等待，等待 Netty 通过异步的方式，在 handler 中处理 completableFuture 方法
+                return completableFuture.get(10,TimeUnit.SECONDS);
                 //TODO 线程池关闭
             }
         });

@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -46,13 +47,16 @@ public class ElephantRPCBootstrap {
     //注册中心
     private Registry registry;
 
-    private int port = 8088;
+    private final int port = 8088;
 
     //维护一个 zookeeper 实例
-//    private ZooKeeper zookeeper;
+    //private ZooKeeper zookeeper;
 
     //缓存通道
     public final static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
+
+    //定义全局对外挂起的 completableFuture
+    public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
 
     private ElephantRPCBootstrap(){
         //构造启动引导程序，
