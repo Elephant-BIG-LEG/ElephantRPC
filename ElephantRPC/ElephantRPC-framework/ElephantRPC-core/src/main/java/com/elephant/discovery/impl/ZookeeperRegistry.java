@@ -3,14 +3,16 @@ package com.elephant.discovery.impl;
 import com.elephant.Constant;
 import com.elephant.ServiceConfig;
 import com.elephant.discovery.AbstractRegistry;
-import com.elephant.discovery.Registry;
+import com.elephant.exception.DiscoveryException;
+import com.elephant.exception.NetworkException;
 import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNote;
 import com.elephant.utils.Zookeeper.ZookeeperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
-
+import java.net.InetSocketAddress;
+import java.util.List;
 /**
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
@@ -60,5 +62,27 @@ public class ZookeeperRegistry extends AbstractRegistry {
         if(log.isDebugEnabled()){
             log.debug("服务{}，已被注册",service.getInterface().getName());
         }
+    }
+
+    @Override
+    public InetSocketAddress searchService(String name) {
+        //拼接节点路径
+        String parentNode = Constant.BASE_PROVIDER_PATH + "/" + name;
+        //获取子节点列表
+        List<String> childrenNodes = ZookeeperUtil.getChildrenNodes(zookeeper,parentNode,null);
+        //拿到可用主机的列表
+        List<InetSocketAddress> collect = childrenNodes.stream().map(ipString -> {
+            String[] ipAndPort = ipString.split(":");
+            String ip = ipAndPort[0];
+            int port = Integer.parseInt(ipAndPort[1]);
+            return new InetSocketAddress(ip, port);
+        }).toList();
+        if(collect.size() == 0){
+            throw new DiscoveryException("**** Not founded every service host!!!");
+        }
+
+        //TODO : 每次调用相关方法都需要去注册中心拉去列表吗？ 本地缓存 + watcher机制
+        //        如何合理选择一个服务，而不是只获取第一个？ 负载均衡
+        return collect.get(0);
     }
 }

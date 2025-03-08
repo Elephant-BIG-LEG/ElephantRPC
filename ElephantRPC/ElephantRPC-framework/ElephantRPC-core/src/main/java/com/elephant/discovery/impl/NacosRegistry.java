@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
 
+import java.net.InetSocketAddress;
+
 /**
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
@@ -59,5 +61,10 @@ public class NacosRegistry extends AbstractRegistry {
         if(log.isDebugEnabled()){
             log.debug("服务{}，已被注册",service.getInterface().getName());
         }
+    }
+
+    @Override
+    public InetSocketAddress searchService(String name) {
+        return null;
     }
 }

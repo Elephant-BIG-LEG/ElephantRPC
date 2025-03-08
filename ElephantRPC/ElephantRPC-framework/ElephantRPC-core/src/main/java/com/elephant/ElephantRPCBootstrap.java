@@ -3,13 +3,7 @@ package com.elephant;
 
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
-import com.elephant.discovery.impl.ZookeeperRegistry;
-import com.elephant.utils.Zookeeper.ZookeeperUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.ZooKeeper;
-
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -124,7 +118,7 @@ public class ElephantRPCBootstrap {
      */
     public void start() {
         try {
-            Thread.sleep(15000);
+            Thread.sleep(150000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -143,6 +137,8 @@ public class ElephantRPCBootstrap {
     public ElephantRPCBootstrap reference(ReferenceConfig<?> reference) {
         //在这方法里，是否可以拿到相关的配置项【包括配置中心】
         //配置 reference，将来调用 get 方法时，方便生成代理对象
+        //需要一个注册中心
+        reference.setRegistry(registry);
         return this;
     }
 

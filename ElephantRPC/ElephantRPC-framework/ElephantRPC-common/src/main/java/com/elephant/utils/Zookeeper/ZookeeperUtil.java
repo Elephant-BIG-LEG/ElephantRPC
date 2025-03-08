@@ -111,4 +111,19 @@ public class ZookeeperUtil {
             throw new ZookeeperException(e);
         }
     }
+
+    /**
+     * 获取子节点
+     * @param zookeeper zk 实例
+     * @param parentNode 服务节点
+     * @return 子元素列表
+     */
+    public static List<String> getChildrenNodes(ZooKeeper zookeeper, String parentNode,Watcher watcher) {
+        try {
+            return zookeeper.getChildren(parentNode, watcher);
+        } catch (KeeperException | InterruptedException e) {
+            log.error("**** This zookeeper node:【{}】 occur exception！！！",parentNode,e);
+            throw new ZookeeperException(e);
+        }
+    }
 }

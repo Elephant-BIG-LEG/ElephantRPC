@@ -8,7 +8,7 @@ import com.elephant.discovery.RegistryConfig;
  * @Date: 2025/03/06/17:12
  * @Description: TODO
  */
-public class Application {
+public class ConsumerApplication {
     public static void main(String[] args) {
         //想尽一切方法获取代理对象，使用 ReferenceConfig 进行封装
         //reference 中一定有用于生成代理的模板方法 get()
