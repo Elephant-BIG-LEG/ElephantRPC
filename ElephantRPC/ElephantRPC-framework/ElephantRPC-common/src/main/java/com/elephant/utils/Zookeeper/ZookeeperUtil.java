@@ -34,7 +34,7 @@ public class ZookeeperUtil {
             //创建 zookeeper 实例
             final ZooKeeper zooKeeper = new ZooKeeper(connectString, timeout, event -> {
                 //只有连接成功才放行
-                if (event.getState() == org.apache.zookeeper.Watcher.Event.KeeperState.SyncConnected) {
+                if (event.getState() == Watcher.Event.KeeperState.SyncConnected) {
                     System.out.println("客户端连接成功");
                     countDownLatch.countDown();
                 }
@@ -62,6 +62,8 @@ public class ZookeeperUtil {
         try {
             //不存在就创建
             if (zooKeeper.exists(node.getNodePath(), watcher) == null) {
+                System.out.println(zooKeeper);
+                System.out.println(node.getNodePath());
                 String result = zooKeeper.create(node.getNodePath(), node.getData(),
                         ZooDefs.Ids.OPEN_ACL_UNSAFE,createMode);
                 log.info("**** Creating this node:【{}】succeed!!!", result);

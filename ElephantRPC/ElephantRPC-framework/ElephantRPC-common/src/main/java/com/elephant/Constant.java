@@ -13,6 +13,6 @@ public class Constant {
     public static final int TIME_OUT = 10000;
 
     //服务提供方和调用方
-    public static final String BASE_PROVIDER_PATH = "/elephantRPC_metadata/providers";
+    public static final String BASE_PROVIDER_PATH = "/elephantRPC-metadata/providers";
     public static final String BASE_CONSUMER_PATH = "/elephantRPC-metadata/consumers";
 }
