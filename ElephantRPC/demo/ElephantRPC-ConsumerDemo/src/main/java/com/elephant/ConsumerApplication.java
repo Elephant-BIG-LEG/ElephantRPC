@@ -26,11 +26,13 @@ public class ConsumerApplication {
         ElephantRPCBootstrap.getInstance()
                 .application("first-elephantRPC-consumer")
                 .register(new RegistryConfig("zookeeper://127.0.0.1:2181"))
+                //TODO
+                .serialize("jdk")
                 .reference(reference);
 
         //使用代理对象进行远程调用
         HelloRPC helloRPC = reference.get();
-        String sayHi = helloRPC.sayHi("你好");
+        String sayHi = helloRPC.sayHi("你好RPC00");
         log.info("Receiving the msg:{}",sayHi);
     }
 }

@@ -3,6 +3,7 @@ package com.elephant.proxy.handler;
 import com.elephant.ElephantRPCBootstrap;
 import com.elephant.discovery.NettyBootstrapInitializer;
 import com.elephant.discovery.Registry;
+import com.elephant.enumeration.RequestType;
 import com.elephant.exception.DiscoveryException;
 import com.elephant.transport.message.ElephantRPCRequest;
 import com.elephant.transport.message.RequestPayload;
@@ -77,7 +78,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 //TODO 需要自动生成一个全局 ID
                 .requestId(1L)
                 .compressType((byte) 1)
-                .requestType((byte) 1)
+                .requestType((RequestType.REQUEST.getId()))
                 .serializeType((byte) 1)
                 .requestPayload(requestPayload)
                 .build();
@@ -119,7 +120,8 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         //如果没有地方处理这个 completableFuture 这里会阻塞，等待 complete 方法的执行
         //q：需要在哪里调用这个 complete 方法得到结果 --- pipeline 最终的处理器中
         //这里会异步等待，等待 Netty 通过异步的方式，在 handler 中处理 completableFuture 方法
-            return completableFuture.get(10,TimeUnit.SECONDS);
+
+        return completableFuture.get(10,TimeUnit.SECONDS);
     }
 
     /**

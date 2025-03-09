@@ -1,6 +1,8 @@
 package com.elephant;
 
 
+import com.elephant.channelHandler.handler.ElephantRPCMessageDecoder;
+import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,6 +12,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
@@ -42,7 +45,7 @@ public class ElephantRPCBootstrap {
 
     //维护已经发布且暴露的服务列表 key -> interface的全限定名 value -> 具体实例
     //通常有三种方法：new、Spring 中的 beanFactory.getBean(Class) 和 手动维护
-    private static final Map<String,ServiceConfig<?>> SERVER_LIST = new ConcurrentHashMap<>(16);
+    public static final Map<String,ServiceConfig<?>> SERVER_LIST = new ConcurrentHashMap<>(16);
 
     //注册中心
     private Registry registry;
@@ -51,6 +54,8 @@ public class ElephantRPCBootstrap {
 
     //维护一个 zookeeper 实例
     //private ZooKeeper zookeeper;
+
+    public static String SERIALIZE_TYPE = "jdk";
 
     //缓存通道
     public final static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
@@ -146,18 +151,11 @@ public class ElephantRPCBootstrap {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //TODO 动态添加 handler
-                            socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<>() {
-                                @Override
-                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-                                    ByteBuf byteBuf = (ByteBuf) msg;
-                                    log.info("byteBuf ---> {}",byteBuf.toString(Charset.defaultCharset()));
-
-                                    //拿到 channel 进行回信
-                                    //这样直接的写回，但是后面的请求就不会处理了
-                                    //TODO 需要添加一个 handler 进行处理【进站和出战问题】
-                                    channelHandlerContext.channel().writeAndFlush(Unpooled.copiedBuffer("收到信息了".getBytes()));
-                                }
-                            });
+                            socketChannel
+                                    .pipeline()
+                                    .addLast(new LoggingHandler())
+                                    .addLast(new ElephantRPCMessageDecoder())
+                                    .addLast(new MethodCallHandler());
                         }
                     });
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
@@ -194,4 +192,14 @@ public class ElephantRPCBootstrap {
         return this;
     }
 
+    /**
+     * 配置序列化
+     * @param serializeType 序列化类型
+     * @return
+     */
+    public ElephantRPCBootstrap serialize(String serializeType) {
+        this.SERIALIZE_TYPE = serializeType;
+        log.info("**** Using the serialize type is:{}",serializeType);
+        return this;
+    }
 }
