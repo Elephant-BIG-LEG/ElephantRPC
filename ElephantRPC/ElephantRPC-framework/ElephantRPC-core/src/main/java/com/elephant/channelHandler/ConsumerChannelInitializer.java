@@ -1,8 +1,11 @@
 package com.elephant.channelHandler;
 
+import com.elephant.channelHandler.handler.ElephantRPCMessageEncoder;
 import com.elephant.channelHandler.handler.MySimpleChanelInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @Author: Elephant-FZY
@@ -14,7 +17,13 @@ public class ConsumerChannelInitializer extends ChannelInitializer<SocketChannel
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        socketChannel.pipeline().addLast(new MySimpleChanelInboundHandler());
+        socketChannel.pipeline()
+                //添加 netty 自带的日志处理器
+                .addLast(new LoggingHandler(LogLevel.DEBUG))
+                //消息编码器
+                .addLast(new ElephantRPCMessageEncoder())
+                //出栈
+                .addLast(new MySimpleChanelInboundHandler());
     }
 
 

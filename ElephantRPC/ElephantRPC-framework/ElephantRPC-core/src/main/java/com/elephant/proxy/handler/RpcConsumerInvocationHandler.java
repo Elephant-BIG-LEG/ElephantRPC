@@ -70,7 +70,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .methodName(method.getName())
                 .parametersType(method.getParameterTypes())
                 .parametersValue(args)
-                .returnType(method.getReturnType())
+                .returnTyp(method.getReturnType())
                 .build();
 
         ElephantRPCRequest elephantRPCRequest = ElephantRPCRequest.builder()
