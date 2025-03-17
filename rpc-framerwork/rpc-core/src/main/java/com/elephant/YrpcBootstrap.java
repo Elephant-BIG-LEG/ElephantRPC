@@ -11,6 +11,9 @@ import com.elephant.utils.Zookeeper.ZookeeperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * @Author: Elephant-FZY
@@ -33,6 +36,11 @@ public class YrpcBootstrap<T> {
 
     //维护一个注册中心
     private Registry registry;
+
+    //当服务调用方，通过接口、方法名、具体的方法参数列表发起调用，提供怎么知道使用哪一个实现
+    // (1) new 一个  （2）spring beanFactory.getBean(Class)  (3) 自己维护映射关系
+    // 维护已经发布且暴露的服务列表 key-> interface的全限定名  value -> ServiceConfig
+    public final static Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
 
     /**
      * --------------------------- 服务提供方相关 API --------------------------------

@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/AbstractRegistry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/Registry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/impl/NacosRegistry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/impl/ZookeeperRegistry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/RegistryConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/RegistryConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +146,7 @@
       <workItem from="1742178429401" duration="2921000" />
       <workItem from="1742182521609" duration="4737000" />
       <workItem from="1742197741847" duration="197000" />
-      <workItem from="1742197948804" duration="4231000" />
+      <workItem from="1742197948804" duration="5467000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -186,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742199093422</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="使用模板方法，将注册中心进行抽象">
+      <option name="closed" value="true" />
+      <created>1742202508788</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742202508788</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +199,8 @@
     <MESSAGE value="添加相关依赖" />
     <MESSAGE value="搭建基本框架，并解决Zookeeper的日志冲突" />
     <MESSAGE value="添加服务提供方注册节点相关代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加服务提供方注册节点相关代码" />
+    <MESSAGE value="使用模板方法，将注册中心进行抽象" />
+    <option name="LAST_COMMIT_MESSAGE" value="使用模板方法，将注册中心进行抽象" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
