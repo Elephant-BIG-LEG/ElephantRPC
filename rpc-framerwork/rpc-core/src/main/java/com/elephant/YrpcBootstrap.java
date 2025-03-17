@@ -1,13 +1,16 @@
 package com.elephant;
 
 
+import com.elephant.discovery.AbstractRegistry;
+import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
+import com.elephant.discovery.impl.ZookeeperRegistry;
 import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNode;
 import com.elephant.utils.Zookeeper.ZookeeperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
-import org.apache.zookeeper.server.ServerConfig;
+
 
 /**
  * @Author: Elephant-FZY
@@ -25,8 +28,11 @@ public class YrpcBootstrap<T> {
 
     private RegistryConfig registryConfig;
 
-    //维护一个 Zookeeper 实例 保证只启用一个
-    private ZooKeeper zookeeper;
+//    //维护一个 Zookeeper 实例 保证只启用一个
+//    private ZooKeeper zookeeper;
+
+    //维护一个注册中心
+    private Registry registry;
 
     /**
      * --------------------------- 服务提供方相关 API --------------------------------
@@ -56,10 +62,10 @@ public class YrpcBootstrap<T> {
 
 
     public YrpcBootstrap registry(RegistryConfig registryConfig) {
-        zookeeper = ZookeeperUtils.createZookeeper();
         log.info("开始注册该服务：{}", registryConfig);
-        //TODO 注册该服务
-        this.registryConfig = registryConfig;
+        //使用模板方法
+        //true 表示使用默认配置
+        this.registry = registryConfig.getRegistry(true);
         return this;
 
     }
@@ -70,25 +76,8 @@ public class YrpcBootstrap<T> {
      * @return
      */
     public YrpcBootstrap publish(ServiceConfig<T> service) {
-        String parentNode = Constants.BASE_PROVIDERS_PATH + "/" + service.getInterface().getName();
-        //发布父节点【持久节点】
-        if (!ZookeeperUtils.exists(zookeeper, parentNode, null)) {
-            ZookeeperNode zookeeperNode = new ZookeeperNode(parentNode, null);
-            Boolean node = ZookeeperUtils.createNode(zookeeper, zookeeperNode, null, CreateMode.PERSISTENT);
-            if (node) {
-                log.info("成功发布持久节点服务：【{}】", service.getInterface().getName());
-            }
-        }
-        //创建本机临时节点
-        //发布服务提供方子节点【临时节点】
-        String nodePath = parentNode + "/" + NetUtils.getIp() + ":" + Constants.PORT;
-        if (!ZookeeperUtils.exists(zookeeper, nodePath, null)) {
-            ZookeeperNode zookeeperNode = new ZookeeperNode(nodePath, null);
-            Boolean node = ZookeeperUtils.createNode(zookeeper, zookeeperNode, null, CreateMode.EPHEMERAL);
-            if (node) {
-                log.info("成功发布临时节点服务：【{}】", service.getInterface().getName());
-            }
-        }
+        //抽象注册中心的概念
+        registry.register(service);
         return this;
     }
 

@@ -32,7 +32,7 @@ public class ZookeeperUtils {
      * @param watcher
      * @return
      */
-    private static ZooKeeper createZk(String connectString, int timeout, Watcher watcher) {
+    public static ZooKeeper createZk(String connectString, int timeout, Watcher watcher) {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         try {
             final ZooKeeper zooKeeper = new ZooKeeper(connectString,timeout,null);
