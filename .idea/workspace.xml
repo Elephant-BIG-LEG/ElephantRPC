@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +148,7 @@
       <workItem from="1742178429401" duration="2921000" />
       <workItem from="1742182521609" duration="4737000" />
       <workItem from="1742197741847" duration="197000" />
-      <workItem from="1742197948804" duration="5467000" />
+      <workItem from="1742197948804" duration="7062000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -188,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742202508788</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="服务列表使用本地维护方案">
+      <option name="closed" value="true" />
+      <created>1742208679163</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1742208679163</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,7 +210,8 @@
     <MESSAGE value="搭建基本框架，并解决Zookeeper的日志冲突" />
     <MESSAGE value="添加服务提供方注册节点相关代码" />
     <MESSAGE value="使用模板方法，将注册中心进行抽象" />
-    <option name="LAST_COMMIT_MESSAGE" value="使用模板方法，将注册中心进行抽象" />
+    <MESSAGE value="服务列表使用本地维护方案" />
+    <option name="LAST_COMMIT_MESSAGE" value="服务列表使用本地维护方案" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -31,9 +31,9 @@ public class ConsumerApplication {
                 //.group("primary")
                 .reference(reference);
 
-//        System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//        HelloYrpc helloYrpc = reference.get();
-//
+        System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        HelloYrpc helloYrpc = reference.get();
+
 //        while (true) {
 ////            try {
 ////                Thread.sleep(10000);

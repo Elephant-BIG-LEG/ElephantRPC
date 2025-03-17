@@ -105,6 +105,7 @@ public class YrpcBootstrap<T> {
 
     public YrpcBootstrap reference(ReferenceConfig<?> reference) {
         log.info("通过核心配置类去完善服务调用端的配置类");
+        reference.setRegistryConfig(registryConfig);
         return null;
     }
 
