@@ -21,7 +21,7 @@ public class ProviderApplication {
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 //.serialize("jdk")
                 // 发布服务
-                .publish(null)
+                .publish(service)
                 // 扫包批量发布
                 //.scan("com.ydlclass")
                 // 启动服务

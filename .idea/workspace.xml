@@ -5,19 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/resources/logback.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/impl/HelloYrpcImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/logback.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ServiceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/RegistryConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-manager/src/main/resources/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/exception/NetworkException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/exception/ZookeeperException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/NetUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-manager/src/main/java/com/elephant/Application.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-manager/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-manager/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ServiceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ServiceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,9 +50,9 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2uLBAjwTqFX7F1a3FhoCDH4wU25" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -61,6 +62,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Application.executor": "Run",
     "Application.ProviderApplication.executor": "Run",
     "Maven.ElephantRPC [clean].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -68,7 +70,7 @@
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Beginner/ElephantRPC/rpc-demo/rpc-consumer/src/main/resources",
+    "last_opened_file_path": "D:/Beginner/ElephantRPC",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -77,8 +79,9 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "com.sensetime.sensecode.jetbrains.raccoon.ui.RaccoonConfigurable",
-    "vue.rearranger.settings.migration": "true"
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.Application.executor": "Debug"
   }
 }]]></component>
   <component name="RebelAgentSelection">
@@ -92,8 +95,24 @@
       <recent name="D:\Beginner\ElephantRPC\rpc-demo\rpc-api\src\main\java" />
       <recent name="D:\Beginner\ElephantRPC\rpc-demo\rpc-provider\src\main\java" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Beginner\ElephantRPC\rpc-demo\rpc-provider\src\main\resources\log" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.ProviderApplication">
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.elephant.Application" />
+      <module name="rpc-manager" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.elephant.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ProviderApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.elephant.ProviderApplication" />
       <module name="rpc-provider" />
@@ -120,6 +139,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.ProviderApplication" />
+        <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
   </component>
@@ -131,7 +151,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1715764257255</updated>
-      <workItem from="1742017835398" duration="9871000" />
+      <workItem from="1742017835398" duration="10417000" />
+      <workItem from="1742090689299" duration="5320000" />
+      <workItem from="1742109184853" duration="9000" />
+      <workItem from="1742178429401" duration="2921000" />
+      <workItem from="1742182521609" duration="4737000" />
+      <workItem from="1742197741847" duration="197000" />
+      <workItem from="1742197948804" duration="1102000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -149,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742019119010</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="搭建基本框架，并解决Zookeeper的日志冲突">
+      <option name="closed" value="true" />
+      <created>1742031357959</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742031357959</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,6 +192,23 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="RPC项目基本框架" />
     <MESSAGE value="添加相关依赖" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加相关依赖" />
+    <MESSAGE value="搭建基本框架，并解决Zookeeper的日志冲突" />
+    <option name="LAST_COMMIT_MESSAGE" value="搭建基本框架，并解决Zookeeper的日志冲突" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperUtils.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
