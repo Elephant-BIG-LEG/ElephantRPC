@@ -8,6 +8,13 @@ import com.elephant.discovery.impl.ZookeeperRegistry;
 import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNode;
 import com.elephant.utils.Zookeeper.ZookeeperUtils;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
 
@@ -90,14 +97,44 @@ public class YrpcBootstrap<T> {
     }
 
 
+    /**
+     * 启动 Netty 服务
+     */
     public void start() {
         log.info("服务提供方启用");
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup(2);
+        EventLoopGroup workGroup = new NioEventLoopGroup(10);
+
         try {
-            //TODO
-            Thread.sleep(10000000);
+            //引导程序
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup,workGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            //TODO
+                            socketChannel.pipeline().addLast(null);
+                        }
+                    });
+            //绑定端口
+            ChannelFuture channelFuture = serverBootstrap.bind(Constants.PORT).sync();
+
+            channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }finally {
+            try {
+                log.info("下线服务");
+                bossGroup.shutdownGracefully().sync();
+                workGroup.shutdownGracefully().sync();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+
     }
 
     /**

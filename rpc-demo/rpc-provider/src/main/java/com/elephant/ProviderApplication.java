@@ -24,7 +24,7 @@ public class ProviderApplication {
                 .publish(service)
                 // 扫包批量发布
                 //.scan("com.ydlclass")
-                // 启动服务
+                // 启动 Netty 服务
                 .start();
     }
 }
