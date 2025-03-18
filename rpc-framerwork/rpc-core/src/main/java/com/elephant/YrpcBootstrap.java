@@ -9,6 +9,7 @@ import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNode;
 import com.elephant.utils.Zookeeper.ZookeeperUtils;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -18,6 +19,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
 
+import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,6 +45,10 @@ public class YrpcBootstrap<T> {
 
     //维护一个注册中心
     private Registry registry;
+
+    //注意：如果使用 InetSocketAddress 作为 key，一定要保证该类重写了 toString 方法和 equals 方法
+    //每一个地址维护一个 channel
+    public static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
 
     //当服务调用方，通过接口、方法名、具体的方法参数列表发起调用，提供怎么知道使用哪一个实现
     // (1) new 一个  （2）spring beanFactory.getBean(Class)  (3) 自己维护映射关系

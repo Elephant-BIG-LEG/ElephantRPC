@@ -2,9 +2,12 @@ package com.elephant;
 
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
+import com.elephant.exception.DiscoveryException;
+import com.elephant.exception.NetworkException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -56,38 +59,43 @@ public class ReferenceConfig<T> {
 
 
                 //2.使用 Netty 发起 RPC 调用
-                EventLoopGroup group = new NioEventLoopGroup();
-                try {
-                    Bootstrap bootstrap = new Bootstrap();
-                    //引导程序
-                    bootstrap = bootstrap.group(group)
-                            .remoteAddress(new InetSocketAddress(8080))
-                            .handler(new ChannelInitializer<SocketChannel>() {
-                                @Override
-                                protected void initChannel(SocketChannel socketChannel) throws Exception {
-                                    //TODO
-                                    socketChannel.pipeline().addLast(null);
-                                }
-                            });
-                    //尝试连接
-                    ChannelFuture channelFuture = bootstrap.connect().sync();
-
-                    //写出
-                    channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(
-                            "hello netty".getBytes(StandardCharsets.UTF_8)));
-
-                    //阻塞等待消息
-                    channelFuture.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }finally {
+                //应该将 Netty 的连接进行缓存，每一次建立一个新的连接是不合理的
+                Channel channel = YrpcBootstrap.CHANNEL_CACHE.get(FirstAddress);
+                if(channel == null){
+                    //建立连接
+                    NioEventLoopGroup group = new NioEventLoopGroup();
                     try {
-                        log.info("下线服务");
-                        group.shutdownGracefully().sync();
+                        Bootstrap bootstrap = new Bootstrap();
+                        //引导程序
+                        bootstrap = bootstrap.group(group)
+                                .remoteAddress(new InetSocketAddress(8080))
+                                .handler(new ChannelInitializer<SocketChannel>() {
+                                    @Override
+                                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                                        //TODO
+                                        socketChannel.pipeline().addLast(null);
+                                    }
+                                });
+                        //尝试连接
+                        channel = bootstrap.connect(FirstAddress).sync().channel();
+                        YrpcBootstrap.CHANNEL_CACHE.put(FirstAddress,channel);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
+
+                if(channel == null){
+                    //await 方法会阻塞，会等待连接成功再返回【需要考虑超时问题】，Netty 也提供了异步处理的逻辑
+                    channel = NettyBootstrapInitializer.getBootstrap().connect(FirstAddress).await().channel();
+                    YrpcBootstrap.CHANNEL_CACHE.put(FirstAddress,channel);
+                }
+
+                if(channel == null){
+                    throw new NetworkException("获取通道异常");
+                }
+                //发送请求
+                ChannelFuture channelFuture = channel.writeAndFlush(new Object());
+
                 return null;
             }
         });
