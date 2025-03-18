@@ -2,10 +2,13 @@ package com.elephant;
 
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.InetSocketAddress;
+import java.util.List;
 
 /**
  * @Author: Elephant-FZY
@@ -13,6 +16,7 @@ import java.lang.reflect.Proxy;
  * @Date: 2025/03/15/16:19
  * @Description: 服务调用端核心配置类
  */
+@Slf4j
 public class ReferenceConfig<T> {
     private Class<T> interfaceRef;
 
@@ -20,9 +24,12 @@ public class ReferenceConfig<T> {
     // 分组信息
     private String group;
 
-    private RegistryConfig registryConfig;
 
 
+    /**
+     * 代理设计模式 生成一个 API 的代理对象
+     * @return 代理对象
+     */
     public T get(){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Class[] classes = new Class[]{interfaceRef};
@@ -30,10 +37,14 @@ public class ReferenceConfig<T> {
         Object helloProxy = Proxy.newProxyInstance(classLoader, classes, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                //1.注册服务 --- 这里想要实现注册就需要从核心配置类拉去注册中心过来
-                Registry registry = registryConfig.getRegistry(true);
-                registry.lookup(proxy.toString(),group);
+                //从注册中心中寻找一个可用服务
+                //TODO 后期可以修改为自动推荐一个服务 -- 负载均衡
+                //TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
+                List<InetSocketAddress> addresses = registry.lookup(interfaceRef.getName(),group);
+                InetSocketAddress FirstAddress  = addresses.get(0);
+                log.info("选择了该服务：【{}】的【{}】节点",interfaceRef.getName(),FirstAddress);
                 //2.使用 Netty 发起 RPC 调用
+
 
                 return null;
             }
@@ -43,6 +54,9 @@ public class ReferenceConfig<T> {
     }
 
 
+    public Class<T> getInterfaceRef() {
+        return interfaceRef;
+    }
 
     public void setInterfaceRef(Class<T> interfaceRef) {
         this.interfaceRef = interfaceRef;
@@ -62,17 +76,5 @@ public class ReferenceConfig<T> {
 
     public void setGroup(String group) {
         this.group = group;
-    }
-
-    public Class<T> getInterfaceRef() {
-        return interfaceRef;
-    }
-
-    public RegistryConfig getRegistryConfig() {
-        return registryConfig;
-    }
-
-    public void setRegistryConfig(RegistryConfig registryConfig) {
-        this.registryConfig = registryConfig;
     }
 }

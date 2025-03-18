@@ -93,7 +93,8 @@ public class YrpcBootstrap<T> {
     public void start() {
         log.info("服务提供方启用");
         try {
-            Thread.sleep(100000);
+            //TODO
+            Thread.sleep(10000000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -105,8 +106,9 @@ public class YrpcBootstrap<T> {
 
     public YrpcBootstrap reference(ReferenceConfig<?> reference) {
         log.info("通过核心配置类去完善服务调用端的配置类");
-        reference.setRegistryConfig(registryConfig);
-        return null;
+        //将注册中心的实例设置到 reference 中
+        reference.setRegistry(registry);
+        return this;
     }
 
 

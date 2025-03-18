@@ -3,6 +3,7 @@ package com.elephant.discovery.impl;
 import com.elephant.Constants;
 import com.elephant.ServiceConfig;
 import com.elephant.discovery.AbstractRegistry;
+import com.elephant.exception.DiscoveryException;
 import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNode;
 import com.elephant.utils.Zookeeper.ZookeeperUtils;
@@ -12,6 +13,7 @@ import org.apache.zookeeper.ZooKeeper;
 
 import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Elephant-FZY
@@ -58,9 +60,27 @@ public class ZookeeperRegistry extends AbstractRegistry {
         }
     }
 
+    /**
+     * 返回相关的服务地址
+     * @param serviceName 服务的名称
+     * @param group
+     * @return IP + PORT 的服务集合
+     */
     @Override
     public List<InetSocketAddress> lookup(String serviceName, String group) {
-        return null;
+        String path = Constants.BASE_PROVIDERS_PATH + "/" + serviceName;
+        List<String> children = ZookeeperUtils.getChildren(zookeeper, path, null);
+        List<InetSocketAddress> inetSocketAddresses = children.stream().map(ipString ->{
+            String[] ipAndPort = ipString.split(":");
+            String ip = ipAndPort[0];
+            int port = Integer.parseInt(ipAndPort[1]);
+            return new InetSocketAddress(ip,port);
+        }).collect(Collectors.toList());
+
+        if(inetSocketAddresses == null){
+            throw new DiscoveryException("未找到相关服务");
+        }
+        return inetSocketAddresses;
     }
 
 

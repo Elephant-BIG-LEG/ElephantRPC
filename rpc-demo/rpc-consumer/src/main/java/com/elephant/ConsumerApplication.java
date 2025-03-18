@@ -16,6 +16,7 @@ public class ConsumerApplication {
         // 想尽一切办法获取代理对象,使用ReferenceConfig进行封装
         // reference一定用生成代理的模板方法，get()
         ReferenceConfig<HelloYrpc> reference = new ReferenceConfig<>();
+        //后面调用 get 方法时，会自动生成相对应的代理对象
         reference.setInterfaceRef(HelloYrpc.class);
 
         // 代理做了些什么?
@@ -25,14 +26,19 @@ public class ConsumerApplication {
         // 4、发送请求，携带一些信息（接口名，参数列表，方法的名字），获得结果
         YrpcBootstrap.getInstance()
                 .application("first-yrpc-consumer")
+                //配置一个注册中心
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 //.serialize("hessian")
                 //.compress("gzip")
                 //.group("primary")
+                //会将上面的注册中心放到这个核心配置类中
                 .reference(reference);
 
         System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         HelloYrpc helloYrpc = reference.get();
+        //这里才会去触发 invoke 方法
+        helloYrpc.sayHi("你好");
+
 
 //        while (true) {
 ////            try {
