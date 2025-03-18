@@ -7,10 +7,7 @@ import com.elephant.exception.NetworkException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -22,6 +19,8 @@ import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Elephant-FZY
@@ -86,7 +85,23 @@ public class ReferenceConfig<T> {
 
                 if(channel == null){
                     //await 方法会阻塞，会等待连接成功再返回【需要考虑超时问题】，Netty 也提供了异步处理的逻辑
-                    channel = NettyBootstrapInitializer.getBootstrap().connect(FirstAddress).await().channel();
+                    //sync 和 await都是阻塞当前线程，获取返回值【连接的过程时异步的，发生数据的过程时异步的】
+                    //如果发生了异常，sync会主动在主线程中抛出异常，异常在子线程中处理需要使用 future 中处理
+                    //同步操作
+                    //channel = NettyBootstrapInitializer.getBootstrap().connect(FirstAddress).await().channel();
+                    //异步操作
+                    CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
+                    NettyBootstrapInitializer.getBootstrap().connect(FirstAddress).addListener((ChannelFutureListener) promise ->{
+                        if(promise.isDone()){
+                            completableFuture.complete(promise.channel());
+                        } else if (!promise.isSuccess()) {
+                            //捕捉异常
+                            completableFuture.completeExceptionally(promise.cause());
+                        }
+                    });
+                    //阻塞拿到 channel
+                    channel = completableFuture.get(3, TimeUnit.SECONDS);
+
                     YrpcBootstrap.CHANNEL_CACHE.put(FirstAddress,channel);
                 }
 
@@ -94,9 +109,39 @@ public class ReferenceConfig<T> {
                     throw new NetworkException("获取通道异常");
                 }
                 //发送请求
-                ChannelFuture channelFuture = channel.writeAndFlush(new Object());
+                /**
+                 * ------------------同步策略-------------------------
+                 */
+//                ChannelFuture channelFuture = channel.writeAndFlush(new Object()).await();
+                // 需要学习channelFuture的简单的api get 阻塞获取结果，getNow 获取当前的结果，如果未处理完成，返回null
+//                if(channelFuture.isDone()){
+//                    Object object = channelFuture.getNow();
+//                } else if( !channelFuture.isSuccess() ){
+//                    // 需要捕获异常,可以捕获异步任务中的异常
+//                    Throwable cause = channelFuture.cause();
+//                    throw new RuntimeException(cause);
+//                }
+                /**
+                 * ------------------异步策略-------------------------
+                 */
+                CompletableFuture<Object> completableFuture = new CompletableFuture<>();
+                channel.writeAndFlush(new Object()).addListener((ChannelFutureListener) promise -> {
+                    // 当前的promise将来返回的结果是什么，writeAndFlush的返回结果
+                    // 一旦数据被写出去，这个promise也就结束了
+                    // 但是我们想要的是什么？  服务端给我们的返回值，所以这里处理completableFuture是有问题的
+                    // 是不是应该将 completableFuture 挂起并且暴露，并且在得到服务提供方的响应的时候调用complete方法
+//                    if(promise.isDone()){
+//                        completableFuture.complete(promise.getNow());
+//                    }
 
-                return null;
+                    // 只需要处理以下异常就行了
+                    if (!promise.isSuccess()) {
+                        completableFuture.completeExceptionally(promise.cause());
+                    }
+                });
+
+                //TODO 超时时间可以动态调整
+                return completableFuture.get(3, TimeUnit.SECONDS);
             }
         });
         return (T)helloProxy;
