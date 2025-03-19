@@ -6,6 +6,8 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @Author: Elephant-FZY
@@ -14,6 +16,7 @@ import java.util.List;
  * @Description: 注册中心的管理页面 --- TODO 添加管理端界面
  */
 public class Application {
+
     public static void main(String[] args) {
         //创建服务实例
         ZooKeeper zk = ZookeeperUtils.createZookeeper();

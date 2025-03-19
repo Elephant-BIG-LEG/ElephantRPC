@@ -1,25 +1,19 @@
 package com.elephant;
 
 
-import com.elephant.discovery.AbstractRegistry;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
-import com.elephant.discovery.impl.ZookeeperRegistry;
-import com.elephant.utils.NetUtils;
-import com.elephant.utils.Zookeeper.ZookeeperNode;
-import com.elephant.utils.Zookeeper.ZookeeperUtils;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.*;
-
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -82,6 +76,11 @@ public class YrpcBootstrap<T> {
     }
 
 
+    /**
+     * 设置注册中心
+     * @param registryConfig
+     * @return
+     */
     public YrpcBootstrap registry(RegistryConfig registryConfig) {
         log.info("开始注册该服务：{}", registryConfig);
         //使用模板方法
@@ -120,8 +119,19 @@ public class YrpcBootstrap<T> {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            //TODO
-                            socketChannel.pipeline().addLast(null);
+                            //TODO 服务提供方处理数据
+                            socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<>() {
+                                @Override
+                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+                                    ByteBuf byteBuf = (ByteBuf) msg;
+                                    log.info("byteBuf:{}" ,byteBuf.toString(Charset.defaultCharset()));
+
+                                    //TODO
+                                    log.info("服务提供方开始写回数据");
+                                    channelHandlerContext.channel().writeAndFlush(
+                                            Unpooled.copiedBuffer("这是写回的信息".getBytes(StandardCharsets.UTF_8)));
+                                }
+                            });
                         }
                     });
             //绑定端口

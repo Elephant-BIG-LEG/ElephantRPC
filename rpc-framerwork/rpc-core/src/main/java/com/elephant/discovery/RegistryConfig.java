@@ -25,7 +25,7 @@ public class RegistryConfig {
         //TODO 这里使用默认配置 如果后期使用 UI 管理界面可以传入 boolean 参数
         switch (registerType){
             case "zookeeper":
-                return new ZookeeperRegistry(connectString,host,true);
+                return new ZookeeperRegistry(connectString,host,isDefault);
             case "nacos":
                 return new NacosRegistry();
             default:

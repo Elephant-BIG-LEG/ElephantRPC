@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ZookeeperRegistry extends AbstractRegistry {
 
-    //维护一个 Zookeeper 实例
+    //全局维护一个 Zookeeper 实例
     private ZooKeeper zookeeper;
 
     /**

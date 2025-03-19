@@ -34,7 +34,6 @@ public class ConsumerApplication {
                 //会将上面的注册中心放到这个核心配置类中
                 .reference(reference);
 
-        System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         HelloYrpc helloYrpc = reference.get();
         //这里才会去触发 invoke 方法
         helloYrpc.sayHi("你好");

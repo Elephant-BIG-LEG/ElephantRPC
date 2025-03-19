@@ -1,7 +1,12 @@
 package com.elephant;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +28,19 @@ public class NettyBootstrapInitializer {
         bootstrap.group(group)
                 // 选择初始化一个什么样的channel
                 .channel(NioSocketChannel.class)
-                .handler(null);
+                .handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>() {
+                            @Override
+                            protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf msg) throws Exception {
+                                //TODO 服务调用端处理数据
+                                log.info("如果这里想要获取数据，需要解码");
+                                log.info("msg:{}",msg.toString());
+                            }
+                        });
+                    }
+                });
     }
 
     private NettyBootstrapInitializer() {

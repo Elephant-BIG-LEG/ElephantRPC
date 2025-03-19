@@ -56,9 +56,6 @@ public class ZookeeperUtils {
      * @return true 成功创建 false 节点已存在 exception 创建异常
      */
     public static Boolean createNode(ZooKeeper zooKeeper, ZookeeperNode node, Watcher watcher,CreateMode createMode){
-        if(zooKeeper == null){
-            throw new RuntimeException("该服务实例不存在，请重试");
-        }
         try {
             if(zooKeeper.exists(node.getNodePath(),watcher) == null){
                 zooKeeper.create(node.getNodePath(), node.getData(),
@@ -123,6 +120,17 @@ public class ZookeeperUtils {
             return zooKeeper.getChildren(serviceNode, watcher);
         } catch (KeeperException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * 判断服务是否存活
+     * @param zooKeeper
+     */
+    public static void isAlive(ZooKeeper zooKeeper){
+        if(zooKeeper.getState() != ZooKeeper.States.CONNECTED){
+            throw new RuntimeException("服务不存在或者不支持连接");
         }
     }
 
