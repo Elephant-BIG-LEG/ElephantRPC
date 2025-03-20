@@ -44,6 +44,7 @@ public class NettyBootstrapInitializer {
                                 //TODO 表示需要修改
                                 CompletableFuture<Object> completableFuture = YrpcBootstrap.PENDING_REQUEST.get(1L);
                                 //将结果设置到 CompletableFuture 中
+                                //                -- 这里执行成功便会处理 return completableFuture.get(10, TimeUnit.SECONDS);并返回结果
                                 completableFuture.complete(result);
                             }
                         });
