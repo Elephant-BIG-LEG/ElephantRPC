@@ -10,11 +10,14 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.charset.Charset;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/18/14:07
- * @Description: TODO
+ * @Description: 封装 Bootstrap 的创建
  */
 @Slf4j
 public class NettyBootstrapInitializer {
@@ -35,8 +38,13 @@ public class NettyBootstrapInitializer {
                             @Override
                             protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf msg) throws Exception {
                                 //TODO 服务调用端处理数据
-                                log.info("如果这里想要获取数据，需要解码");
-                                log.info("msg:{}",msg.toString());
+                                //这是服务提供方发送的数据
+                                String result = msg.toString(Charset.defaultCharset());
+                                //从全局挂起的请求中，匹配请求 ID，找到 completableFuture
+                                //TODO 表示需要修改
+                                CompletableFuture<Object> completableFuture = YrpcBootstrap.PENDING_REQUEST.get(1L);
+                                //将结果设置到 CompletableFuture 中
+                                completableFuture.complete(result);
                             }
                         });
                     }

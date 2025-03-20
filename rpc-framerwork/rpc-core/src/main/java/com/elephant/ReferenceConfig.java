@@ -1,25 +1,14 @@
 package com.elephant;
 
 import com.elephant.discovery.Registry;
-import com.elephant.discovery.RegistryConfig;
-import com.elephant.exception.DiscoveryException;
 import com.elephant.exception.NetworkException;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -102,12 +91,13 @@ public class ReferenceConfig<T> {
                  * 异步建立 channel 连接
                  */
                 if(channel == null){
-                    //await 方法会阻塞，会等待连接成功再返回【需要考虑超时问题】，Netty 也提供了异步处理的逻辑
-                    //sync 和 await都是阻塞当前线程，获取返回值【连接的过程时异步的，发生数据的过程时异步的】
-                    //如果发生了异常，sync会主动在主线程中抛出异常，异常在子线程中处理需要使用 future 中处理
-                    //同步操作
-                    //channel = NettyBootstrapInitializer.getBootstrap().connect(address).await().channel();
-                    //异步操作
+                    // await 方法会阻塞，会等待连接成功再返回【需要考虑超时问题】，Netty 也提供了异步处理的逻辑
+                    // sync 和 await都是阻塞当前线程，获取返回值【连接的过程时异步的，发生数据的过程时异步的】
+                    // 如果发生了异常，sync会主动在主线程中抛出异常，异常在子线程中处理需要使用 future 中处理
+                    // 同步操作
+                    // channel = NettyBootstrapInitializer.getBootstrap().connect(address).await().channel();
+                    // 异步操作
+                    // CompletableFuture 拿到服务器响应的结果
                     CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
                     NettyBootstrapInitializer.getBootstrap().connect(address).addListener((ChannelFutureListener) promise ->{
                         if(promise.isDone()){
@@ -126,10 +116,11 @@ public class ReferenceConfig<T> {
                 if(channel == null){
                     throw new NetworkException("获取通道异常");
                 }
-                //发送请求
+                //发送请求 每一个 RPC 服务维护着一个 CompletableFuture
                 /**
                  * ------------------同步策略-------------------------
                  */
+
 //                ChannelFuture channelFuture = channel.writeAndFlush(new Object()).await();
                 // 需要学习channelFuture的简单的api get 阻塞获取结果，getNow 获取当前的结果，如果未处理完成，返回null
 //                if(channelFuture.isDone()){
@@ -139,11 +130,13 @@ public class ReferenceConfig<T> {
 //                    Throwable cause = channelFuture.cause();
 //                    throw new RuntimeException(cause);
 //                }
+
                 /**
                  * ------------------异步策略-------------------------
                  */
                 CompletableFuture<Object> completableFuture = new CompletableFuture<>();
-                //TODO 写出客户调用端接受
+                YrpcBootstrap.PENDING_REQUEST.put(1L,completableFuture);
+                //TODO 临时的写出数据
                 channel.writeAndFlush(Unpooled.copiedBuffer("hello".getBytes())).addListener((ChannelFutureListener) promise -> {
                     // 当前的promise将来返回的结果是什么，writeAndFlush的返回结果
                     // 一旦数据被写出去，这个promise也就结束了
@@ -159,9 +152,9 @@ public class ReferenceConfig<T> {
                     }
                 });
 
-                //TODO 超时时间可以动态调整
-//                return completableFuture.get(3, TimeUnit.SECONDS);
-                return null;
+                // 如果没有地方处理这个 completableFuture，这里会阻塞，等待 complete 方法的执行
+                // 我们需要在那里调用 complete 方法得到结果，就是 pipeline 中最终的 handler 的处理结果
+                return completableFuture.get(10, TimeUnit.SECONDS);
             }
         });
         return (T)helloProxy;

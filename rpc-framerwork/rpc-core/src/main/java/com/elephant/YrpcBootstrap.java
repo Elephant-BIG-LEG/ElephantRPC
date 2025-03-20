@@ -15,6 +15,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -34,9 +35,6 @@ public class YrpcBootstrap<T> {
 
     private RegistryConfig registryConfig;
 
-//    //维护一个 Zookeeper 实例 保证只启用一个
-//    private ZooKeeper zookeeper;
-
     //维护一个注册中心
     private Registry registry;
 
@@ -48,6 +46,9 @@ public class YrpcBootstrap<T> {
     // (1) new 一个  （2）spring beanFactory.getBean(Class)  (3) 自己维护映射关系
     // 维护已经发布且暴露的服务列表 key-> interface的全限定名  value -> ServiceConfig
     public final static Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
+
+    //定义全局的对外挂起的 completableFuture
+    public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
 
     /**
      * --------------------------- 服务提供方相关 API --------------------------------
@@ -125,8 +126,6 @@ public class YrpcBootstrap<T> {
                                 protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
                                     ByteBuf byteBuf = (ByteBuf) msg;
                                     log.info("byteBuf:{}" ,byteBuf.toString(Charset.defaultCharset()));
-
-                                    //TODO
                                     log.info("服务提供方开始写回数据");
                                     channelHandlerContext.channel().writeAndFlush(
                                             Unpooled.copiedBuffer("这是写回的信息".getBytes(StandardCharsets.UTF_8)));

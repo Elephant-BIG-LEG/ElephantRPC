@@ -36,7 +36,8 @@ public class ConsumerApplication {
 
         HelloYrpc helloYrpc = reference.get();
         //这里才会去触发 invoke 方法
-        helloYrpc.sayHi("你好");
+        String string = helloYrpc.sayHi("你好");
+        log.info("成功收到服务提供方发送的数据:{}",string);
 
 
 //        while (true) {
