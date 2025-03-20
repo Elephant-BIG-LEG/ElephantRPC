@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/ConsumerChannelInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/transport/message/RequestPayload.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/transport/message/YrpcRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/NettyBootstrapInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/NettyBootstrapInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +169,8 @@
       <workItem from="1742300696248" duration="60000" />
       <workItem from="1742348901620" duration="3771000" />
       <workItem from="1742361435413" duration="5442000" />
-      <workItem from="1742434925153" duration="5448000" />
+      <workItem from="1742434925153" duration="6095000" />
+      <workItem from="1742472393987" duration="1051000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -283,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742454658660</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="将handler进行抽离">
+      <option name="closed" value="true" />
+      <created>1742455460523</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1742455460523</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,6 +313,7 @@
     <MESSAGE value="完成服务提供方与服务调用方之间的基本通讯，并解决BUG -- 处理冗余代码影响" />
     <MESSAGE value="异步获取服务提供方发送的数据" />
     <MESSAGE value="调整服务调用端通讯的代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整服务调用端通讯的代码" />
+    <MESSAGE value="将handler进行抽离" />
+    <option name="LAST_COMMIT_MESSAGE" value="将handler进行抽离" />
   </component>
 </project>
