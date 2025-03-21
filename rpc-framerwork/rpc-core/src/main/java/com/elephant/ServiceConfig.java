@@ -8,6 +8,7 @@ package com.elephant;
  */
 public class ServiceConfig<T> {
     private Class<?> interfaceProvider;
+    //表示服务的具体实现对象
     private Object ref;
     private String group = "default";
 

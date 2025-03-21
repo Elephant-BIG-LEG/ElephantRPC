@@ -3,6 +3,7 @@ package com.elephant.proxy.handler;
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
 import com.elephant.discovery.Registry;
+import com.elephant.enumeration.RequestType;
 import com.elephant.exception.DiscoveryException;
 import com.elephant.exception.NetworkException;
 import com.elephant.transport.message.RequestPayload;
@@ -62,7 +63,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
          * ------------------封装报文-------------------------
          */
         RequestPayload requestPayload = RequestPayload.builder()
-                .interfaceName(interfaceRef.toString())
+                .interfaceName(interfaceRef.getName())
                 .methodName(method.getName())
                 .parametersType(method.getParameterTypes())
                 .parametersValue(args)
@@ -73,7 +74,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         YrpcRequest yrpcRequest = YrpcRequest.builder()
                 .requestId(1L)
                 .compressType((byte) 1)
-                .requestType((byte) 1)
+                .requestType(RequestType.REQUEST.getId())
                 .serializeType((byte) 1)
                 .requestPayload(requestPayload)
                 .build();

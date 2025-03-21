@@ -13,6 +13,7 @@ public class ProviderApplication {
     public static void main(String[] args) {
         ServiceConfig<HelloYrpc> service = new ServiceConfig<>();
         service.setInterface(HelloYrpc.class);
+        //服务的具体实现对象
         service.setRef(new HelloYrpcImpl());
 
         YrpcBootstrap.getInstance()

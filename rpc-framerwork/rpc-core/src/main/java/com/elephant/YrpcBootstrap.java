@@ -1,6 +1,9 @@
 package com.elephant;
 
 
+import com.elephant.channelHandler.handler.MethodCallHandler;
+import com.elephant.channelHandler.handler.YrpcRequestDecoder;
+import com.elephant.channelHandler.handler.YrpcResponseEncoder;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,6 +13,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
@@ -99,6 +103,8 @@ public class YrpcBootstrap<T> {
     public YrpcBootstrap publish(ServiceConfig<T> service) {
         //抽象注册中心的概念
         registry.register(service);
+
+        SERVERS_LIST.put(service.getInterface().getName(), service);
         return this;
     }
 
@@ -107,7 +113,9 @@ public class YrpcBootstrap<T> {
      * 启动 Netty 服务
      */
     public void start() {
-        log.info("服务提供方启用");
+        if(log.isDebugEnabled()){
+            log.debug("服务提供方启用");
+        }
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(2);
         EventLoopGroup workGroup = new NioEventLoopGroup(10);
@@ -121,16 +129,23 @@ public class YrpcBootstrap<T> {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //TODO 服务提供方处理数据
-                            socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<>() {
-                                @Override
-                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-                                    ByteBuf byteBuf = (ByteBuf) msg;
-                                    log.info("byteBuf:{}" ,byteBuf.toString(Charset.defaultCharset()));
-                                    log.info("服务提供方开始写回数据");
-                                    channelHandlerContext.channel().writeAndFlush(
-                                            Unpooled.copiedBuffer("这是写回的信息".getBytes(StandardCharsets.UTF_8)));
-                                }
-                            });
+//                            new SimpleChannelInboundHandler<>() {
+//                                @Override
+//                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+//                                    ByteBuf byteBuf = (ByteBuf) msg;
+//                                    log.info("byteBuf:{}" ,byteBuf.toString(Charset.defaultCharset()));
+//                                    log.info("服务提供方开始写回数据");
+//                                    channelHandlerContext.channel().writeAndFlush(
+//                                            Unpooled.copiedBuffer("这是写回的信息".getBytes(StandardCharsets.UTF_8)));
+//                                }
+//                            }
+                            socketChannel.pipeline().addLast(new LoggingHandler())
+                                    // 解码
+                                    .addLast(new YrpcRequestDecoder())
+                                    // 根据请求进行方法调用
+                                    .addLast(new MethodCallHandler())
+                                    // 编码
+                                    .addLast(new YrpcResponseEncoder());
                         }
                     });
             //绑定端口
@@ -148,8 +163,6 @@ public class YrpcBootstrap<T> {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 
     /**
