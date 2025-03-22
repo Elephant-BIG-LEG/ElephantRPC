@@ -54,6 +54,8 @@ public class YrpcBootstrap<T> {
     //定义全局的对外挂起的 completableFuture
     public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
 
+    //1号机房 2号机器
+    public static final IdGenerator idGenerator = new IdGenerator(1,2);
     /**
      * --------------------------- 服务提供方相关 API --------------------------------
      */

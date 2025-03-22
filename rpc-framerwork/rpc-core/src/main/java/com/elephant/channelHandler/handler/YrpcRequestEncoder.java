@@ -1,8 +1,11 @@
 package com.elephant.channelHandler.handler;
 
 
-import ch.qos.logback.core.rolling.helper.Compressor;
+import com.elephant.compress.Compressor;
+import com.elephant.compress.CompressorFactory;
 import com.elephant.enumeration.RequestType;
+import com.elephant.serialize.Serializer;
+import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.MessageFormatConstant;
 import com.elephant.transport.message.RequestPayload;
 import com.elephant.transport.message.YrpcRequest;
@@ -83,38 +86,30 @@ public class YrpcRequestEncoder extends MessageToByteEncoder<YrpcRequest> {
         // 1、根据配置的序列化方式进行序列化
         // 怎么实现序列化 1、工具类 耦合性很高 如果以后我想替换序列化的方式，很难
         byte[] body = null;
-//        if (yrpcRequest.getRequestPayload() != null) {
-//            Serializer serializer = SerializerFactory.getSerializer(yrpcRequest.getSerializeType()).getImpl();
-//            body = serializer.serialize(yrpcRequest.getRequestPayload());
-//            // 2、根据配置的压缩方式进行压缩
-//            Compressor compressor = CompressorFactory.getCompressor(yrpcRequest.getCompressType()).getImpl();
-//            body = compressor.compress(body);
-//        }
-        //TODO
-//        if (body != null) {
-//            byteBuf.writeBytes(body);
-//        }
-
-        //TODO 临时写入
-        if(!(yrpcRequest.getRequestPayload() == null)){
-            log.debug("服务调用端写入数据",yrpcRequest.getRequestPayload());
-            body = getBodyBytes(yrpcRequest.getRequestPayload());
-            byteBuf.writeBytes(body);
+        if (yrpcRequest.getRequestPayload() != null) {
+            Serializer serializer = SerializerFactory.getSerializer(yrpcRequest.getSerializeType()).getImpl();
+            body = serializer.serialize(yrpcRequest.getRequestPayload());
+            // 2、根据配置的压缩方式进行压缩
+            Compressor compressor = CompressorFactory.getCompressor(yrpcRequest.getCompressType()).getImpl();
+            body = compressor.compress(body);
         }
 
+        if (body != null) {
+            byteBuf.writeBytes(body);
+        }
         int bodyLength = body == null ? 0 : body.length;
-        
+
         // 重新处理报文的总长度
         // 先保存当前的写指针的位置
         int writerIndex = byteBuf.writerIndex();
         // 将写指针的位置移动到总长度的位置上
         byteBuf.writerIndex(MessageFormatConstant.MAGIC.length
-            + MessageFormatConstant.VERSION_LENGTH + MessageFormatConstant.HEADER_FIELD_LENGTH
+                + MessageFormatConstant.VERSION_LENGTH + MessageFormatConstant.HEADER_FIELD_LENGTH
         );
         byteBuf.writeInt(MessageFormatConstant.HEADER_LENGTH + bodyLength);
         // 将写指针归位
         byteBuf.writerIndex(writerIndex);
-        
+
         if (log.isDebugEnabled()) {
             log.debug("请求【{}】已经完成报文的编码。", yrpcRequest.getRequestId());
         }

@@ -5,22 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestDecoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestEncoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseDecoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseEncoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/enumeration/RequestType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/enumeration/RespCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/transport/message/MessageFormatConstant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/transport/message/YrpcResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/resources/trace.2025-03-21.0.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/log/trace.2025-03-21.0.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/DateUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/IdGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/exception/CompressException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/exception/SerializeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/compress/Compressor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/compress/CompressorFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/compress/impl/GzipCompressor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/ObjectWrapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/SerializeUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/Serializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/SerializerFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/impl/HessianSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/impl/JdkSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/impl/JsonSerializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/impl/HelloYrpcImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/impl/HelloYrpcImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ServiceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ServiceConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/ConsumerChannelInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/ConsumerChannelInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseEncoder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,9 +72,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.Application.executor": "Run",
     "Application.ConsumerApplication.executor": "Run",
-    "Application.ProviderApplication.executor": "Debug",
+    "Application.IdGenerator.executor": "Run",
+    "Application.ProviderApplication.executor": "Run",
     "Maven.ElephantRPC [clean].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -134,6 +142,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="IdGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.elephant.IdGenerator" />
+      <module name="rpc-commer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.elephant.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ProviderApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.elephant.ProviderApplication" />
       <module name="rpc-provider" />
@@ -161,6 +182,7 @@
       <list>
         <item itemvalue="Application.ConsumerApplication" />
         <item itemvalue="Application.ProviderApplication" />
+        <item itemvalue="Application.IdGenerator" />
         <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
@@ -187,7 +209,8 @@
       <workItem from="1742361435413" duration="5442000" />
       <workItem from="1742434925153" duration="6095000" />
       <workItem from="1742472393987" duration="2622000" />
-      <workItem from="1742534954853" duration="9577000" />
+      <workItem from="1742534954853" duration="9970000" />
+      <workItem from="1742610325297" duration="5623000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -317,13 +340,22 @@
       <option name="project" value="LOCAL" />
       <updated>1742473790318</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="封装服务提供方和服务调用端的解码与编码，并使用反射完成服务提供方的响应">
+      <option name="closed" value="true" />
+      <created>1742544915882</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1742544915882</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="RPC项目基本框架" />
     <MESSAGE value="添加相关依赖" />
     <MESSAGE value="搭建基本框架，并解决Zookeeper的日志冲突" />
@@ -340,21 +372,12 @@
     <MESSAGE value="调整服务调用端通讯的代码" />
     <MESSAGE value="将handler进行抽离" />
     <MESSAGE value="封装服务调用端的请求体和负载" />
-    <option name="LAST_COMMIT_MESSAGE" value="封装服务调用端的请求体和负载" />
+    <MESSAGE value="封装服务提供方和服务调用端的解码与编码，并使用反射完成服务提供方的响应" />
+    <option name="LAST_COMMIT_MESSAGE" value="封装服务提供方和服务调用端的解码与编码，并使用反射完成服务提供方的响应" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestEncoder.java</url>
-          <line>54</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestEncoder.java</url>
-          <line>98</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java</url>
           <line>102</line>
@@ -364,6 +387,11 @@
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java</url>
           <line>100</line>
           <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestEncoder.java</url>
+          <line>99</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,7 +1,11 @@
 package com.elephant.channelHandler.handler;
 
 
-import ch.qos.logback.core.rolling.helper.Compressor;
+
+import com.elephant.compress.Compressor;
+import com.elephant.compress.CompressorFactory;
+import com.elephant.serialize.Serializer;
+import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.MessageFormatConstant;
 import com.elephant.transport.message.YrpcResponse;
 import io.netty.buffer.ByteBuf;
@@ -62,34 +66,34 @@ public class YrpcResponseEncoder extends MessageToByteEncoder<YrpcResponse> {
         
         // 1、对响应做序列化
         byte[] body = null;
-//        if(yrpcResponse.getBody() != null) {
-//            Serializer serializer = SerializerFactory
-//                .getSerializer(yrpcResponse.getSerializeType()).getImpl();
-//            body = serializer.serialize(yrpcResponse.getBody());
-//
-//            // 2、压缩
-//            Compressor compressor = CompressorFactory.getCompressor(
-//                yrpcResponse.getCompressType()
-//            ).getImpl();
-//            body = compressor.compress(body);
-//        }
-        
+        if(yrpcResponse.getBody() != null) {
+            Serializer serializer = SerializerFactory
+                    .getSerializer(yrpcResponse.getSerializeType()).getImpl();
+            body = serializer.serialize(yrpcResponse.getBody());
+
+            // 2、压缩
+            Compressor compressor = CompressorFactory.getCompressor(
+                    yrpcResponse.getCompressType()
+            ).getImpl();
+            body = compressor.compress(body);
+        }
+
         if(body != null){
             byteBuf.writeBytes(body);
         }
         int bodyLength = body == null ? 0 : body.length;
-        
+
         // 重新处理报文的总长度
         // 先保存当前的写指针的位置
         int writerIndex = byteBuf.writerIndex();
         // 将写指针的位置移动到总长度的位置上
         byteBuf.writerIndex(MessageFormatConstant.MAGIC.length
-            + MessageFormatConstant.VERSION_LENGTH + MessageFormatConstant.HEADER_FIELD_LENGTH
+                + MessageFormatConstant.VERSION_LENGTH + MessageFormatConstant.HEADER_FIELD_LENGTH
         );
         byteBuf.writeInt(MessageFormatConstant.HEADER_LENGTH + bodyLength);
         // 将写指针归位
         byteBuf.writerIndex(writerIndex);
-    
+
         if(log.isDebugEnabled()){
             log.debug("响应【{}】已经在服务端完成编码工作。",yrpcResponse.getRequestId());
         }

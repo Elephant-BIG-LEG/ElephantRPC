@@ -1,7 +1,11 @@
 package com.elephant.channelHandler.handler;
 
 
+import com.elephant.compress.Compressor;
+import com.elephant.compress.CompressorFactory;
 import com.elephant.enumeration.RequestType;
+import com.elephant.serialize.Serializer;
+import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.MessageFormatConstant;
 import com.elephant.transport.message.RequestPayload;
 import com.elephant.transport.message.YrpcRequest;
@@ -9,7 +13,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -129,31 +132,32 @@ public class YrpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         if( requestType == RequestType.HEART_BEAT.getId()){
             return yrpcRequest;
         }
-        
+
         int payloadLength = fullLength - headLength;
         byte[] payload = new byte[payloadLength];
         byteBuf.readBytes(payload);
-        
+
         // 有了字节数组之后就可以解压缩，反序列化
         // 1、解压缩
-//        if(payload != null && payload.length != 0) {
-//            Compressor compressor = CompressorFactory.getCompressor(compressType).getImpl();
-//            payload = compressor.decompress(payload);
-//
-//
-//            // 2、反序列化
-//            Serializer serializer = SerializerFactory.getSerializer(serializeType).getImpl();
-//            RequestPayload requestPayload = serializer.deserialize(payload, RequestPayload.class);
-//            yrpcRequest.setRequestPayload(requestPayload);
-//        }
+        if(payload != null && payload.length != 0) {
+            Compressor compressor = CompressorFactory.getCompressor(compressType).getImpl();
+            payload = compressor.decompress(payload);
 
-        //TODO 临时解压缩
-        if(payload != null && payload.length != 0){
-            log.info("负载不为空");
-            RequestPayload requestPayload = deserialize(payload);
-            log.info(requestPayload.toString());
+
+            // 2、反序列化
+            Serializer serializer = SerializerFactory.getSerializer(serializeType).getImpl();
+            RequestPayload requestPayload = serializer.deserialize(payload, RequestPayload.class);
             yrpcRequest.setRequestPayload(requestPayload);
         }
+
+
+//        //TODO 临时解压缩
+//        if(payload != null && payload.length != 0){
+//            log.info("负载不为空");
+//            RequestPayload requestPayload = deserialize(payload);
+//            log.info(requestPayload.toString());
+//            yrpcRequest.setRequestPayload(requestPayload);
+//        }
         
         if(log.isDebugEnabled()){
             log.debug("请求【{}】已经在服务端完成解码工作。",yrpcRequest.getRequestId());

@@ -1,5 +1,6 @@
 package com.elephant.proxy.handler;
 
+import com.elephant.IdGenerator;
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
 import com.elephant.discovery.Registry;
@@ -72,7 +73,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 
         //TODO 修改临时参数
         YrpcRequest yrpcRequest = YrpcRequest.builder()
-                .requestId(1L)
+                .requestId(YrpcBootstrap.idGenerator.getId())
                 .compressType((byte) 1)
                 .requestType(RequestType.REQUEST.getId())
                 .serializeType((byte) 1)
@@ -121,7 +122,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         /**
          * @see NettyBootstrapInitializer
          */
-        return completableFuture.get(10, TimeUnit.SECONDS);
+        return completableFuture.get(100, TimeUnit.SECONDS);
     }
 
 

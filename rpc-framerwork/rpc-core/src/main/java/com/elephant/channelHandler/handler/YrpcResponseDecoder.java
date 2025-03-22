@@ -1,7 +1,11 @@
 package com.elephant.channelHandler.handler;
 
 
-import ch.qos.logback.core.rolling.helper.Compressor;
+
+import com.elephant.compress.Compressor;
+import com.elephant.compress.CompressorFactory;
+import com.elephant.serialize.Serializer;
+import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.MessageFormatConstant;
 import com.elephant.transport.message.YrpcResponse;
 import io.netty.buffer.ByteBuf;
@@ -121,28 +125,28 @@ public class YrpcResponseDecoder extends LengthFieldBasedFrameDecoder {
 //        if( requestType == RequestType.HEART_BEAT.getId()){
 //            return yrpcRequest;
 //        }
-        
+
         int bodyLength = fullLength - headLength;
         byte[] payload = new byte[bodyLength];
         byteBuf.readBytes(payload);
-        
-//        if(payload.length > 0) {
-//            // 有了字节数组之后就可以解压缩，反序列化
-//            // 1、解压缩
-//            Compressor compressor = CompressorFactory.getCompressor(compressType).getImpl();
-//            payload = compressor.decompress(payload);
-//
-//            // 2、反序列化
-//            Serializer serializer = SerializerFactory
-//                .getSerializer(yrpcResponse.getSerializeType()).getImpl();
-//            Object body = serializer.deserialize(payload, Object.class);
-//            yrpcResponse.setBody(body);
-//        }
-        
+
+        if(payload.length > 0) {
+            // 有了字节数组之后就可以解压缩，反序列化
+            // 1、解压缩
+            Compressor compressor = CompressorFactory.getCompressor(compressType).getImpl();
+            payload = compressor.decompress(payload);
+
+            // 2、反序列化
+            Serializer serializer = SerializerFactory
+                    .getSerializer(yrpcResponse.getSerializeType()).getImpl();
+            Object body = serializer.deserialize(payload, Object.class);
+            yrpcResponse.setBody(body);
+        }
+
         if(log.isDebugEnabled()){
             log.debug("响应【{}】已经在调用端完成解码工作。",yrpcResponse.getRequestId());
         }
-    
+
         return yrpcResponse;
     }
     
