@@ -4,13 +4,11 @@ package com.elephant;
 import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
-import com.elephant.compress.CompressorFactory;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
-import com.elephant.serialize.Serializer;
+import com.elephant.loadbalancer.LoadBalancer;
+import com.elephant.loadbalancer.impl.RoundRobinLoadBalancer;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -18,8 +16,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,17 +30,19 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class YrpcBootstrap<T> {
 
-    public static String COMPRESS_TYPE = "gzip";
-    public static String SERIALIZE_TYPE = "jdk";
     /**
      * --------------------------- 相关的基础配置 --------------------------------
      */
+
+    public static String COMPRESS_TYPE = "gzip";
+    public static String SERIALIZE_TYPE = "jdk";
+
     private static String appName = "default";
 
     private RegistryConfig registryConfig;
 
     //维护一个注册中心
-    private Registry registry;
+    private static Registry registry;
 
     //注意：如果使用 InetSocketAddress 作为 key，一定要保证该类重写了 toString 方法和 equals 方法
     //每一个地址维护一个 channel
@@ -60,6 +58,8 @@ public class YrpcBootstrap<T> {
 
     //1号机房 2号机器
     public static final IdGenerator idGenerator = new IdGenerator(1,2);
+
+    public static LoadBalancer LOAD_BALANCER;
     /**
      * --------------------------- 服务提供方相关 API --------------------------------
      */
@@ -97,6 +97,8 @@ public class YrpcBootstrap<T> {
         //使用模板方法
         //true 表示使用默认配置
         this.registry = registryConfig.getRegistry(true);
+        //TODO
+        YrpcBootstrap.LOAD_BALANCER = new RoundRobinLoadBalancer();
         return this;
 
     }
@@ -198,4 +200,10 @@ public class YrpcBootstrap<T> {
         }
         return this;
     }
+
+    //TODO
+    public static Registry getRegistry() {
+        return registry;
+    }
+
 }

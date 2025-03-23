@@ -1,6 +1,5 @@
 package com.elephant.proxy.handler;
 
-import com.elephant.IdGenerator;
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
 import com.elephant.compress.CompressorFactory;
@@ -11,14 +10,12 @@ import com.elephant.exception.NetworkException;
 import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.RequestPayload;
 import com.elephant.transport.message.YrpcRequest;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -48,11 +45,13 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        //从注册中心中寻找一个可用服务
-        //TODO 后期可以修改为自动推荐一个服务 -- 负载均衡
+        // 从注册中心中寻找一个可用服务
+
         //TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
-        List<InetSocketAddress> addresses = registry.lookup(interfaceRef.getName(),group);
-        InetSocketAddress address  = addresses.get(0);
+
+        // 负载均衡
+        InetSocketAddress address = YrpcBootstrap.LOAD_BALANCER.selectServiceAddress(interfaceRef.getName(), group);
+
         if(log.isDebugEnabled()){
             log.debug("选择了该服务：【{}】下的【{}】节点",interfaceRef.getName(),address);
         }
