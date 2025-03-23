@@ -20,7 +20,8 @@ public class ProviderApplication {
                 .application("first-rpc-provider")
                 // 配置注册中心
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
-                //.serialize("jdk")
+                .serialize("jdk")
+                //.compress("gzip")
                 // 发布服务
                 .publish(service)
                 // 扫包批量发布

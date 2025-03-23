@@ -37,10 +37,10 @@ public class CompressorFactory {
         return compressorObjectWrapper;
     }
     
-    public static ObjectWrapper<Compressor> getCompressor(byte serializeCode) {
-        ObjectWrapper<Compressor> compressorObjectWrapper = COMPRESSOR_CACHE.get(serializeCode);
+    public static ObjectWrapper<Compressor> getCompressor(byte compressorCode) {
+        ObjectWrapper<Compressor> compressorObjectWrapper = COMPRESSOR_CACHE_CODE.get(compressorCode);
         if ((compressorObjectWrapper == null)){
-            log.error("未找到您配置的编号为【{}】的压缩算法，默认选用gzip算法。",serializeCode);
+            log.error("未找到您配置的编号为【{}】的压缩算法，默认选用gzip算法。",compressorCode);
             return COMPRESSOR_CACHE.get("gzip");
         }
         return compressorObjectWrapper;

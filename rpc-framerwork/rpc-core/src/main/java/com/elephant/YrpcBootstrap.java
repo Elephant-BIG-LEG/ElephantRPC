@@ -4,8 +4,10 @@ package com.elephant;
 import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
+import com.elephant.compress.CompressorFactory;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
+import com.elephant.serialize.Serializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -32,6 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class YrpcBootstrap<T> {
 
+    public static String COMPRESS_TYPE = "gzip";
+    public static String SERIALIZE_TYPE = "jdk";
     /**
      * --------------------------- 相关的基础配置 --------------------------------
      */
@@ -179,5 +183,19 @@ public class YrpcBootstrap<T> {
     }
 
 
+    public YrpcBootstrap serialize(String serializeType) {
+        SERIALIZE_TYPE = serializeType;
+        if(log.isDebugEnabled()){
+            log.debug("使用：{}进行序列化",serializeType);
+        }
+        return this;
+    }
 
+    public YrpcBootstrap compress(String compressType) {
+        COMPRESS_TYPE = compressType;
+        if(log.isDebugEnabled()){
+            log.debug("使用：{}进行压缩",compressType);
+        }
+        return this;
+    }
 }

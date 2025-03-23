@@ -3,10 +3,12 @@ package com.elephant.proxy.handler;
 import com.elephant.IdGenerator;
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
+import com.elephant.compress.CompressorFactory;
 import com.elephant.discovery.Registry;
 import com.elephant.enumeration.RequestType;
 import com.elephant.exception.DiscoveryException;
 import com.elephant.exception.NetworkException;
+import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.RequestPayload;
 import com.elephant.transport.message.YrpcRequest;
 import io.netty.buffer.Unpooled;
@@ -74,11 +76,12 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         //TODO 修改临时参数
         YrpcRequest yrpcRequest = YrpcRequest.builder()
                 .requestId(YrpcBootstrap.idGenerator.getId())
-                .compressType((byte) 1)
+                .compressType(CompressorFactory.getCompressor(YrpcBootstrap.COMPRESS_TYPE).getCode())
                 .requestType(RequestType.REQUEST.getId())
-                .serializeType((byte) 1)
+                .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.SERIALIZE_TYPE).getCode())
                 .requestPayload(requestPayload)
                 .build();
+
 
 
         //发送请求 每一个 RPC 服务维护着一个 CompletableFuture

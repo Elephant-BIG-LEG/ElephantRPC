@@ -113,7 +113,6 @@ public class YrpcRequestEncoder extends MessageToByteEncoder<YrpcRequest> {
         if (log.isDebugEnabled()) {
             log.debug("请求【{}】已经完成报文的编码。", yrpcRequest.getRequestId());
         }
-        
     }
 
     /**

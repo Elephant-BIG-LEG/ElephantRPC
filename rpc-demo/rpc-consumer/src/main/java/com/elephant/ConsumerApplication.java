@@ -28,8 +28,8 @@ public class ConsumerApplication {
                 .application("first-yrpc-consumer")
                 //配置一个注册中心
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
-                //.serialize("hessian")
-                //.compress("gzip")
+                .serialize("hessian")
+                .compress("gzip")
                 //.group("primary")
                 //会将上面的注册中心放到这个核心配置类中
                 .reference(reference);

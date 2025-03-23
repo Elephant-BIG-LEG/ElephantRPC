@@ -1,0 +1,46 @@
+2025-03-17 13:24:54.163 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :90   [32m                  [0;39m 判断节点[/elephant-metadata/providers/interface com.elephant.HelloYrpc/192.168.192.1:8088]是否存在是发生异常
+org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /elephant-metadata/providers/interface com.elephant.HelloYrpc/192.168.192.1:8088
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:102)
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:54)
+	at org.apache.zookeeper.ZooKeeper.exists(ZooKeeper.java:1869)
+	at com.elephant.utils.Zookeeper.ZookeeperUtils.exists(ZookeeperUtils.java:88)
+	at com.elephant.YrpcBootstrap.publish(YrpcBootstrap.java:84)
+	at com.elephant.ProviderApplication.main(ProviderApplication.java:24)
+2025-03-17 13:27:25.519 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :90   [32m                  [0;39m 判断节点[/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088]是否存在是发生异常
+org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:102)
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:54)
+	at org.apache.zookeeper.ZooKeeper.exists(ZooKeeper.java:1869)
+	at com.elephant.utils.Zookeeper.ZookeeperUtils.exists(ZookeeperUtils.java:88)
+	at com.elephant.YrpcBootstrap.publish(YrpcBootstrap.java:84)
+	at com.elephant.ProviderApplication.main(ProviderApplication.java:24)
+2025-03-17 13:29:13.217 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :90   [32m                  [0;39m 判断节点[/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088]是否存在是发生异常
+org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:102)
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:54)
+	at org.apache.zookeeper.ZooKeeper.exists(ZooKeeper.java:1869)
+	at com.elephant.utils.Zookeeper.ZookeeperUtils.exists(ZookeeperUtils.java:88)
+	at com.elephant.YrpcBootstrap.publish(YrpcBootstrap.java:84)
+	at com.elephant.ProviderApplication.main(ProviderApplication.java:24)
+2025-03-17 13:37:54.648 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :96   [32m                  [0;39m 判断节点[/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088]是否存在是发生异常
+org.apache.zookeeper.KeeperException$SessionExpiredException: KeeperErrorCode = Session expired for /elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:134)
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:54)
+	at org.apache.zookeeper.ZooKeeper.exists(ZooKeeper.java:1869)
+	at com.elephant.utils.Zookeeper.ZookeeperUtils.exists(ZookeeperUtils.java:88)
+	at com.elephant.YrpcBootstrap.publish(YrpcBootstrap.java:85)
+	at com.elephant.ProviderApplication.main(ProviderApplication.java:24)
+2025-03-17 15:39:53.219 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :96   [32m                  [0;39m 判断节点[/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088]是否存在是发生异常
+org.apache.zookeeper.KeeperException$ConnectionLossException: KeeperErrorCode = ConnectionLoss for /elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:102)
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:54)
+	at org.apache.zookeeper.ZooKeeper.exists(ZooKeeper.java:1869)
+	at com.elephant.utils.Zookeeper.ZookeeperUtils.exists(ZookeeperUtils.java:88)
+	at com.elephant.YrpcBootstrap.publish(YrpcBootstrap.java:85)
+	at com.elephant.ProviderApplication.main(ProviderApplication.java:24)
+2025-03-17 15:43:09.481 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :73   [32m                  [0;39m 创建节点:/elephant-metadata/providers/com.elephant.HelloYrpc/elephant-metadata/providers异常
+2025-03-17 15:44:36.295 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :73   [32m                  [0;39m 创建节点:/elephant-metadata/providers/com.elephant.HelloYrpc/elephant-metadata/providers异常
+2025-03-17 15:46:08.920 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :73   [32m                  [0;39m 创建节点:/elephant-metadata/providers/com.elephant.HelloYrpc/elephant-metadata/providers异常
+2025-03-17 15:47:46.159 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :73   [32m                  [0;39m 创建节点:/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088异常
+2025-03-17 15:54:05.566 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :73   [32m                  [0;39m 创建节点:/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088异常
+2025-03-17 15:58:44.384 ERROR com.elephant.utils.Zookeeper.ZookeeperUtils       :73   [32m                  [0;39m 创建节点:/elephant-metadata/providers/com.elephant.HelloYrpc/192.168.192.1:8088异常
