@@ -19,7 +19,7 @@ public interface Selector {
     InetSocketAddress getNext();
 
     /**
-     *  TODO 服务下限 -- 移除节点并提供一个新的节点
+     *  TODO 服务下线 -- 移除节点并提供一个新的节点
      */
     void reBalance();
 }

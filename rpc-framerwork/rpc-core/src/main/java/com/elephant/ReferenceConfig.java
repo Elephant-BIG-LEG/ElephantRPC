@@ -36,6 +36,7 @@ public class ReferenceConfig<T> {
         //动态代理
         Object helloProxy = Proxy.newProxyInstance(classLoader, classes, handler);
 
+        // 如果没有捕获这个异常，会一直堵在这里
         return (T)helloProxy;
     }
 

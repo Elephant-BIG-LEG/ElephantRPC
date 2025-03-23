@@ -36,21 +36,24 @@ public class ConsumerApplication {
 
         HelloYrpc helloYrpc = reference.get();
         //这里才会去触发 invoke 方法
-        String string = helloYrpc.sayHi("你好");
-        log.info("成功收到服务提供方发送的数据:{}",string);
+//        String string = helloYrpc.sayHi("你好");
+//        log.info("成功收到服务提供方发送的数据:{}",string);
 
 
-//        while (true) {
-////            try {
-////                Thread.sleep(10000);
-////                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-////            } catch (InterruptedException e) {
-////                throw new RuntimeException(e);
-////            }
-//            for (int i = 0; i < 50; i++) {
-//                String sayHi = helloYrpc.sayHi("你好yrpc");
-//                log.info("sayHi-->{}", sayHi);
+
+        while (true) {
+//            try {
+//                Thread.sleep(10000);
+//                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
 //            }
-//        }
+            try {
+                String sayHi = helloYrpc.sayHi("你好yrpc");
+                log.info("sayHi-->{}", sayHi);
+            } catch (Exception e) {
+                log.error("Error occurred while calling sayHi", e);
+            }
+        }
     }
 }

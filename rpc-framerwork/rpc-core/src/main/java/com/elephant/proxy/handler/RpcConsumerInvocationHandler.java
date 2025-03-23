@@ -123,8 +123,10 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         // 我们需要在那里调用 complete 方法得到结果，就是 pipeline 中最终的 handler 的处理结果
         /**
          * @see NettyBootstrapInitializer
+         * 5s 后超时 抛出异常
+         * TODO 感觉这里的时间限制应该可以动态修改
          */
-        return completableFuture.get(100, TimeUnit.SECONDS);
+        return completableFuture.get(5, TimeUnit.SECONDS);
     }
 
 

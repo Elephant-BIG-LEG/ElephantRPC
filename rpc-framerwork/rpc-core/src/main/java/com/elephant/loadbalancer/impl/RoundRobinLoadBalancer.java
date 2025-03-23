@@ -2,7 +2,7 @@ package com.elephant.loadbalancer.impl;
 
 import com.elephant.YrpcBootstrap;
 import com.elephant.exception.LoadBalancerException;
-import com.elephant.loadbalancer.LoadBalancer;
+import com.elephant.loadbalancer.AbstractLoadBalancer;
 import com.elephant.loadbalancer.Selector;
 import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
@@ -15,27 +15,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/23/11:04
- * @Description: TODO
+ * @Description: 分层设计
  */
 @Slf4j
-public class RoundRobinLoadBalancer implements LoadBalancer {
+public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
 
     private Map<String, Selector> cache = new ConcurrentHashMap<>(8);
 
     @Override
-    public InetSocketAddress selectServiceAddress(String serviceName,String group) {
-        // 对于这个负载均衡器，内部应该维护服务列表作为缓存
-        Selector selector = cache.get(serviceName);
-        // 提供一些算法负载选取合适的节点
-        if (selector == null) {
-            // 通过注册中心拉取服务
-            List<InetSocketAddress> serviceList = YrpcBootstrap.getRegistry().lookup(serviceName,group);
-            selector = new RoundRobinSelector(serviceList);
-            cache.put(serviceName,selector);
-        }
-        // 获取可用节点
-        return selector.getNext();
+    protected Selector getSelector(List<InetSocketAddress> serviceList) {
+        return new RoundRobinSelector(serviceList);
     }
+
+
 
     private static class RoundRobinSelector implements Selector {
         private List<InetSocketAddress> serviceList;
@@ -46,6 +38,10 @@ public class RoundRobinLoadBalancer implements LoadBalancer {
             this.index = new AtomicInteger(0);
         }
 
+        /**
+         * 轮询算法
+         * @return
+         */
         @Override
         public InetSocketAddress getNext() {
             if(serviceList == null || serviceList.size() == 0){
@@ -66,7 +62,9 @@ public class RoundRobinLoadBalancer implements LoadBalancer {
             return address;
         }
 
-
+        /**
+         * 重平衡
+         */
         @Override
         public void reBalance() {
 
