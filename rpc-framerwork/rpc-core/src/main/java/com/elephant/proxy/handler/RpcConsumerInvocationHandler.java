@@ -13,6 +13,7 @@ import com.elephant.transport.message.YrpcRequest;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -45,24 +46,9 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        // 从注册中心中寻找一个可用服务
-
-        //TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
-
-        // 负载均衡
-        InetSocketAddress address = YrpcBootstrap.LOAD_BALANCER.selectServiceAddress(interfaceRef.getName(), group);
-
-        if(log.isDebugEnabled()){
-            log.debug("选择了该服务：【{}】下的【{}】节点",interfaceRef.getName(),address);
-        }
-
-        //2.使用 Netty 发起 RPC 调用
-        //应该将 Netty 的连接进行缓存，每一次建立一个新的连接是不合理的
-
-        Channel channel = getAvailableChannel(address);
 
         /**
-         * ------------------封装报文-------------------------
+         * ------------------ 封装报文 -------------------------
          */
         RequestPayload requestPayload = RequestPayload.builder()
                 .interfaceName(interfaceRef.getName())
@@ -72,7 +58,9 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .returnType(method.getReturnType())
                 .build();
 
-        //TODO 修改临时参数
+        /**
+         * ------------------ 生成请求 -------------------------
+         */
         YrpcRequest yrpcRequest = YrpcRequest.builder()
                 .requestId(YrpcBootstrap.idGenerator.getId())
                 .compressType(CompressorFactory.getCompressor(YrpcBootstrap.COMPRESS_TYPE).getCode())
@@ -81,7 +69,23 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .requestPayload(requestPayload)
                 .build();
 
+        // 将请求存入本地线程 -- 为了负载均衡器可以获取到请求信息
+        YrpcBootstrap.REQUEST_THREAD_LOCAL.set(yrpcRequest);
 
+        // 从注册中心拉取服务列表，再从客户端负载均衡选择一个可用服务
+        // TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
+        // 负载均衡
+        InetSocketAddress address = YrpcBootstrap.LOAD_BALANCER
+                        .selectServiceAddress(interfaceRef.getName(),group);
+
+        if (log.isDebugEnabled()) {
+            log.debug("选择了该服务：【{}】下的【{}】节点", interfaceRef.getName(), address);
+        }
+
+        //2.使用 Netty 发起 RPC 调用
+        //应该将 Netty 的连接进行缓存，每一次建立一个新的连接是不合理的
+
+        Channel channel = getAvailableChannel(address);
 
         //发送请求 每一个 RPC 服务维护着一个 CompletableFuture
         /**
@@ -102,9 +106,10 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
          * ------------------异步策略-------------------------
          */
         CompletableFuture<Object> completableFuture = new CompletableFuture<>();
-        YrpcBootstrap.PENDING_REQUEST.put(1L,completableFuture);
+        YrpcBootstrap.PENDING_REQUEST.put(1L, completableFuture);
         //写出请求,这个请求的实例会进入 pipeline
         channel.writeAndFlush(yrpcRequest).addListener((ChannelFutureListener) promise -> {
+
             // 当前的promise将来返回的结果是什么，writeAndFlush的返回结果
             // 一旦数据被写出去，这个promise也就结束了
             // 但是我们想要的是什么？  服务端给我们的返回值，所以这里处理completableFuture是有问题的
@@ -114,16 +119,20 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 //                    }
 
             // 只需要处理以下异常就行了
+
             if (!promise.isSuccess()) {
                 completableFuture.completeExceptionally(promise.cause());
             }
         });
 
-        // 如果没有地方处理这个 completableFuture，这里会阻塞，等待 complete 方法的执行
-        // 我们需要在那里调用 complete 方法得到结果，就是 pipeline 中最终的 handler 的处理结果
+        //清理 threadLocal
+        YrpcBootstrap.REQUEST_THREAD_LOCAL.remove();
+
         /**
          * @see NettyBootstrapInitializer
          * 5s 后超时 抛出异常
+         * 如果没有地方处理这个 completableFuture，这里会阻塞，等待 complete 方法的执行
+         * 我们需要在那里调用 complete 方法得到结果，就是 pipeline 中最终的 handler 的处理结果
          * TODO 感觉这里的时间限制应该可以动态修改
          */
         return completableFuture.get(5, TimeUnit.SECONDS);
@@ -132,6 +141,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 
     /**
      * 获取可用的 channel
+     *
      * @param address 地址
      * @return channel
      */
@@ -177,7 +187,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         /**
          * 异步建立 channel 连接
          */
-        if(channel == null){
+        if (channel == null) {
             // await 方法会阻塞，会等待连接成功再返回【需要考虑超时问题】，Netty 也提供了异步处理的逻辑
             // sync 和 await都是阻塞当前线程，获取返回值【连接的过程时异步的，发生数据的过程时异步的】
             // 如果发生了异常，sync会主动在主线程中抛出异常，异常在子线程中处理需要使用 future 中处理
@@ -186,8 +196,8 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
             // 异步操作
             // CompletableFuture 拿到服务器响应的结果
             CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
-            NettyBootstrapInitializer.getBootstrap().connect(address).addListener((ChannelFutureListener) promise ->{
-                if(promise.isDone()){
+            NettyBootstrapInitializer.getBootstrap().connect(address).addListener((ChannelFutureListener) promise -> {
+                if (promise.isDone()) {
                     completableFuture.complete(promise.channel());
                 } else if (!promise.isSuccess()) {
                     //捕捉异常
@@ -198,14 +208,14 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
             try {
                 channel = completableFuture.get(3, TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                log.error("获取 channel 时发生异常",e);
+                log.error("获取 channel 时发生异常", e);
                 throw new DiscoveryException(e);
             }
 
-            YrpcBootstrap.CHANNEL_CACHE.put(address,channel);
+            YrpcBootstrap.CHANNEL_CACHE.put(address, channel);
         }
 
-        if(channel == null){
+        if (channel == null) {
             throw new NetworkException("获取通道异常");
         }
         return channel;

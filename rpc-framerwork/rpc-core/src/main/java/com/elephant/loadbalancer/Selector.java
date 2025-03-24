@@ -13,13 +13,9 @@ public interface Selector {
 
 
     /**
-     * 发现一个节点
+     * 根据相应的负载均衡器获取一个节点
      * @return 可用服务节点
      */
     InetSocketAddress getNext();
 
-    /**
-     *  TODO 服务下线 -- 移除节点并提供一个新的节点
-     */
-    void reBalance();
 }

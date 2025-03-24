@@ -7,7 +7,9 @@ import com.elephant.channelHandler.handler.YrpcResponseEncoder;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.loadbalancer.LoadBalancer;
+import com.elephant.loadbalancer.impl.ConsistentHashBalancer;
 import com.elephant.loadbalancer.impl.RoundRobinLoadBalancer;
+import com.elephant.transport.message.YrpcRequest;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -60,6 +62,9 @@ public class YrpcBootstrap<T> {
     public static final IdGenerator idGenerator = new IdGenerator(1,2);
 
     public static LoadBalancer LOAD_BALANCER;
+
+    // 保存request对象，可以到当前线程中随时获取
+    public static final ThreadLocal<YrpcRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
     /**
      * --------------------------- 服务提供方相关 API --------------------------------
      */
@@ -98,7 +103,8 @@ public class YrpcBootstrap<T> {
         //true 表示使用默认配置
         this.registry = registryConfig.getRegistry(true);
         //TODO
-        YrpcBootstrap.LOAD_BALANCER = new RoundRobinLoadBalancer();
+        //YrpcBootstrap.LOAD_BALANCER = new RoundRobinLoadBalancer();
+        YrpcBootstrap.LOAD_BALANCER = new ConsistentHashBalancer();
         return this;
 
     }

@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.LongAdder;
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/22/10:32
  * @Description: 全局唯一 RequestID
+ *              格式：时间戳（42 位）+  机房号（5 位）+ 机器号（5 位） + 序列号（12 位）= 64位
+ *              有可能出现连续的 UUID
  */
 public class IdGenerator {
 

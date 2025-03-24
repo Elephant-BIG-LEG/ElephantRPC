@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/23/15:19
- * @Description: TODO
+ * @Description: TODO 应该是将服务调用端连接所有服务提供方，还是一个服务调用端只维护一部分的服务提供方呢？？？
  */
 @Slf4j
 public abstract class AbstractLoadBalancer implements LoadBalancer {
@@ -32,6 +32,7 @@ public abstract class AbstractLoadBalancer implements LoadBalancer {
         if (selector == null) {
             // 通过注册中心拉取服务 TODO 使用配置中心获取注册中心
             List<InetSocketAddress> serviceList = YrpcBootstrap.getRegistry().lookup(serviceName,group);
+            // 选择负载均衡器
             selector = getSelector(serviceList);
             cache.put(serviceName,selector);
         }
@@ -41,7 +42,7 @@ public abstract class AbstractLoadBalancer implements LoadBalancer {
 
 
     /**
-     * 模板设计模式：获取一个Selector 由子类扩展【多种负载均衡算法】
+     * 模板设计模式：获取一个Selector【负载均衡器】 由子类扩展【多种负载均衡算法】
      * @param serviceList
      * @return 一个可用服务
      */

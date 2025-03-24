@@ -27,8 +27,6 @@ public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
         return new RoundRobinSelector(serviceList);
     }
 
-
-
     private static class RoundRobinSelector implements Selector {
         private List<InetSocketAddress> serviceList;
         private AtomicInteger index;
@@ -40,7 +38,7 @@ public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
 
         /**
          * 轮询算法
-         * @return
+         * @return 可用服务地址
          */
         @Override
         public InetSocketAddress getNext() {
@@ -62,12 +60,5 @@ public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
             return address;
         }
 
-        /**
-         * 重平衡
-         */
-        @Override
-        public void reBalance() {
-
-        }
     }
 }
