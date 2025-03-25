@@ -17,7 +17,7 @@ public class ConsumerApplication {
         // reference一定用生成代理的模板方法，get()
         ReferenceConfig<HelloYrpc> reference = new ReferenceConfig<>();
         //后面调用 get 方法时，会自动生成相对应的代理对象
-        reference.setInterfaceRef(HelloYrpc.class);
+        reference.setInterface(HelloYrpc.class);
 
         // 代理做了些什么?
         // 1、连接注册中心
@@ -36,24 +36,24 @@ public class ConsumerApplication {
 
         HelloYrpc helloYrpc = reference.get();
         //这里才会去触发 invoke 方法
-//        String string = helloYrpc.sayHi("你好");
-//        log.info("成功收到服务提供方发送的数据:{}",string);
+        String string = helloYrpc.sayHi("你好");
+        log.info("成功收到服务提供方发送的数据:{}",string);
 
 
 
-        while (true) {
+//        while (true) {
+////            try {
+////                Thread.sleep(10000);
+////                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+////            } catch (InterruptedException e) {
+////                throw new RuntimeException(e);
+////            }
 //            try {
-//                Thread.sleep(10000);
-//                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
+//                String sayHi = helloYrpc.sayHi("你好yrpc");
+//                log.info("sayHi-->{}", sayHi);
+//            } catch (Exception e) {
+//                log.error("Error occurred while calling sayHi", e);
 //            }
-            try {
-                String sayHi = helloYrpc.sayHi("你好yrpc");
-                log.info("sayHi-->{}", sayHi);
-            } catch (Exception e) {
-                log.error("Error occurred while calling sayHi", e);
-            }
-        }
+//        }
     }
 }

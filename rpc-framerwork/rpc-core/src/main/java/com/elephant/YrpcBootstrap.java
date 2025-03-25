@@ -4,6 +4,7 @@ package com.elephant;
 import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
+import com.elephant.core.HeartbeatDetector;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.loadbalancer.LoadBalancer;
@@ -184,6 +185,10 @@ public class YrpcBootstrap<T> {
      */
 
     public YrpcBootstrap reference(ReferenceConfig<?> reference) {
+        if(log.isDebugEnabled()){
+            log.debug("心跳检测器开始工作");
+        }
+        HeartbeatDetector.detectHeartbeat(reference.getInterface().getName(),null);
         log.info("通过核心配置类去完善服务调用端的配置类");
         //将注册中心的实例设置到 reference 中
         reference.setRegistry(registry);

@@ -13,10 +13,10 @@ import com.elephant.transport.message.YrpcRequest;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +65,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .requestId(YrpcBootstrap.idGenerator.getId())
                 .compressType(CompressorFactory.getCompressor(YrpcBootstrap.COMPRESS_TYPE).getCode())
                 .requestType(RequestType.REQUEST.getId())
+                .timeStamp(new Date().getTime())
                 .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.SERIALIZE_TYPE).getCode())
                 .requestPayload(requestPayload)
                 .build();
@@ -106,7 +107,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
          * ------------------异步策略-------------------------
          */
         CompletableFuture<Object> completableFuture = new CompletableFuture<>();
-        YrpcBootstrap.PENDING_REQUEST.put(1L, completableFuture);
+        YrpcBootstrap.PENDING_REQUEST.put(yrpcRequest.getRequestId(), completableFuture);
         //写出请求,这个请求的实例会进入 pipeline
         channel.writeAndFlush(yrpcRequest).addListener((ChannelFutureListener) promise -> {
 

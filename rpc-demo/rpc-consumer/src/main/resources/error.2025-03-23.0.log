@@ -1,0 +1,74 @@
+2025-03-23 10:45:27.924 ERROR com.elephant.compress.CompressorFactory           :43   [32m                  [0;39m 未找到您配置的编号为【1】的压缩算法，默认选用gzip算法。
+2025-03-23 10:48:03.516 ERROR com.elephant.compress.CompressorFactory           :43   [32m                  [0;39m 未找到您配置的编号为【1】的压缩算法，默认选用gzip算法。
+2025-03-23 15:13:06.526 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:11.539 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:16.540 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:21.548 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:26.557 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:31.565 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:36.571 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted
+2025-03-23 15:13:41.584 ERROR com.elephant.ConsumerApplication                  :55   [32m                  [0;39m Error occurred while calling sayHi
+java.lang.reflect.UndeclaredThrowableException: null
+	at jdk.proxy2/jdk.proxy2.$Proxy3.sayHi(Unknown Source)
+	at com.elephant.ConsumerApplication.main(ConsumerApplication.java:52)
+Caused by: java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at com.elephant.proxy.handler.RpcConsumerInvocationHandler.invoke(RpcConsumerInvocationHandler.java:129)
+	... 2 common frames omitted

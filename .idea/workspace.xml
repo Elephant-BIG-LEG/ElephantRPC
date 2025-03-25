@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/impl/ConsistentHashBalancer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/resources/error.2025-03-23.0.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/resources/trace.2025-03-23.0.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/log/trace.2025-03-23.0.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/IdGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/AbstractLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/AbstractLoadBalancer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/Selector.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/Selector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/impl/RoundRobinLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/impl/RoundRobinLoadBalancer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,33 +57,33 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Application.executor": "Run",
-    "Application.ConsumerApplication.executor": "Run",
-    "Application.IdGenerator.executor": "Run",
-    "Application.ProviderApplication.executor": "Run",
-    "Maven.ElephantRPC [clean].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "jdk.selected.JAVA_MODULE": "21",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/java/com/elephant",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.Application.executor": "Debug"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ConsumerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.IdGenerator.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ProviderApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.ElephantRPC [clean].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/java/com/elephant&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.Application.executor&quot;: &quot;Debug&quot;
   }
-}]]></component>
+}</component>
   <component name="RebelAgentSelection">
     <selection>jr</selection>
   </component>
@@ -203,7 +205,8 @@
       <workItem from="1742534954853" duration="9970000" />
       <workItem from="1742610325297" duration="5798000" />
       <workItem from="1742696627883" duration="12566000" />
-      <workItem from="1742791969572" duration="10276000" />
+      <workItem from="1742791969572" duration="10576000" />
+      <workItem from="1742863801670" duration="7654000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -373,7 +376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742716349951</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="一致性 Hash 算法的完成并留下 TODO 任务">
+      <option name="closed" value="true" />
+      <created>1742817054746</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1742817054746</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,16 +413,13 @@
     <MESSAGE value="完善压缩和序列化代码" />
     <MESSAGE value="拉取可用服务节点使用负载均衡替代" />
     <MESSAGE value="模板设计模式优化负载均衡代码结构" />
-    <option name="LAST_COMMIT_MESSAGE" value="模板设计模式优化负载均衡代码结构" />
+    <MESSAGE value="测试并修改" />
+    <MESSAGE value="一致性 Hash 算法的完成并留下 TODO 任务" />
+    <option name="LAST_COMMIT_MESSAGE" value="一致性 Hash 算法的完成并留下 TODO 任务" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java</url>
-          <line>111</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcResponseEncoder.java</url>
           <line>51</line>
@@ -419,13 +427,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java</url>
-          <line>161</line>
+          <line>162</line>
           <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/ConsumerChannelInitializer.java</url>
-          <line>25</line>
-          <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java</url>
@@ -438,13 +441,8 @@
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java</url>
-          <line>36</line>
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java</url>
-          <line>105</line>
+          <line>106</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>

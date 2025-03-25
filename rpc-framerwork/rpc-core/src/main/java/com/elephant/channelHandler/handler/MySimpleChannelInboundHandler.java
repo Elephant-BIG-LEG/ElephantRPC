@@ -1,6 +1,8 @@
 package com.elephant.channelHandler.handler;
 
 import com.elephant.YrpcBootstrap;
+import com.elephant.transport.message.YrpcRequest;
+import com.elephant.transport.message.YrpcResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -21,17 +23,19 @@ import java.util.concurrent.CompletableFuture;
  *            断路器记录：记录错误请求，用于断路器机制。
  *            负载均衡重新分配：在服务端关闭时，重新分配负载均衡。
  */
-public class MySimpleChannelInboundHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class MySimpleChannelInboundHandler extends SimpleChannelInboundHandler<YrpcResponse> {
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, YrpcResponse yrpcResponse) throws Exception {
         //TODO 服务调用端处理数据
         //这是服务提供方发送的数据
-        String result = msg.toString(Charset.defaultCharset());
+        Object body = yrpcResponse.getBody();
         //从全局挂起的请求中，匹配请求 ID，找到 completableFuture
-        //TODO 表示需要修改
-        CompletableFuture<Object> completableFuture = YrpcBootstrap.PENDING_REQUEST.get(1L);
+        CompletableFuture<Object> completableFuture = YrpcBootstrap.PENDING_REQUEST.get(yrpcResponse.getRequestId());
+        body = body == null ? new Object() : body;
         //将结果设置到 CompletableFuture 中
         //                -- 这里执行成功便会处理 return completableFuture.get(10, TimeUnit.SECONDS);并返回结果
-        completableFuture.complete(result);
+        completableFuture.complete(body);
     }
+
+
 }

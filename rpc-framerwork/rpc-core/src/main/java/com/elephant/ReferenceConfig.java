@@ -41,11 +41,11 @@ public class ReferenceConfig<T> {
     }
 
 
-    public Class<T> getInterfaceRef() {
+    public Class<T> getInterface() {
         return interfaceRef;
     }
 
-    public void setInterfaceRef(Class<T> interfaceRef) {
+    public void setInterface(Class<T> interfaceRef) {
         this.interfaceRef = interfaceRef;
     }
 
