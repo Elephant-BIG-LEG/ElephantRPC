@@ -27,25 +27,32 @@ import java.util.concurrent.TimeoutException;
 public class HeartbeatDetector {
 
     public static void detectHeartbeat(String serviceName, String group) {
-        // 从注册中心拉取服务列表并建立连接
-        Registry registry = YrpcBootstrap.getInstance().getRegistry();
-        List<InetSocketAddress> addresses = registry.lookup(serviceName, group);
+        // 1、从注册中心拉取服务列表并建立连接
+        Registry registry = YrpcBootstrap.getRegistry();
+        List<InetSocketAddress> addresses = registry.lookup(serviceName,group);
+
         // 将连接进行缓存
         for (InetSocketAddress address : addresses) {
             try {
                 if (!YrpcBootstrap.CHANNEL_CACHE.containsKey(address)) {
-                    //获取对应的 channel
                     Channel channel = NettyBootstrapInitializer.getBootstrap().connect(address).sync().channel();
                     YrpcBootstrap.CHANNEL_CACHE.put(address, channel);
                 }
+
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        // 3、任务，定期发送消息
         // 定期发送消息 在每一次检测中最多检测三次 连接失败超过三次通知注册中心进行下线
-        // 应开一个独立的线程启动定时任务
-        // TODO 这里的检测并不是异步的，只是在等待数据是异步的，逻辑是执行一个地址的检测后换下一个地址，需要修改成异步的
-        new Timer().schedule(new MyTimerTask(),2000);
+        // 应开一个独立的线程启动定时任务 或者开一个线程池
+        Thread thread = new Thread(() ->
+                new Timer().scheduleAtFixedRate(new MyTimerTask(), 0, 2000)
+                , "yrpc-HeartbeatDetector-thread");
+        // 将线程设置为守护线程
+        thread.setDaemon(true);
+        thread.start();
 
     }
 
@@ -53,10 +60,12 @@ public class HeartbeatDetector {
 
         @Override
         public void run() {
-            Map<InetSocketAddress, Channel> cache = YrpcBootstrap.CHANNEL_CACHE;
-            //获取每一个 key 和 value
-            for (Map.Entry<InetSocketAddress, Channel> entry : cache.entrySet()) {
+            // 将响应时长的map清空
+            YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.clear();
 
+            // 遍历所有的channel
+            Map<InetSocketAddress, Channel> cache = YrpcBootstrap.CHANNEL_CACHE;
+            for (Map.Entry<InetSocketAddress, Channel> entry : cache.entrySet()) {
                 // 定义一个重试的次数
                 int tryTimes = 3;
                 while (tryTimes > 0) {
@@ -94,19 +103,18 @@ public class HeartbeatDetector {
                         endTime = System.currentTimeMillis();
                     } catch (InterruptedException | ExecutionException | TimeoutException e) {
                         // 一旦发生问题，需要优先重试
-                        tryTimes--;
-                        log.error("当前主机:【{}】和地址为:【{}】的服务连接发生异常.正在进行第【{}】次重试......",
-                                entry.getKey(),
+                        tryTimes --;
+                        log.error("和地址为【{}】的主机连接发生异常.正在进行第【{}】次重试......",
                                 channel.remoteAddress(), 3 - tryTimes);
 
                         // 将重试的机会用尽，将失效的地址移出服务列表
-                        if (tryTimes == 0) {
+                        if(tryTimes == 0){
                             YrpcBootstrap.CHANNEL_CACHE.remove(entry.getKey());
                         }
 
                         // 尝试等到一段时间后重试
                         try {
-                            Thread.sleep(10 * (new Random().nextInt(5)));
+                            Thread.sleep(10*(new Random().nextInt(5)));
                         } catch (InterruptedException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -115,19 +123,19 @@ public class HeartbeatDetector {
                     }
                     Long time = endTime - start;
 
-                    // 使用treemap进行缓存
-                    //YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.put(time, channel);
+                    // 使用 treemap 进行缓存 -- 是有序的
+                    YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.put(time, channel);
                     log.debug("和[{}]服务器的响应时间是[{}].", entry.getKey(), time);
                     break;
                 }
             }
 
-//            log.info("-----------------------响应时间的treemap----------------------");
-//            for (Map.Entry<Long, Channel> entry : YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.entrySet()) {
-//                if (log.isDebugEnabled()) {
-//                    log.debug("[{}]--->channelId:[{}]", entry.getKey(), entry.getValue().id());
-//                }
-//            }
+            log.info("-----------------------响应时间的treemap----------------------");
+            for (Map.Entry<Long, Channel> entry : YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.entrySet()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("[{}]--->channelId:[{}]", entry.getKey(), entry.getValue().id());
+                }
+            }
         }
     }
 }

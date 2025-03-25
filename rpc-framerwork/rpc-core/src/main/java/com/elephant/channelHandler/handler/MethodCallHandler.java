@@ -2,6 +2,7 @@ package com.elephant.channelHandler.handler;
 
 import com.elephant.ServiceConfig;
 import com.elephant.YrpcBootstrap;
+import com.elephant.enumeration.RequestType;
 import com.elephant.enumeration.RespCode;
 import com.elephant.transport.message.RequestPayload;
 import com.elephant.transport.message.YrpcRequest;
@@ -12,7 +13,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.SocketAddress;
 
 /**
  * @Author: Elephant-FZY
@@ -25,6 +25,7 @@ public class MethodCallHandler extends SimpleChannelInboundHandler<YrpcRequest> 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, YrpcRequest yrpcRequest) throws Exception {
 
+
         // 1、先封装部分响应
         YrpcResponse yrpcResponse = new YrpcResponse();
         yrpcResponse.setRequestId(yrpcRequest.getRequestId());
@@ -33,6 +34,25 @@ public class MethodCallHandler extends SimpleChannelInboundHandler<YrpcRequest> 
 
         // 2、 获得通道
         Channel channel = channelHandlerContext.channel();
+
+        //处理心跳
+        if (yrpcRequest.getRequestType() == RequestType.HEART_BEAT.getId()) {
+            // 需要封装响应并且返回
+            log.info("处理心跳");
+            yrpcResponse.setCode(RespCode.SUCCESS_HEART_BEAT.getCode());
+        }else{
+            // 正常调用
+            RequestPayload requestPayload = yrpcRequest.getRequestPayload();
+            Object result = callTargetMethod(requestPayload);
+            if (log.isDebugEnabled()) {
+                log.debug("请求【{}】已经在服务端完成方法调用。", yrpcRequest.getRequestId());
+            }
+            // （3）封装响应   我们是否需要考虑另外一个问题，响应码，响应类型
+            yrpcResponse.setCode(RespCode.SUCCESS.getCode());
+            yrpcResponse.setBody(result);
+
+            log.info("服务调用端开始写出数据");
+        }
 
 //        // 3、查看关闭的挡板是否打开，如果挡板已经打开，返回一个错误的响应
 //        if(ShutDownHolder.BAFFLE.get() ){
@@ -100,16 +120,6 @@ public class MethodCallHandler extends SimpleChannelInboundHandler<YrpcRequest> 
 //        // 7、计数器减一
 //        ShutDownHolder.REQUEST_COUNTER.decrement();
 
-        RequestPayload requestPayload = yrpcRequest.getRequestPayload();
-        Object result = callTargetMethod(requestPayload);
-        if (log.isDebugEnabled()) {
-            log.debug("请求【{}】已经在服务端完成方法调用。", yrpcRequest.getRequestId());
-        }
-        // （3）封装响应   我们是否需要考虑另外一个问题，响应码，响应类型
-        yrpcResponse.setCode(RespCode.SUCCESS.getCode());
-        yrpcResponse.setBody(result);
-
-        log.info("服务调用端开始写出数据");
 
         channel.writeAndFlush(yrpcResponse);
 

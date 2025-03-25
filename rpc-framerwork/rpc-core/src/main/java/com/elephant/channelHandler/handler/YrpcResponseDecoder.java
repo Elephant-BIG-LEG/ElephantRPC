@@ -120,11 +120,6 @@ public class YrpcResponseDecoder extends LengthFieldBasedFrameDecoder {
         yrpcResponse.setSerializeType(serializeType);
         yrpcResponse.setRequestId(requestId);
         yrpcResponse.setTimeStamp(timeStamp);
-        
-        // todo 心跳请求没有负载，此处可以判断并直接返回
-//        if( requestType == RequestType.HEART_BEAT.getId()){
-//            return yrpcRequest;
-//        }
 
         int bodyLength = fullLength - headLength;
         byte[] payload = new byte[bodyLength];

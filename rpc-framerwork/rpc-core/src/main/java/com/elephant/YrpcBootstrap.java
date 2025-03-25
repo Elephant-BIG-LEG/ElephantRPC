@@ -20,6 +20,7 @@ import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,6 +52,8 @@ public class YrpcBootstrap<T> {
     //每一个地址维护一个 channel
     public static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
 
+    //有序的保存channel的响应时间
+    public static Map<Long,Channel> ANSWER_TIME_CHANNEL_CACHE = new TreeMap<>();
     //当服务调用方，通过接口、方法名、具体的方法参数列表发起调用，提供怎么知道使用哪一个实现
     // (1) new 一个  （2）spring beanFactory.getBean(Class)  (3) 自己维护映射关系
     // 维护已经发布且暴露的服务列表 key-> interface的全限定名  value -> ServiceConfig
