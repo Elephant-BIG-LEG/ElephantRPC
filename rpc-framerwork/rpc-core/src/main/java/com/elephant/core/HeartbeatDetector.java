@@ -125,15 +125,15 @@ public class HeartbeatDetector {
 
                     // 使用 treemap 进行缓存 -- 是有序的
                     YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.put(time, channel);
-                    log.debug("和[{}]服务器的响应时间是[{}].", entry.getKey(), time);
+                    log.debug("主机：【{}】和【{}】服务器的响应时间是[{}].",channel.remoteAddress(),entry.getKey(), time);
                     break;
                 }
             }
 
-            log.info("-----------------------响应时间的treemap----------------------");
+            log.info("----------------------- 响应时间的treemap ----------------------");
             for (Map.Entry<Long, Channel> entry : YrpcBootstrap.ANSWER_TIME_CHANNEL_CACHE.entrySet()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("[{}]--->channelId:[{}]", entry.getKey(), entry.getValue().id());
+                    log.debug("【{}】--->channelId:【{}】", entry.getKey(), entry.getValue().id());
                 }
             }
         }

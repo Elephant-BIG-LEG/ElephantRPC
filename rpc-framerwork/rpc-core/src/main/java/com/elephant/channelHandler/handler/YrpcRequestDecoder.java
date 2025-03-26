@@ -72,7 +72,8 @@ public class YrpcRequestDecoder extends LengthFieldBasedFrameDecoder {
     
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
-        
+
+        //让同一台机器稍微休息一下，同一台机器的操作太快了 -- 50 以内的毫秒数
         Thread.sleep(new Random().nextInt(50));
         
         Object decode = super.decode(ctx, in);

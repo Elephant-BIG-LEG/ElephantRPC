@@ -41,19 +41,19 @@ public class ConsumerApplication {
 
 
 
-//        while (true) {
-////            try {
-////                Thread.sleep(10000);
-////                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-////            } catch (InterruptedException e) {
-////                throw new RuntimeException(e);
-////            }
+        while (true) {
 //            try {
-//                String sayHi = helloYrpc.sayHi("你好yrpc");
-//                log.info("sayHi-->{}", sayHi);
-//            } catch (Exception e) {
-//                log.error("Error occurred while calling sayHi", e);
+//                Thread.sleep(10000);
+//                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
 //            }
-//        }
+            try {
+                String sayHi = helloYrpc.sayHi("你好yrpc");
+                log.info("sayHi-->{}", sayHi);
+            } catch (Exception e) {
+                log.error("Error occurred while calling sayHi", e);
+            }
+        }
     }
 }

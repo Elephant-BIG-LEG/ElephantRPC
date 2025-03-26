@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/23/11:04
- * @Description: 分层设计
+ * @Description: 轮询负载均衡器
  */
 @Slf4j
 public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
