@@ -22,6 +22,7 @@ import java.util.concurrent.TimeoutException;
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/25/8:59
  * @Description: 心跳检测；服务调用端发起 检测服务调用端与服务提供方的连接情况
+ * @Function: 检测、重试
  */
 @Slf4j
 public class HeartbeatDetector {

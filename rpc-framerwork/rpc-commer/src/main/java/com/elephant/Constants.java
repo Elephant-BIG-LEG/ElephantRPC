@@ -12,5 +12,5 @@ public class Constants {
     public static final String BASE_PROVIDERS_PATH = "/elephant-metadata/providers";
     public static final String BASE_CONSUMER_PATH = "/elephant-metadata/consumers";
 
-    public static final int PORT = 8090;
+    public static final int PORT = 8089;
 }

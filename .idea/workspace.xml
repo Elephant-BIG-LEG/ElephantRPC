@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/impl/MinimumResponseTimeLoadBalancer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/resources/trace.2025-03-25.0.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/log/trace.2025-03-25.0.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/YrpcRequestDecoder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/impl/RoundRobinLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/loadbalancer/impl/RoundRobinLoadBalancer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,7 +206,7 @@
       <workItem from="1742791969572" duration="10576000" />
       <workItem from="1742863801670" duration="8081000" />
       <workItem from="1742877802998" duration="4687000" />
-      <workItem from="1742949241393" duration="2148000" />
+      <workItem from="1742949241393" duration="3386000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -403,7 +400,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742882750141</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="实现最短响应时间的负载均衡器">
+      <option name="closed" value="true" />
+      <created>1742951559250</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1742951559250</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -411,7 +416,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="RPC项目基本框架" />
     <MESSAGE value="添加相关依赖" />
     <MESSAGE value="搭建基本框架，并解决Zookeeper的日志冲突" />
     <MESSAGE value="添加服务提供方注册节点相关代码" />
@@ -436,7 +440,8 @@
     <MESSAGE value="一致性 Hash 算法的完成并留下 TODO 任务" />
     <MESSAGE value="初步完成心跳检测的编写，需要修改服务调用端与服务提供方之间的心跳检测的绿色通道" />
     <MESSAGE value="完成心跳检测并利用 TreeMap 维护响应时间的 Channel，为最短响应时间做准备" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成心跳检测并利用 TreeMap 维护响应时间的 Channel，为最短响应时间做准备" />
+    <MESSAGE value="实现最短响应时间的负载均衡器" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现最短响应时间的负载均衡器" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
