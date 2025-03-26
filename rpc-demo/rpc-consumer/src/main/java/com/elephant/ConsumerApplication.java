@@ -40,19 +40,21 @@ public class ConsumerApplication {
         log.info("成功收到服务提供方发送的数据:{}",string);
 
 
-
+        // 每个 10 秒进行 10 次调用
         while (true) {
-//            try {
-//                Thread.sleep(10000);
-//                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
             try {
-                String sayHi = helloYrpc.sayHi("你好yrpc");
-                log.info("sayHi-->{}", sayHi);
-            } catch (Exception e) {
-                log.error("Error occurred while calling sayHi", e);
+                Thread.sleep(10000);
+                System.out.println("++------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 10; i++) {
+                try {
+                    String sayHi = helloYrpc.sayHi("你好yrpc");
+                    log.info("sayHi-->{}", sayHi);
+                } catch (Exception e) {
+                    log.error("Error occurred while calling sayHi", e);
+                }
             }
         }
     }

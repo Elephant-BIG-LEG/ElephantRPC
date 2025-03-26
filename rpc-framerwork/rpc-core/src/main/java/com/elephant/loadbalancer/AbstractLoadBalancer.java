@@ -25,24 +25,37 @@ public abstract class AbstractLoadBalancer implements LoadBalancer {
     private Map<String, Selector> cache = new ConcurrentHashMap<>(8);
 
     @Override
-    public InetSocketAddress selectServiceAddress(String serviceName,String group) {
+    public InetSocketAddress selectServiceAddress(String serviceName, String group) {
         // 对于这个负载均衡器，内部应该维护服务列表作为缓存 -- TODO 需要修改服务列表【满足服务提供方上下线之后的负载均衡】
         Selector selector = cache.get(serviceName);
         // 提供一些算法负载选取合适的节点
         if (selector == null) {
             // 通过注册中心拉取服务 TODO 使用配置中心获取注册中心
-            List<InetSocketAddress> serviceList = YrpcBootstrap.getRegistry().lookup(serviceName,group);
+            List<InetSocketAddress> serviceList = YrpcBootstrap.getRegistry().lookup(serviceName, group);
             // 选择负载均衡器
             selector = getSelector(serviceList);
-            cache.put(serviceName,selector);
+            cache.put(serviceName, selector);
         }
         // 获取可用节点
         return selector.getNext();
     }
 
+    /**
+     * 根据新的服务列表生成新的 Selector【负载均衡器】
+     * 需要保证线程安全
+     *
+     * @param serviceName 服务名称
+     * @param addresses   最新的服务列表
+     */
+    @Override
+    public synchronized void reLoadBalance(String serviceName, List<InetSocketAddress> addresses) {
+        cache.put(serviceName, getSelector(addresses));
+    }
+
 
     /**
      * 模板设计模式：获取一个Selector【负载均衡器】 由子类扩展【多种负载均衡算法】
+     *
      * @param serviceList
      * @return 一个可用服务
      */

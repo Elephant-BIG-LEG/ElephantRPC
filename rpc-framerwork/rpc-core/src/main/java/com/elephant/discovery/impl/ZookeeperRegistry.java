@@ -7,6 +7,7 @@ import com.elephant.exception.DiscoveryException;
 import com.elephant.utils.NetUtils;
 import com.elephant.utils.Zookeeper.ZookeeperNode;
 import com.elephant.utils.Zookeeper.ZookeeperUtils;
+import com.elephant.watcher.UpAndDownWatcher;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
@@ -43,7 +44,7 @@ public class ZookeeperRegistry extends AbstractRegistry {
     public void register(ServiceConfig<?> service) {
         String parentNode = Constants.BASE_PROVIDERS_PATH + "/" + service.getInterface().getName();
         //发布父节点【持久节点】
-        if (!ZookeeperUtils.exists(zookeeper, parentNode,null)) {
+        if (!ZookeeperUtils.exists(zookeeper, parentNode,new UpAndDownWatcher())) {
             ZookeeperNode zookeeperNode = new ZookeeperNode(parentNode, null);
             Boolean node = ZookeeperUtils.createNode(zookeeper, zookeeperNode, null, CreateMode.PERSISTENT);
             if (node) {

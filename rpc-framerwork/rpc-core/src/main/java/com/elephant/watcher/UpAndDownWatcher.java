@@ -3,6 +3,7 @@ package com.elephant.watcher;
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
 import com.elephant.discovery.Registry;
+import com.elephant.loadbalancer.LoadBalancer;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.WatchedEvent;
@@ -51,6 +52,9 @@ public class UpAndDownWatcher implements Watcher {
             }
 
             // TODO 这里得去刷新缓存中服务列表，让服务提供方即使发生了服务上下线也能够进行负载均衡
+            // 获得负载均衡器，进行重新加载
+            LoadBalancer loadBalancer = YrpcBootstrap.LOAD_BALANCER;
+            loadBalancer.reLoadBalance(serviceName,addresses);
 
         }
     }
