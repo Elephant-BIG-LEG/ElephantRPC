@@ -28,6 +28,7 @@ public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
     }
 
     private static class RoundRobinSelector implements Selector {
+        // TODO 这里的 serviceList 还必须修改，即使刷新了全局的服务列表，这里的 serviceList 还是使用的是缓存中的数据
         private List<InetSocketAddress> serviceList;
         private AtomicInteger index;
 

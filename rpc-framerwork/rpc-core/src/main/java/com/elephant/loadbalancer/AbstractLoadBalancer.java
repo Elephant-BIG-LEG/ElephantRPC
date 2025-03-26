@@ -26,7 +26,7 @@ public abstract class AbstractLoadBalancer implements LoadBalancer {
 
     @Override
     public InetSocketAddress selectServiceAddress(String serviceName,String group) {
-        // 对于这个负载均衡器，内部应该维护服务列表作为缓存
+        // 对于这个负载均衡器，内部应该维护服务列表作为缓存 -- TODO 需要修改服务列表【满足服务提供方上下线之后的负载均衡】
         Selector selector = cache.get(serviceName);
         // 提供一些算法负载选取合适的节点
         if (selector == null) {
