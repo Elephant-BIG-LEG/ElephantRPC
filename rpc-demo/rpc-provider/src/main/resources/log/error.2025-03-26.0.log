@@ -1,0 +1,19 @@
+2025-03-23 10:45:27.967 ERROR com.elephant.compress.CompressorFactory           :43   [32m                  [0;39m 未找到您配置的编号为【1】的压缩算法，默认选用gzip算法。
+2025-03-23 10:48:03.552 ERROR com.elephant.compress.CompressorFactory           :43   [32m                  [0;39m 未找到您配置的编号为【1】的压缩算法，默认选用gzip算法。
+2025-03-26 09:27:33.979 ERROR io.netty.util.ResourceLeakDetector                :319  [32m                  [0;39m LEAK: ByteBuf.release() was not called before it's garbage-collected. See https://netty.io/wiki/reference-counted-objects.html for more information.
+Recent access records: 
+Created at:
+	io.netty.buffer.PooledByteBufAllocator.newDirectBuffer(PooledByteBufAllocator.java:403)
+	io.netty.buffer.AbstractByteBufAllocator.directBuffer(AbstractByteBufAllocator.java:188)
+	io.netty.buffer.AbstractByteBufAllocator.directBuffer(AbstractByteBufAllocator.java:179)
+	io.netty.buffer.AbstractByteBufAllocator.ioBuffer(AbstractByteBufAllocator.java:140)
+	io.netty.channel.DefaultMaxMessagesRecvByteBufAllocator$MaxMessageHandle.allocate(DefaultMaxMessagesRecvByteBufAllocator.java:120)
+	io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:150)
+	io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	java.base/java.lang.Thread.run(Thread.java:1583)

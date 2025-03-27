@@ -1,6 +1,7 @@
 package com.elephant;
 
 
+import com.elephant.annotation.ElephantAPI;
 import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
@@ -19,11 +20,18 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 /**
@@ -54,7 +62,7 @@ public class YrpcBootstrap<T> {
     public static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
 
     //有序的保存channel的响应时间
-    public static TreeMap<Long,Channel> ANSWER_TIME_CHANNEL_CACHE = new TreeMap<>();
+    public static TreeMap<Long, Channel> ANSWER_TIME_CHANNEL_CACHE = new TreeMap<>();
     //当服务调用方，通过接口、方法名、具体的方法参数列表发起调用，提供怎么知道使用哪一个实现
     // (1) new 一个  （2）spring beanFactory.getBean(Class)  (3) 自己维护映射关系
     // 维护已经发布且暴露的服务列表 key-> interface的全限定名  value -> ServiceConfig
@@ -64,7 +72,7 @@ public class YrpcBootstrap<T> {
     public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
 
     //1号机房 2号机器
-    public static final IdGenerator idGenerator = new IdGenerator(1,2);
+    public static final IdGenerator idGenerator = new IdGenerator(1, 2);
 
     public static LoadBalancer LOAD_BALANCER;
 
@@ -99,6 +107,7 @@ public class YrpcBootstrap<T> {
 
     /**
      * 设置注册中心
+     *
      * @param registryConfig
      * @return
      */
@@ -117,10 +126,11 @@ public class YrpcBootstrap<T> {
 
     /**
      * 发布服务提供方的相关节点
+     *
      * @param service
      * @return
      */
-    public YrpcBootstrap publish(ServiceConfig<T> service) {
+    public YrpcBootstrap publish(ServiceConfig<?> service) {
         //抽象注册中心的概念
         registry.register(service);
 
@@ -133,7 +143,7 @@ public class YrpcBootstrap<T> {
      * 启动 Netty 服务
      */
     public void start() {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("服务提供方启用");
         }
 
@@ -143,7 +153,7 @@ public class YrpcBootstrap<T> {
         try {
             //引导程序
             ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup,workGroup)
+            serverBootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -174,7 +184,7 @@ public class YrpcBootstrap<T> {
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             try {
                 log.info("下线服务");
                 bossGroup.shutdownGracefully().sync();
@@ -186,14 +196,137 @@ public class YrpcBootstrap<T> {
     }
 
     /**
+     * 扫包加载
+     *
+     * @param packageName 要进行扫描的包名称
+     * @return
+     */
+    public YrpcBootstrap scan(String packageName) {
+        log.info("开始扫包批量发布服务");
+        // 需要通过 packageName 获取旗下的所有类的权限定名称
+        List<String> classNames = getAllClassNames(packageName);
+
+        // 通过反射获取接口，构建具体实现
+        List<Class<?>> classes = classNames.stream().map(className -> {
+                    try {
+                        // Class.forName(className) -- 加载类并初始化
+                        return Class.forName(className);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).filter(clazz -> clazz.getAnnotation(ElephantAPI.class) != null)
+                .collect(Collectors.toList());
+        // 获取接口
+        for (Class<?> clazz : classes) {
+            Class<?>[] interfaces = clazz.getInterfaces();
+            Object instance = null;
+
+            //拿到对应的实例
+            try {
+                instance = clazz.getConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+
+            // TODO 分组信息
+
+            for(Class<?> anInterface : interfaces){
+                ServiceConfig<?> serviceConfig = new ServiceConfig<>();
+                serviceConfig.setInterface(anInterface);
+                serviceConfig.setRef(instance);
+                // 发布服务
+                publish(serviceConfig);
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * 获取包名下所有类的全限定名称
+     *
+     * @param packageNames 包名
+     * @return 返回一个包含所有类名的集合
+     */
+    private List<String> getAllClassNames(String packageNames) {
+        String basePath = packageNames.replaceAll("\\.", "/");
+        URL url = ClassLoader.getSystemClassLoader().getResource(basePath);
+
+        if (url == null) {
+            log.error("扫包批量发布时，未能发现路径：【{}】下的服务", basePath);
+        }
+
+        String absolutePath = url.getPath();
+
+        // 使用 ArrayList 是因为查找效率高
+        List<String> classNames = new ArrayList<>();
+
+        classNames = recursionFile(absolutePath, classNames, basePath);
+
+        return classNames;
+    }
+
+    /**
+     * 递归遍历文件
+     *
+     * @param absolutePath 绝对路径
+     * @param classNames   类名集合
+     * @param basePath     基础地址
+     * @return 返回一个包含所有类名的集合
+     */
+    private List<String> recursionFile(String absolutePath, List<String> classNames, String basePath) {
+        // 获取文件
+        File file = new File(absolutePath);
+
+        // 判断是不是文件夹
+        if (file.isDirectory()) {
+            // 找到文件中的所有文件夹
+            File[] children = file.listFiles(pathname ->
+                    pathname.isDirectory() || pathname.getPath().contains(".class"));
+
+            for (File child : children) {
+                if (child.isDirectory()) {
+                    recursionFile(absolutePath, classNames, basePath);
+                } else {
+                    String className = getClassNameByAbsolutePath(child.getAbsolutePath(), basePath);
+                    classNames.add(className);
+                }
+            }
+        } else {
+            // 文件 -> 类的全限定名称
+            String className = getClassNameByAbsolutePath(absolutePath, basePath);
+            classNames.add(className);
+        }
+
+        return null;
+    }
+
+    /**
+     * 通过绝对路径拿到类名
+     *
+     * @param absolutePath
+     * @param basePath
+     * @return
+     */
+    private String getClassNameByAbsolutePath(String absolutePath, String basePath) {
+        // 截取
+        String fileName = absolutePath.substring(absolutePath.indexOf(
+                        basePath.replaceAll("/", "\\\\")))
+                .replaceAll("\\\\", ".");
+        fileName.substring(0, fileName.indexOf(".class"));
+        return fileName;
+    }
+
+    /**
      * --------------------------- 服务调用端相关 API --------------------------------
      */
 
     public YrpcBootstrap reference(ReferenceConfig<?> reference) {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("心跳检测器开始工作");
         }
-        HeartbeatDetector.detectHeartbeat(reference.getInterface().getName(),null);
+        HeartbeatDetector.detectHeartbeat(reference.getInterface().getName(), null);
         log.info("通过核心配置类去完善服务调用端的配置类");
         //将注册中心的实例设置到 reference 中
         reference.setRegistry(registry);
@@ -203,16 +336,16 @@ public class YrpcBootstrap<T> {
 
     public YrpcBootstrap serialize(String serializeType) {
         SERIALIZE_TYPE = serializeType;
-        if(log.isDebugEnabled()){
-            log.debug("使用：{}进行序列化",serializeType);
+        if (log.isDebugEnabled()) {
+            log.debug("使用：{}进行序列化", serializeType);
         }
         return this;
     }
 
     public YrpcBootstrap compress(String compressType) {
         COMPRESS_TYPE = compressType;
-        if(log.isDebugEnabled()){
-            log.debug("使用：{}进行压缩",compressType);
+        if (log.isDebugEnabled()) {
+            log.debug("使用：{}进行压缩", compressType);
         }
         return this;
     }
