@@ -6,6 +6,17 @@ import com.elephant.loadbalancer.LoadBalancer;
 import com.elephant.loadbalancer.impl.RoundRobinLoadBalancer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @Author: Elephant-FZY
@@ -40,4 +51,28 @@ public class Configuration {
 
     // 配置信息-->负载均衡策略
     private LoadBalancer loadBalancer = new RoundRobinLoadBalancer();
+
+    public Configuration() {
+        // 1、成员变量的默认配置项
+        log.info("代码配置");
+
+        // 2、spi机制发现相关配置项
+        log.info("SPI配置");
+//        SpiResolver spiResolver = new SpiResolver();
+//        spiResolver.loadFromSpi(this);
+
+        // 3、读取xml获得上边的信息
+        log.info("xml配置");
+        XmlResolver xmlResolver = new XmlResolver();
+        xmlResolver.loadFromXml(this);
+
+        // 4、编程配置项，yrpcBootstrap提供
+        log.info("默认项");
+    }
+
+
+
+    public static void main(String[] args) {
+        Configuration configuration = new Configuration();
+    }
 }
