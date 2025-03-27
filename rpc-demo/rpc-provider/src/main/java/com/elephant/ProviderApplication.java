@@ -11,10 +11,10 @@ import com.elephant.impl.HelloYrpcImpl;
  */
 public class ProviderApplication {
     public static void main(String[] args) {
-        ServiceConfig<HelloYrpc> service = new ServiceConfig<>();
-        service.setInterface(HelloYrpc.class);
-        //服务的具体实现对象
-        service.setRef(new HelloYrpcImpl());
+//        ServiceConfig<HelloYrpc> service = new ServiceConfig<>();
+//        service.setInterface(HelloYrpc.class);
+//        //服务的具体实现对象
+//        service.setRef(new HelloYrpcImpl());
 
         YrpcBootstrap.getInstance()
                 .application("first-rpc-provider")
@@ -23,7 +23,7 @@ public class ProviderApplication {
                 .serialize("jdk")
                 //.compress("gzip")
                 // 发布服务
-                .publish(service)
+                //.publish(service)
                 // 扫包批量发布
                 .scan("com.elephant")
                 // 启动 Netty 服务

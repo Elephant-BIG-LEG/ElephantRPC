@@ -202,26 +202,24 @@ public class YrpcBootstrap<T> {
      * @return
      */
     public YrpcBootstrap scan(String packageName) {
-        log.info("开始扫包批量发布服务");
-        // 需要通过 packageName 获取旗下的所有类的权限定名称
+        log.info("开始扫包批量发布，packageName获取绝对路径");
+        // 1、需要通过packageName获取其下的所有的类的权限定名称
         List<String> classNames = getAllClassNames(packageName);
-
-        // 通过反射获取接口，构建具体实现
-        List<Class<?>> classes = classNames.stream().map(className -> {
+        // 2、通过反射获取他的接口，构建具体实现
+        List<Class<?>> classes = classNames.stream()
+                .map(className -> {
                     try {
-                        // Class.forName(className) -- 加载类并初始化
                         return Class.forName(className);
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 }).filter(clazz -> clazz.getAnnotation(ElephantAPI.class) != null)
                 .collect(Collectors.toList());
-        // 获取接口
+
         for (Class<?> clazz : classes) {
+            // 获取他的接口
             Class<?>[] interfaces = clazz.getInterfaces();
             Object instance = null;
-
-            //拿到对应的实例
             try {
                 instance = clazz.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
@@ -231,90 +229,82 @@ public class YrpcBootstrap<T> {
 
             // TODO 分组信息
 
-            for(Class<?> anInterface : interfaces){
+            for (Class<?> anInterface : interfaces) {
                 ServiceConfig<?> serviceConfig = new ServiceConfig<>();
                 serviceConfig.setInterface(anInterface);
                 serviceConfig.setRef(instance);
-                // 发布服务
+                if (log.isDebugEnabled()){
+                    log.debug("---->已经通过包扫描，将服务【{}】发布.",anInterface);
+                }
+                // 3、发布
                 publish(serviceConfig);
             }
-        }
 
+        }
         return this;
     }
 
-    /**
-     * 获取包名下所有类的全限定名称
-     *
-     * @param packageNames 包名
-     * @return 返回一个包含所有类名的集合
-     */
-    private List<String> getAllClassNames(String packageNames) {
-        String basePath = packageNames.replaceAll("\\.", "/");
+    private List<String> getAllClassNames(String packageName) {
+        // 1、通过packageName获得绝对路径
+        // com.ydlclass.xxx.yyy -> E://xxx/xww/sss/com/ydlclass/xxx/yyy
+        String basePath = packageName.replaceAll("\\.","/");
         URL url = ClassLoader.getSystemClassLoader().getResource(basePath);
-
-        if (url == null) {
-            log.error("扫包批量发布时，未能发现路径：【{}】下的服务", basePath);
+        if(url == null){
+            throw new RuntimeException("包扫描时，发现路径不存在.");
         }
-
         String absolutePath = url.getPath();
-
-        // 使用 ArrayList 是因为查找效率高
+        //
         List<String> classNames = new ArrayList<>();
-
-        classNames = recursionFile(absolutePath, classNames, basePath);
+        classNames = recursionFile(absolutePath,classNames,basePath);
 
         return classNames;
     }
 
     /**
-     * 递归遍历文件
-     *
-     * @param absolutePath 绝对路径
-     * @param classNames   类名集合
-     * @param basePath     基础地址
-     * @return 返回一个包含所有类名的集合
-     */
-    private List<String> recursionFile(String absolutePath, List<String> classNames, String basePath) {
-        // 获取文件
-        File file = new File(absolutePath);
-
-        // 判断是不是文件夹
-        if (file.isDirectory()) {
-            // 找到文件中的所有文件夹
-            File[] children = file.listFiles(pathname ->
-                    pathname.isDirectory() || pathname.getPath().contains(".class"));
-
-            for (File child : children) {
-                if (child.isDirectory()) {
-                    recursionFile(absolutePath, classNames, basePath);
-                } else {
-                    String className = getClassNameByAbsolutePath(child.getAbsolutePath(), basePath);
-                    classNames.add(className);
-                }
-            }
-        } else {
-            // 文件 -> 类的全限定名称
-            String className = getClassNameByAbsolutePath(absolutePath, basePath);
-            classNames.add(className);
-        }
-
-        return null;
-    }
-
-    /**
-     * 通过绝对路径拿到类名
-     *
+     * 递归处理文件
      * @param absolutePath
+     * @param classNames
      * @param basePath
      * @return
      */
-    private String getClassNameByAbsolutePath(String absolutePath, String basePath) {
-        // 截取
-        String fileName = absolutePath.substring(absolutePath.indexOf(
-                        basePath.replaceAll("/", "\\\\")))
-                .replaceAll("\\\\", ".");
-        fileName.substring(0, fileName.indexOf(".class"));
+    private List<String> recursionFile(String absolutePath, List<String> classNames,String basePath) {
+        // 获取文件
+        File file = new File(absolutePath);
+        // 判断文件是否是文件夹
+        if (file.isDirectory()){
+            // 找到文件夹的所有的文件
+            File[] children = file.listFiles(pathname -> pathname.isDirectory()
+                    || pathname.getPath().contains(".class"));
+            if(children == null || children.length == 0){
+                return classNames;
+            }
+            for (File child : children) {
+                if(child.isDirectory()){
+                    // 递归调用
+                    recursionFile(child.getAbsolutePath(),classNames,basePath);
+                } else {
+                    // 文件 --> 类的权限定名称
+                    String className = getClassNameByAbsolutePath(child.getAbsolutePath(),basePath);
+                    classNames.add(className);
+                }
+            }
+
+        } else {
+            // 文件 --> 类的权限定名称
+            String className = getClassNameByAbsolutePath(absolutePath,basePath);
+            classNames.add(className);
+        }
+        return classNames;
+    }
+
+    private String getClassNameByAbsolutePath(String absolutePath,String basePath) {
+        // E:\project\ydlclass-yrpc\yrpc-framework\yrpc-core\target\classes\com\ydlclass\serialize\Serializer.class
+        // com\ydlclass\serialize\Serializer.class --> com.ydlclass.serialize.Serializer
+        String fileName = absolutePath
+                .substring(absolutePath.indexOf(basePath.replaceAll("/","\\\\")))
+                .replaceAll("\\\\",".");
+
+        fileName = fileName.substring(0,fileName.indexOf(".class"));
         return fileName;
     }
 
