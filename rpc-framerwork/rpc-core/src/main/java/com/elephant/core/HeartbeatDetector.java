@@ -78,10 +78,10 @@ public class HeartbeatDetector {
                      * ------------------ 构建一个心跳请求 -------------------------
                      */
                     YrpcRequest yrpcRequest = YrpcRequest.builder()
-                            .requestId(YrpcBootstrap.idGenerator.getId())
+                            .requestId(YrpcBootstrap.configuration.idGenerator.getId())
                             .requestType(RequestType.HEART_BEAT.getId())
-                            .compressType(CompressorFactory.getCompressor(YrpcBootstrap.COMPRESS_TYPE).getCode())
-                            .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.SERIALIZE_TYPE).getCode())
+                            .compressType(CompressorFactory.getCompressor(YrpcBootstrap.configuration.getCompressType()).getCode())
+                            .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.configuration.getSerializeType()).getCode())
                             .timeStamp(start)
                             .build();
 

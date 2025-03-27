@@ -5,6 +5,7 @@ import com.elephant.annotation.ElephantAPI;
 import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
+import com.elephant.config.Configuration;
 import com.elephant.core.HeartbeatDetector;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
@@ -47,15 +48,10 @@ public class YrpcBootstrap<T> {
      * --------------------------- 相关的基础配置 --------------------------------
      */
 
-    public static String COMPRESS_TYPE = "gzip";
-    public static String SERIALIZE_TYPE = "jdk";
+    // YrpcBootstrap是个单例，我们希望每个应用程序只有一个实例
+    private static final YrpcBootstrap yrpcBootstrap = new YrpcBootstrap();
 
-    private static String appName = "default";
-
-    private RegistryConfig registryConfig;
-
-    //维护一个注册中心
-    private static Registry registry;
+    public static Configuration configuration;
 
     //注意：如果使用 InetSocketAddress 作为 key，一定要保证该类重写了 toString 方法和 equals 方法
     //每一个地址维护一个 channel
@@ -70,22 +66,15 @@ public class YrpcBootstrap<T> {
 
     //定义全局的对外挂起的 completableFuture
     public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
-
-    //1号机房 2号机器
-    public static final IdGenerator idGenerator = new IdGenerator(1, 2);
-
-    public static LoadBalancer LOAD_BALANCER;
-
     // 保存request对象，可以到当前线程中随时获取
     public static final ThreadLocal<YrpcRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
+
     /**
      * --------------------------- 服务提供方相关 API --------------------------------
      */
 
-    private static final YrpcBootstrap yrpcBootstrap = new YrpcBootstrap();
-
     private YrpcBootstrap() {
-
+        configuration = new Configuration();
     }
 
     /**
@@ -100,7 +89,7 @@ public class YrpcBootstrap<T> {
 
     public YrpcBootstrap application(String appName) {
         log.info("为该服务起一个名字：{}", appName);
-        this.appName = appName;
+        configuration.setAppName(appName);
         return this;
     }
 
@@ -115,11 +104,18 @@ public class YrpcBootstrap<T> {
         log.info("开始注册该服务：{}", registryConfig);
         //使用模板方法
         //true 表示使用默认配置
-        this.registry = registryConfig.getRegistry(true);
-        //TODO
-        //YrpcBootstrap.LOAD_BALANCER = new RoundRobinLoadBalancer();
-//        YrpcBootstrap.LOAD_BALANCER = new ConsistentHashBalancer();
-        YrpcBootstrap.LOAD_BALANCER = new MinimumResponseTimeLoadBalancer();
+        configuration.setRegistryConfig(registryConfig);
+        return this;
+
+    }
+
+    /**
+     * 配置负载均衡器
+     * @param loadBalancer
+     * @return
+     */
+    public YrpcBootstrap registry(LoadBalancer loadBalancer) {
+        configuration.setLoadBalancer(loadBalancer);
         return this;
 
     }
@@ -132,7 +128,7 @@ public class YrpcBootstrap<T> {
      */
     public YrpcBootstrap publish(ServiceConfig<?> service) {
         //抽象注册中心的概念
-        registry.register(service);
+        configuration.getRegistryConfig().getRegistry(true).register(service);
 
         SERVERS_LIST.put(service.getInterface().getName(), service);
         return this;
@@ -179,7 +175,7 @@ public class YrpcBootstrap<T> {
                         }
                     });
             //绑定端口
-            ChannelFuture channelFuture = serverBootstrap.bind(Constants.PORT).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(configuration.getPort()).sync();
 
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -319,13 +315,13 @@ public class YrpcBootstrap<T> {
         HeartbeatDetector.detectHeartbeat(reference.getInterface().getName(), null);
         log.info("通过核心配置类去完善服务调用端的配置类");
         //将注册中心的实例设置到 reference 中
-        reference.setRegistry(registry);
+        reference.setRegistry(configuration.getRegistryConfig().getRegistry(true));
         return this;
     }
 
 
     public YrpcBootstrap serialize(String serializeType) {
-        SERIALIZE_TYPE = serializeType;
+        configuration.setSerializeType(serializeType);
         if (log.isDebugEnabled()) {
             log.debug("使用：{}进行序列化", serializeType);
         }
@@ -333,7 +329,7 @@ public class YrpcBootstrap<T> {
     }
 
     public YrpcBootstrap compress(String compressType) {
-        COMPRESS_TYPE = compressType;
+        configuration.setCompressType(compressType);
         if (log.isDebugEnabled()) {
             log.debug("使用：{}进行压缩", compressType);
         }
@@ -342,7 +338,7 @@ public class YrpcBootstrap<T> {
 
     //TODO
     public static Registry getRegistry() {
-        return registry;
+        return configuration.getRegistryConfig().getRegistry(true);
     }
 
 }

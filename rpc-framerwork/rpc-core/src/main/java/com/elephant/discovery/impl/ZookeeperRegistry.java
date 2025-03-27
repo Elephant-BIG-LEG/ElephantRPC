@@ -2,6 +2,7 @@ package com.elephant.discovery.impl;
 
 import com.elephant.Constants;
 import com.elephant.ServiceConfig;
+import com.elephant.YrpcBootstrap;
 import com.elephant.discovery.AbstractRegistry;
 import com.elephant.exception.DiscoveryException;
 import com.elephant.utils.NetUtils;
@@ -54,7 +55,7 @@ public class ZookeeperRegistry extends AbstractRegistry {
         //创建本机临时节点
         //发布服务提供方子节点【临时节点】
         // TODO 动态修改端口节点
-        String nodePath = parentNode + "/" + NetUtils.getIp() + ":" + Constants.PORT;
+        String nodePath = parentNode + "/" + NetUtils.getIp() + ":" + YrpcBootstrap.configuration.getPort();
         if (!ZookeeperUtils.exists(zookeeper, nodePath, null)) {
             ZookeeperNode zookeeperNode = new ZookeeperNode(nodePath, null);
             Boolean node = ZookeeperUtils.createNode(zookeeper, zookeeperNode, null, CreateMode.EPHEMERAL);

@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="整合扫包动态发布服务">
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/impl/HelloYrpcImpl2.java" afterDir="false" />
+    <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/Configuration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/impl/ZookeeperRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/impl/ZookeeperRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/watcher/UpAndDownWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/watcher/UpAndDownWatcher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +23,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="AnnotationType" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -71,7 +75,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.pluginManager",
@@ -97,10 +101,11 @@
       <recent name="D:\Beginner\ElephantRPC\rpc-demo\rpc-provider\src\main\resources\log" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.elephant.impl" />
       <recent name="com.elephant.transport.message" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ProviderApplication">
+  <component name="RunManager" selected="Application.ConsumerApplication">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.elephant.Application" />
       <module name="rpc-manager" />
@@ -171,8 +176,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ProviderApplication" />
         <item itemvalue="Application.ConsumerApplication" />
+        <item itemvalue="Application.ProviderApplication" />
         <item itemvalue="Application.IdGenerator" />
         <item itemvalue="Application.Application" />
       </list>
@@ -211,7 +216,7 @@
       <workItem from="1742965622384" duration="1796000" />
       <workItem from="1743038060976" duration="1441000" />
       <workItem from="1743041954639" duration="4844000" />
-      <workItem from="1743051590656" duration="1661000" />
+      <workItem from="1743051590656" duration="3392000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -445,7 +450,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743046507955</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="修改扫包逻辑BUG">
+      <option name="closed" value="true" />
+      <created>1743053532300</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1743053532300</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,7 +466,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="服务列表使用本地维护方案" />
     <MESSAGE value="服务调用端的注册" />
     <MESSAGE value="完成服务调用端的注册与发现服务提供方的可用节点的功能" />
     <MESSAGE value="添加服务提供方和服务调用方的Netty启动代码" />
@@ -478,7 +490,8 @@
     <MESSAGE value="动态感知服务提供方的上下线" />
     <MESSAGE value="实现 ReloadBalancer" />
     <MESSAGE value="整合扫包动态发布服务" />
-    <option name="LAST_COMMIT_MESSAGE" value="整合扫包动态发布服务" />
+    <MESSAGE value="修改扫包逻辑BUG" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改扫包逻辑BUG" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -490,7 +503,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java</url>
-          <line>177</line>
+          <line>173</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -502,11 +515,6 @@
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java</url>
           <line>36</line>
           <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

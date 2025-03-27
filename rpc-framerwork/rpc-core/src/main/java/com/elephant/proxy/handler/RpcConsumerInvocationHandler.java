@@ -62,11 +62,11 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
          * ------------------ 生成请求 -------------------------
          */
         YrpcRequest yrpcRequest = YrpcRequest.builder()
-                .requestId(YrpcBootstrap.idGenerator.getId())
-                .compressType(CompressorFactory.getCompressor(YrpcBootstrap.COMPRESS_TYPE).getCode())
+                .requestId(YrpcBootstrap.configuration.idGenerator.getId())
+                .compressType(CompressorFactory.getCompressor(YrpcBootstrap.configuration.getCompressType()).getCode())
                 .requestType(RequestType.REQUEST.getId())
                 .timeStamp(new Date().getTime())
-                .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.SERIALIZE_TYPE).getCode())
+                .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.configuration.getSerializeType()).getCode())
                 .requestPayload(requestPayload)
                 .build();
 
@@ -76,7 +76,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         // 从注册中心拉取服务列表，再从客户端负载均衡选择一个可用服务
         // TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
         // 负载均衡
-        InetSocketAddress address = YrpcBootstrap.LOAD_BALANCER
+        InetSocketAddress address = YrpcBootstrap.configuration.getLoadBalancer()
                         .selectServiceAddress(interfaceRef.getName(),group);
 
         if (log.isDebugEnabled()) {
