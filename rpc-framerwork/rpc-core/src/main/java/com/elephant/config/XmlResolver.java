@@ -39,7 +39,7 @@ public class XmlResolver {
         try {
             // 1、创建一个document
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            // 禁用DTD校验：可以通过调用setValidating(false)方法来禁用DTD校验。
+            // 禁用DTD校验：可以通过调用setValidating(false)方法来禁用DTD校验 -- 运行时作用不大【这里还是关闭】
             factory.setValidating(false);
             // 禁用外部实体解析：可以通过调用setFeature(String name, boolean value)方法并将“http://apache.org/xml/features/nonvalidating/load-external-dtd”设置为“false”来禁用外部实体解析。
             factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
