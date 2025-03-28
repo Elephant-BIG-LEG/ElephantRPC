@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/yrpc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/exception/SpiException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/SpiResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/spi/SpiHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/META-INF/yrpc-services/com.elephant.compress.Compressor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/META-INF/yrpc-services/com.elephant.loadbalancer.LoadBalancer" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/META-INF/yrpc-services/com.elephant.serialize.Serializer" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/XmlResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/XmlResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/ObjectWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/ObjectWrapper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,17 +62,18 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.Application.executor": "Run",
-    "Application.Configuration.executor": "Run",
+    "Application.Configuration.executor": "Debug",
     "Application.ConsumerApplication.executor": "Run",
     "Application.IdGenerator.executor": "Run",
     "Application.ProviderApplication.executor": "Run",
+    "Application.SpiHandler.executor": "Debug",
     "Maven.ElephantRPC [clean].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Beginner/ElephantRPC/rpc-demo/rpc-provider/src/main/resources",
+    "last_opened_file_path": "D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -87,9 +95,9 @@
       <recent name="com.elephant.loadbalancer.impl" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Beginner\ElephantRPC\rpc-framerwork\rpc-core\src\main\resources" />
       <recent name="D:\Beginner\ElephantRPC\rpc-demo\rpc-provider\src\main\resources" />
       <recent name="D:\Beginner\ElephantRPC\rpc-framerwork\rpc-core\src\main\java\com\elephant" />
-      <recent name="D:\Beginner\ElephantRPC\rpc-framerwork\rpc-core\src\main\resources" />
       <recent name="D:\Beginner\ElephantRPC\rpc-framerwork\rpc-commer\src\main\resources" />
       <recent name="D:\Beginner\ElephantRPC\rpc-framerwork\rpc-core\src\main\java\com\elephant\transport\message" />
     </key>
@@ -102,19 +110,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.ConsumerApplication">
-    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.elephant.Application" />
-      <module name="rpc-manager" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.elephant.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Configuration" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.elephant.config.Configuration" />
       <module name="rpc-core" />
@@ -167,6 +162,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SpiHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.elephant.spi.SpiHandler" />
+      <module name="rpc-core" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.elephant.spi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="lua.app" factoryName="Lua Application">
       <option name="program" value="lua.exe" />
       <option name="file" value="" />
@@ -178,8 +186,8 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Application.SpiHandler" />
       <item itemvalue="Application.Configuration" />
-      <item itemvalue="Application.Application" />
       <item itemvalue="Application.ConsumerApplication" />
       <item itemvalue="Application.IdGenerator" />
       <item itemvalue="Application.ProviderApplication" />
@@ -189,8 +197,8 @@
         <item itemvalue="Application.ConsumerApplication" />
         <item itemvalue="Application.ProviderApplication" />
         <item itemvalue="Application.Configuration" />
+        <item itemvalue="Application.SpiHandler" />
         <item itemvalue="Application.IdGenerator" />
-        <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +235,11 @@
       <workItem from="1742965622384" duration="1796000" />
       <workItem from="1743038060976" duration="1441000" />
       <workItem from="1743041954639" duration="4844000" />
-      <workItem from="1743051590656" duration="10110000" />
+      <workItem from="1743051590656" duration="10977000" />
+      <workItem from="1743073077809" duration="308000" />
+      <workItem from="1743076107405" duration="7000" />
+      <workItem from="1743121890631" duration="4592000" />
+      <workItem from="1743139257220" duration="2248000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -485,7 +497,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743063069945</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="完善配置类">
+      <option name="closed" value="true" />
+      <created>1743064688033</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1743064688033</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,7 +513,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="添加服务提供方和服务调用方的Netty启动代码" />
     <MESSAGE value="对每一个地址缓存一个channel，并对Bootstrap使用静态代码块初始化进行重构" />
     <MESSAGE value="CompletableFuture的异步改造" />
     <MESSAGE value="完成服务提供方与服务调用方之间的基本通讯，并解决BUG -- 处理冗余代码影响" />
@@ -518,7 +537,8 @@
     <MESSAGE value="修改扫包逻辑BUG" />
     <MESSAGE value="引入上下文配置" />
     <MESSAGE value="编写读取 xml 配置文件的代码并引入 dtd 约束配置文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="编写读取 xml 配置文件的代码并引入 dtd 约束配置文件" />
+    <MESSAGE value="完善配置类" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善配置类" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -542,6 +562,11 @@
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java</url>
           <line>36</line>
           <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/SpiResolver.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

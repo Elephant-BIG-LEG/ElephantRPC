@@ -14,8 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ObjectWrapper<T> {
+    // 服务代码
     private Byte code;
+    // 实例名称
     private String name;
+    // 具体接口
     private T impl;
 }
 

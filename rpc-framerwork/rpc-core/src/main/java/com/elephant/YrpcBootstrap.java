@@ -252,7 +252,6 @@ public class YrpcBootstrap<T> {
         //
         List<String> classNames = new ArrayList<>();
         classNames = recursionFile(absolutePath,classNames,basePath);
-
         return classNames;
     }
 
@@ -284,7 +283,6 @@ public class YrpcBootstrap<T> {
                     classNames.add(className);
                 }
             }
-
         } else {
             // 文件 --> 类的权限定名称
             String className = getClassNameByAbsolutePath(absolutePath,basePath);

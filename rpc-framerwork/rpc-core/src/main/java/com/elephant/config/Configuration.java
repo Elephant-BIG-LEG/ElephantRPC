@@ -58,10 +58,10 @@ public class Configuration {
 
         // 2、spi机制发现相关配置项
         log.info("SPI配置");
-//        SpiResolver spiResolver = new SpiResolver();
-//        spiResolver.loadFromSpi(this);
+        SpiResolver spiResolver = new SpiResolver();
+        spiResolver.loadFromSpi(this);
 
-        // 3、读取xml获得上边的信息
+        // 3、使用原生的 API 读取 xml 获得上边的信息
         log.info("xml配置");
         XmlResolver xmlResolver = new XmlResolver();
         xmlResolver.loadFromXml(this);
