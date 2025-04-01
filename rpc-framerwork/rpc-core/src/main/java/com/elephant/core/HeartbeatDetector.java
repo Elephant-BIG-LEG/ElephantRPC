@@ -29,7 +29,7 @@ public class HeartbeatDetector {
 
     public static void detectHeartbeat(String serviceName, String group) {
         // 1、从注册中心拉取服务列表并建立连接
-        Registry registry = YrpcBootstrap.getRegistry();
+        Registry registry = YrpcBootstrap.getInstance().getConfiguration().getRegistryConfig().getRegistry(true);
         List<InetSocketAddress> addresses = registry.lookup(serviceName,group);
 
         // 将连接进行缓存
@@ -78,10 +78,10 @@ public class HeartbeatDetector {
                      * ------------------ 构建一个心跳请求 -------------------------
                      */
                     YrpcRequest yrpcRequest = YrpcRequest.builder()
-                            .requestId(YrpcBootstrap.configuration.idGenerator.getId())
+                            .requestId(YrpcBootstrap.getInstance().configuration.idGenerator.getId())
                             .requestType(RequestType.HEART_BEAT.getId())
-                            .compressType(CompressorFactory.getCompressor(YrpcBootstrap.configuration.getCompressType()).getCode())
-                            .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.configuration.getSerializeType()).getCode())
+                            .compressType(CompressorFactory.getCompressor(YrpcBootstrap.getInstance().configuration.getCompressType()).getCode())
+                            .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.getInstance().configuration.getSerializeType()).getCode())
                             .timeStamp(start)
                             .build();
 

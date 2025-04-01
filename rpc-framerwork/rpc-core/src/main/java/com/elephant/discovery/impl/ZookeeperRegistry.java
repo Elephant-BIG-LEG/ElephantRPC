@@ -55,7 +55,7 @@ public class ZookeeperRegistry extends AbstractRegistry {
         //创建本机临时节点
         //发布服务提供方子节点【临时节点】
         // TODO 动态修改端口节点
-        String nodePath = parentNode + "/" + NetUtils.getIp() + ":" + YrpcBootstrap.configuration.getPort();
+        String nodePath = parentNode + "/" + NetUtils.getIp() + ":" + YrpcBootstrap.getInstance().configuration.getPort();
         if (!ZookeeperUtils.exists(zookeeper, nodePath, null)) {
             ZookeeperNode zookeeperNode = new ZookeeperNode(nodePath, null);
             Boolean node = ZookeeperUtils.createNode(zookeeper, zookeeperNode, null, CreateMode.EPHEMERAL);

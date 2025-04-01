@@ -31,7 +31,8 @@ public abstract class AbstractLoadBalancer implements LoadBalancer {
         // 提供一些算法负载选取合适的节点
         if (selector == null) {
             // 通过注册中心拉取服务 TODO 使用配置中心获取注册中心
-            List<InetSocketAddress> serviceList = YrpcBootstrap.getRegistry().lookup(serviceName, group);
+            List<InetSocketAddress> serviceList = YrpcBootstrap.getInstance().getConfiguration()
+                    .getRegistryConfig().getRegistry(true).lookup(serviceName, group);
             // 选择负载均衡器
             selector = getSelector(serviceList);
             cache.put(serviceName, selector);

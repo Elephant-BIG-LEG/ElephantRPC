@@ -62,11 +62,11 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
          * ------------------ 生成请求 -------------------------
          */
         YrpcRequest yrpcRequest = YrpcRequest.builder()
-                .requestId(YrpcBootstrap.configuration.idGenerator.getId())
-                .compressType(CompressorFactory.getCompressor(YrpcBootstrap.configuration.getCompressType()).getCode())
+                .requestId(YrpcBootstrap.getInstance().configuration.idGenerator.getId())
+                .compressType(CompressorFactory.getCompressor(YrpcBootstrap.getInstance().configuration.getCompressType()).getCode())
                 .requestType(RequestType.REQUEST.getId())
                 .timeStamp(new Date().getTime())
-                .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.configuration.getSerializeType()).getCode())
+                .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.getInstance().configuration.getSerializeType()).getCode())
                 .requestPayload(requestPayload)
                 .build();
 

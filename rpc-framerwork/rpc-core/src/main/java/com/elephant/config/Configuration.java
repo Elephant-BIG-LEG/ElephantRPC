@@ -1,22 +1,12 @@
 package com.elephant.config;
 
 import com.elephant.IdGenerator;
+import com.elephant.compress.CompressorFactory;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.loadbalancer.LoadBalancer;
 import com.elephant.loadbalancer.impl.RoundRobinLoadBalancer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @Author: Elephant-FZY
@@ -42,9 +32,13 @@ public class Configuration {
 
     // 配置信息-->序列化协议
     private String serializeType = "jdk";
+    // 这样写没有意义 还是通过统一加载 spi 机制才有作用
+    // private SerializerFactory serializerFactory = new SerializerFactory();
 
     // 配置信息-->压缩使用的协议
     private String compressType = "gzip";
+    // 这样写没有意义 还是通过统一加载 spi 机制才有作用
+    private CompressorFactory compressorFactory = new CompressorFactory();
 
     // 配置信息-->id发射器 -- 1号机房 2号机器
     public IdGenerator idGenerator = new IdGenerator(1, 2);
@@ -66,7 +60,7 @@ public class Configuration {
         XmlResolver xmlResolver = new XmlResolver();
         xmlResolver.loadFromXml(this);
 
-        // 4、编程配置项，yrpcBootstrap提供
+        // 4、编程配置项，yrpcBootstrap 提供
         log.info("默认项");
     }
 

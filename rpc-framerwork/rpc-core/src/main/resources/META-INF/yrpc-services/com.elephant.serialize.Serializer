@@ -1,2 +1,3 @@
 3-hessian-com.elephant.serialize.impl.HessianSerializer
 1-jdk-com.elephant.serialize.impl.JdkSerializer
+2-json-com.elephant.serialize.impl.JsonSerializer

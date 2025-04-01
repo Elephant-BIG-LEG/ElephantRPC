@@ -10,9 +10,6 @@ import com.elephant.core.HeartbeatDetector;
 import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.loadbalancer.LoadBalancer;
-import com.elephant.loadbalancer.impl.ConsistentHashBalancer;
-import com.elephant.loadbalancer.impl.MinimumResponseTimeLoadBalancer;
-import com.elephant.loadbalancer.impl.RoundRobinLoadBalancer;
 import com.elephant.transport.message.YrpcRequest;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -21,7 +18,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
@@ -51,7 +47,7 @@ public class YrpcBootstrap<T> {
     // YrpcBootstrap是个单例，我们希望每个应用程序只有一个实例
     private static final YrpcBootstrap yrpcBootstrap = new YrpcBootstrap();
 
-    public static Configuration configuration;
+    public final Configuration configuration;
 
     //注意：如果使用 InetSocketAddress 作为 key，一定要保证该类重写了 toString 方法和 equals 方法
     //每一个地址维护一个 channel
@@ -335,8 +331,11 @@ public class YrpcBootstrap<T> {
     }
 
     //TODO
-    public static Registry getRegistry() {
-        return configuration.getRegistryConfig().getRegistry(true);
-    }
+//    public static Registry getRegistry() {
+//        return configuration.getRegistryConfig().getRegistry(true);
+//    }
 
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 }

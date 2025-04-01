@@ -27,7 +27,7 @@ public class UpAndDownWatcher implements Watcher {
                 log.debug("检测到服务：【{}】的子节点发生变化,重新 上 / 下线的工作",event.getPath());
             }
             String serviceName = getServiceName(event.getPath());
-            Registry registry = YrpcBootstrap.getInstance().getRegistry();
+            Registry registry = YrpcBootstrap.getInstance().getConfiguration().getRegistryConfig().getRegistry(true);
             List<InetSocketAddress> addresses = registry.lookup(serviceName, null);
             // 处理新增的节点
             for (InetSocketAddress address : addresses) {
@@ -53,7 +53,7 @@ public class UpAndDownWatcher implements Watcher {
 
             // TODO 这里得去刷新缓存中服务列表，让服务提供方即使发生了服务上下线也能够进行负载均衡
             // 获得负载均衡器，进行重新加载
-            LoadBalancer loadBalancer = YrpcBootstrap.configuration.getLoadBalancer();
+            LoadBalancer loadBalancer = YrpcBootstrap.getInstance().configuration.getLoadBalancer();
             loadBalancer.reLoadBalance(serviceName,addresses);
 
         }
