@@ -12,7 +12,7 @@
 
     <!-- 二选一 -->
     <compressType type="gzip"/>
-    <compressor code="1" name="hession"  class="com.elephant.compress.impl.GzipCompressor"/>
+    <compressor code="1" name="gzip"  class="com.elephant.compress.impl.GzipCompressor"/>
 
     <!-- 二选一 -->
     <loadBalancer class="com.elephant.loadbalancer.impl.MinimumResponseTimeLoadBalancer"/>

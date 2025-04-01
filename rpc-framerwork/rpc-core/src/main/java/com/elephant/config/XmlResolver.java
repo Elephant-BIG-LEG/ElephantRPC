@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +25,8 @@ import java.util.Objects;
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/27/15:39
  * @Description: 解析 xml 配置信息并填充到 Configuration 类中
+ * @Function: 处理特殊的格式 ：code + type + impl --> objectWrapper --> 统一放入工厂【只能选用一个】
+ * @Format: 序号 + 名称 + 类的路径
  */
 @Slf4j
 public class XmlResolver {
@@ -61,11 +62,11 @@ public class XmlResolver {
             configuration.setRegistryConfig(resolveRegistryConfig(doc, xpath));
 
 
-            // 处理使用的压缩方式和序列化方式
+            // 处理使用的压缩方式和序列化方式 -- Type
             configuration.setCompressType(resolveCompressType(doc, xpath));
             configuration.setSerializeType(resolveSerializeType(doc, xpath));
 
-            // 配置新的压缩方式和序列化方式，并将其纳入工厂中
+            // 配置新的压缩方式和序列化方式，并将其纳入工厂中 -- Instance
             ObjectWrapper<Compressor> compressorObjectWrapper = resolveCompressCompressor(doc, xpath);
             CompressorFactory.addCompressor(compressorObjectWrapper);
 
@@ -163,7 +164,7 @@ public class XmlResolver {
      *
      * @param doc   文档
      * @param xpath xpath解析器
-     * @return ObjectWrapper<Compressor>
+     * @return 具体接口的实例
      */
     private ObjectWrapper<Compressor> resolveCompressCompressor(Document doc, XPath xpath) {
         String expression = "/configuration/compressor";

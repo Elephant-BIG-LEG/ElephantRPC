@@ -160,6 +160,7 @@ public class SpiHandler {
                 String type = codeAndTypeAndName[1];
                 String implementName = codeAndTypeAndName[2];
 
+                // 建一个实例
                 Class<?> aClass = Class.forName(implementName);
                 Object impl = aClass.getConstructor().newInstance();
 

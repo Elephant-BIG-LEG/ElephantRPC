@@ -7,7 +7,6 @@ import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
 import com.elephant.config.Configuration;
 import com.elephant.core.HeartbeatDetector;
-import com.elephant.discovery.Registry;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.loadbalancer.LoadBalancer;
 import com.elephant.transport.message.YrpcRequest;
@@ -55,6 +54,7 @@ public class YrpcBootstrap<T> {
 
     //有序的保存channel的响应时间
     public static TreeMap<Long, Channel> ANSWER_TIME_CHANNEL_CACHE = new TreeMap<>();
+
     //当服务调用方，通过接口、方法名、具体的方法参数列表发起调用，提供怎么知道使用哪一个实现
     // (1) new 一个  （2）spring beanFactory.getBean(Class)  (3) 自己维护映射关系
     // 维护已经发布且暴露的服务列表 key-> interface的全限定名  value -> ServiceConfig
@@ -62,6 +62,7 @@ public class YrpcBootstrap<T> {
 
     //定义全局的对外挂起的 completableFuture
     public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
+
     // 保存request对象，可以到当前线程中随时获取
     public static final ThreadLocal<YrpcRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
 
@@ -71,6 +72,9 @@ public class YrpcBootstrap<T> {
 
     private YrpcBootstrap() {
         configuration = new Configuration();
+        if(log.isDebugEnabled()){
+            log.debug("已经通过 Configuration 加载配置信息");
+        }
     }
 
     /**
@@ -97,6 +101,7 @@ public class YrpcBootstrap<T> {
      * @return
      */
     public YrpcBootstrap registry(RegistryConfig registryConfig) {
+        // TODO 这里好像没必要传参了，因为 Configuration 都会配置，除非想手动修改
         log.info("开始注册该服务：{}", registryConfig);
         //使用模板方法
         //true 表示使用默认配置
@@ -105,16 +110,16 @@ public class YrpcBootstrap<T> {
 
     }
 
-    /**
-     * 配置负载均衡器
-     * @param loadBalancer
-     * @return
-     */
-    public YrpcBootstrap registry(LoadBalancer loadBalancer) {
-        configuration.setLoadBalancer(loadBalancer);
-        return this;
-
-    }
+//    /**
+//     * TODO 没必要？？？
+//     * 配置负载均衡器
+//     * @param loadBalancer
+//     * @return
+//     */
+//    public YrpcBootstrap loadBalancer(LoadBalancer loadBalancer) {
+//        configuration.setLoadBalancer(loadBalancer);
+//        return this;
+//    }
 
     /**
      * 发布服务提供方的相关节点
@@ -161,6 +166,7 @@ public class YrpcBootstrap<T> {
 //                                            Unpooled.copiedBuffer("这是写回的信息".getBytes(StandardCharsets.UTF_8)));
 //                                }
 //                            }
+
                             socketChannel.pipeline().addLast(new LoggingHandler())
                                     // 解码
                                     .addLast(new YrpcRequestDecoder())
@@ -188,7 +194,7 @@ public class YrpcBootstrap<T> {
     }
 
     /**
-     * 扫包加载
+     * 扫包加载 -- 加载要暴露的接口
      *
      * @param packageName 要进行扫描的包名称
      * @return
@@ -329,11 +335,6 @@ public class YrpcBootstrap<T> {
         }
         return this;
     }
-
-    //TODO
-//    public static Registry getRegistry() {
-//        return configuration.getRegistryConfig().getRegistry(true);
-//    }
 
     public Configuration getConfiguration() {
         return configuration;

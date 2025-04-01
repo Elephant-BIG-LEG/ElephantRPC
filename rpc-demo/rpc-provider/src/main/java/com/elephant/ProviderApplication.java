@@ -16,6 +16,11 @@ public class ProviderApplication {
 //        //服务的具体实现对象
 //        service.setRef(new HelloYrpcImpl());
 
+        /**
+         * TODO 启动的两种方式
+         *  1.使用 Configuration 的默认配置
+         *  2.手动传参覆盖 Configuration 的默认配置
+         */
         YrpcBootstrap.getInstance()
                 .application("first-rpc-provider")
                 // 配置注册中心

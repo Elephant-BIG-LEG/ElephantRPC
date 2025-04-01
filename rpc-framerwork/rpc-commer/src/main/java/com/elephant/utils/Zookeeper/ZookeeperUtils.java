@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 public class ZookeeperUtils {
     public static ZooKeeper createZookeeper(){
-        String connectString = Constants.DEFAULT_CONNECTSTRING;
+        String connectString = "127.0.0.1:2181";
 
         int timeout = Constants.DEFAULT_TIMEOUT;
 

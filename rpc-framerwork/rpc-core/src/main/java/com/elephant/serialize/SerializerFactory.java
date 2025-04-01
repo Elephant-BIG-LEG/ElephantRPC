@@ -15,8 +15,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class SerializerFactory {
-    
+    /**
+     * key：序列化名称
+     * value：序列化实例
+     */
     private final static ConcurrentHashMap<String, ObjectWrapper<Serializer>> SERIALIZER_CACHE = new ConcurrentHashMap<>(8);
+    /**
+     * key：序列化序号
+     * value：序列化实例
+     */
     private final static ConcurrentHashMap<Byte, ObjectWrapper<Serializer>> SERIALIZER_CACHE_CODE = new ConcurrentHashMap<>(8);
     
     static {
@@ -64,5 +71,4 @@ public class SerializerFactory {
         SERIALIZER_CACHE.put(serializerObjectWrapper.getName(),serializerObjectWrapper);
         SERIALIZER_CACHE_CODE.put(serializerObjectWrapper.getCode(),serializerObjectWrapper);
     }
-    
 }

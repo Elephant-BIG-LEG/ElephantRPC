@@ -13,10 +13,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class CompressorFactory {
-    
+    /**
+     * key：压缩名称
+     * value：压缩实例
+     */
     private final static Map<String, ObjectWrapper<Compressor>> COMPRESSOR_CACHE = new ConcurrentHashMap<>(8);
+    /**
+     * key：压缩方式序号
+     * value：压缩实例
+     */
     private final static Map<Byte, ObjectWrapper<Compressor>> COMPRESSOR_CACHE_CODE = new ConcurrentHashMap<>(8);
-    
+
+    // 默认的压缩方式
     static {
         ObjectWrapper<Compressor> gzip = new ObjectWrapper<>((byte) 1, "gzip", new GzipCompressor());
         COMPRESSOR_CACHE.put("gzip", gzip);

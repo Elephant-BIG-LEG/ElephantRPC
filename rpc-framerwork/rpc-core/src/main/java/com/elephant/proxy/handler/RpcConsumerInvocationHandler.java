@@ -76,7 +76,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         // 从注册中心拉取服务列表，再从客户端负载均衡选择一个可用服务
         // TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
         // 负载均衡
-        InetSocketAddress address = YrpcBootstrap.configuration.getLoadBalancer()
+        InetSocketAddress address = YrpcBootstrap.getInstance().configuration.getLoadBalancer()
                         .selectServiceAddress(interfaceRef.getName(),group);
 
         if (log.isDebugEnabled()) {
