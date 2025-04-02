@@ -35,6 +35,9 @@ public class ConsumerApplication {
                 .reference(reference);
 
         HelloYrpc helloYrpc = reference.get();
+        /**
+         * 处理网络抖动问题
+         */
         //这里才会去触发 invoke 方法
         String string = helloYrpc.sayHi("你好");
         log.info("成功收到服务提供方发送的数据:{}",string);

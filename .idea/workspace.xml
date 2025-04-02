@@ -5,21 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/annotation/TryTimes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/java/com/elephant/ProviderApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/utils/Zookeeper/ZookeeperUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/compress/CompressorFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/compress/CompressorFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/Configuration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/ObjectWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/ObjectWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/SpiResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/SpiResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/XmlResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/XmlResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-api/src/main/java/com/elephant/HelloYrpc.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-api/src/main/java/com/elephant/HelloYrpc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/SerializerFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/serialize/SerializerFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/spi/SpiHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/spi/SpiHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/META-INF/yrpc-services/com.elephant.serialize.Serializer" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/META-INF/yrpc-services/com.elephant.serialize.Serializer" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/yrpc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/resources/yrpc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="AnnotationType" />
         <option value="Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -63,35 +53,35 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Application.executor": "Run",
-    "Application.Configuration.executor": "Run",
-    "Application.ConsumerApplication.executor": "Run",
-    "Application.IdGenerator.executor": "Run",
-    "Application.ProviderApplication.executor": "Debug",
-    "Application.SpiHandler.executor": "Debug",
-    "Maven.ElephantRPC [clean].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "jdk.selected.JAVA_MODULE": "21",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/resources",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.Application.executor": "Debug"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Configuration.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ConsumerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.IdGenerator.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ProviderApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.SpiHandler.executor&quot;: &quot;Debug&quot;,
+    &quot;Maven.ElephantRPC [clean].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.Application.executor&quot;: &quot;Debug&quot;
   }
-}]]></component>
+}</component>
   <component name="RebelAgentSelection">
     <selection>jr</selection>
   </component>
@@ -246,7 +236,9 @@
       <workItem from="1743121890631" duration="4592000" />
       <workItem from="1743139257220" duration="2408000" />
       <workItem from="1743466882443" duration="4978000" />
-      <workItem from="1743473866215" duration="3335000" />
+      <workItem from="1743473866215" duration="4994000" />
+      <workItem from="1743482849948" duration="3032000" />
+      <workItem from="1743558057291" duration="316000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -528,7 +520,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743470339369</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="服务提供方核心启动类与服务提供方的核心配置类的融合、重构">
+      <option name="closed" value="true" />
+      <created>1743477497736</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1743477497736</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -536,8 +536,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="完成服务提供方与服务调用方之间的基本通讯，并解决BUG -- 处理冗余代码影响" />
-    <MESSAGE value="异步获取服务提供方发送的数据" />
     <MESSAGE value="调整服务调用端通讯的代码" />
     <MESSAGE value="将handler进行抽离" />
     <MESSAGE value="封装服务调用端的请求体和负载" />
@@ -561,7 +559,9 @@
     <MESSAGE value="完善配置类" />
     <MESSAGE value="引入 SPI 机制，发现配置信息" />
     <MESSAGE value="重构启动核心配置类，将 配置类 重构为单例" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构启动核心配置类，将 配置类 重构为单例" />
+    <MESSAGE value="核心启动类与核心配置类的融合" />
+    <MESSAGE value="服务提供方核心启动类与服务提供方的核心配置类的融合、重构" />
+    <option name="LAST_COMMIT_MESSAGE" value="服务提供方核心启动类与服务提供方的核心配置类的融合、重构" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -575,16 +575,6 @@
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java</url>
           <line>175</line>
           <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/ReferenceConfig.java</url>
-          <line>36</line>
-          <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/spi/SpiHandler.java</url>
@@ -603,7 +593,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/config/Configuration.java</url>
-          <line>55</line>
+          <line>56</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>

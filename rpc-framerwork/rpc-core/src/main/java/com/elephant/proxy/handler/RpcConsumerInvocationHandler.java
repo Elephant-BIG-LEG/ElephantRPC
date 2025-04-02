@@ -2,6 +2,7 @@ package com.elephant.proxy.handler;
 
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
+import com.elephant.annotation.TryTimes;
 import com.elephant.compress.CompressorFactory;
 import com.elephant.discovery.Registry;
 import com.elephant.enumeration.RequestType;
@@ -44,8 +45,38 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         this.group = group;
     }
 
+    /**
+     * 本质上，所有的方法调用都会走到这里
+     * @param proxy the proxy instance that the method was invoked on
+     *
+     * @param method the {@code Method} instance corresponding to
+     * the interface method invoked on the proxy instance.  The declaring
+     * class of the {@code Method} object will be the interface that
+     * the method was declared in, which may be a superinterface of the
+     * proxy interface that the proxy class inherits the method through.
+     *
+     * @param args an array of objects containing the values of the
+     * arguments passed in the method invocation on the proxy instance,
+     * or {@code null} if interface method takes no arguments.
+     * Arguments of primitive types are wrapped in instances of the
+     * appropriate primitive wrapper class, such as
+     * {@code java.lang.Integer} or {@code java.lang.Boolean}.
+     *
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        int tryTime = 0;
+        int intervalTime = 0;
+
+        TryTimes tryTimesAnnotation = method.getAnnotation(TryTimes.class);
+        if(tryTimesAnnotation != null){
+            tryTime = tryTimesAnnotation.tryTimes();
+            intervalTime = tryTimesAnnotation.intervalTime();
+        }
+
 
         /**
          * ------------------ 封装报文 -------------------------
@@ -57,6 +88,10 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .parametersValue(args)
                 .returnType(method.getReturnType())
                 .build();
+
+        if(requestPayload == null){
+            throw new RuntimeException("为null");
+        }
 
         /**
          * ------------------ 生成请求 -------------------------
@@ -70,31 +105,35 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .requestPayload(requestPayload)
                 .build();
 
-        // 将请求存入本地线程 -- 为了负载均衡器可以获取到请求信息
-        YrpcBootstrap.REQUEST_THREAD_LOCAL.set(yrpcRequest);
 
-        // 从注册中心拉取服务列表，再从客户端负载均衡选择一个可用服务
-        // TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
-        // 负载均衡
-        InetSocketAddress address = YrpcBootstrap.getInstance().configuration.getLoadBalancer()
-                        .selectServiceAddress(interfaceRef.getName(),group);
+        while (true) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("选择了该服务：【{}】下的【{}】节点", interfaceRef.getName(), address);
-        }
+            try {
+                // 将请求存入本地线程 -- 为了负载均衡器可以获取到请求信息
+                YrpcBootstrap.REQUEST_THREAD_LOCAL.set(yrpcRequest);
 
-        //2.使用 Netty 发起 RPC 调用
-        //应该将 Netty 的连接进行缓存，每一次建立一个新的连接是不合理的
+                // 从注册中心拉取服务列表，再从客户端负载均衡选择一个可用服务
+                // TODO 每次调用都去注册中心拉取服务 效率低下 -- 本地缓存 + watcher 机制
+                // 负载均衡
+                InetSocketAddress address = YrpcBootstrap.getInstance().configuration.getLoadBalancer()
+                        .selectServiceAddress(interfaceRef.getName(), group);
 
-        Channel channel = getAvailableChannel(address);
+                if (log.isDebugEnabled()) {
+                    log.debug("选择了该服务：【{}】下的【{}】节点", interfaceRef.getName(), address);
+                }
 
-        //发送请求 每一个 RPC 服务维护着一个 CompletableFuture
-        /**
-         * ------------------同步策略-------------------------
-         */
+                //2.使用 Netty 发起 RPC 调用
+                //应该将 Netty 的连接进行缓存，每一次建立一个新的连接是不合理的
+
+                Channel channel = getAvailableChannel(address);
+
+                //发送请求 每一个 RPC 服务维护着一个 CompletableFuture
+                /**
+                 * ------------------同步策略-------------------------
+                 */
 
 //                ChannelFuture channelFuture = channel.writeAndFlush(new Object()).await();
-        // 需要学习channelFuture的简单的api get 阻塞获取结果，getNow 获取当前的结果，如果未处理完成，返回null
+                // 需要学习channelFuture的简单的api get 阻塞获取结果，getNow 获取当前的结果，如果未处理完成，返回null
 //                if(channelFuture.isDone()){
 //                    Object object = channelFuture.getNow();
 //                } else if( !channelFuture.isSuccess() ){
@@ -103,40 +142,56 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 //                    throw new RuntimeException(cause);
 //                }
 
-        /**
-         * ------------------异步策略-------------------------
-         */
-        CompletableFuture<Object> completableFuture = new CompletableFuture<>();
-        YrpcBootstrap.PENDING_REQUEST.put(yrpcRequest.getRequestId(), completableFuture);
-        //写出请求,这个请求的实例会进入 pipeline
-        channel.writeAndFlush(yrpcRequest).addListener((ChannelFutureListener) promise -> {
+                /**
+                 * ------------------异步策略-------------------------
+                 */
+                CompletableFuture<Object> completableFuture = new CompletableFuture<>();
+                YrpcBootstrap.PENDING_REQUEST.put(yrpcRequest.getRequestId(), completableFuture);
+                //写出请求,这个请求的实例会进入 pipeline
+                channel.writeAndFlush(yrpcRequest).addListener((ChannelFutureListener) promise -> {
 
-            // 当前的promise将来返回的结果是什么，writeAndFlush的返回结果
-            // 一旦数据被写出去，这个promise也就结束了
-            // 但是我们想要的是什么？  服务端给我们的返回值，所以这里处理completableFuture是有问题的
-            // 是不是应该将 completableFuture 挂起并且暴露，并且在得到服务提供方的响应的时候调用complete方法
-//                    if(promise.isDone()){
-//                        completableFuture.complete(promise.getNow());
-//                    }
+                    // 当前的promise将来返回的结果是什么，writeAndFlush的返回结果
+                    // 一旦数据被写出去，这个promise也就结束了
+                    // 但是我们想要的是什么？  服务端给我们的返回值，所以这里处理completableFuture是有问题的
+                    // 是不是应该将 completableFuture 挂起并且暴露，并且在得到服务提供方的响应的时候调用complete方法
+    //                    if(promise.isDone()){
+    //                        completableFuture.complete(promise.getNow());
+    //                    }
 
-            // 只需要处理以下异常就行了
+                    // 只需要处理以下异常就行了
 
-            if (!promise.isSuccess()) {
-                completableFuture.completeExceptionally(promise.cause());
+                    if (!promise.isSuccess()) {
+                        completableFuture.completeExceptionally(promise.cause());
+                    }
+                });
+
+                //清理 threadLocal
+                YrpcBootstrap.REQUEST_THREAD_LOCAL.remove();
+
+                /**
+                 * @see NettyBootstrapInitializer
+                 * 5s 后超时 抛出异常
+                 * 如果没有地方处理这个 completableFuture，这里会阻塞，等待 complete 方法的执行
+                 * 我们需要在那里调用 complete 方法得到结果，就是 pipeline 中最终的 handler 的处理结果
+                 * TODO 感觉这里的时间限制应该可以动态修改
+                 */
+                return completableFuture.get(5, TimeUnit.SECONDS);
+            } catch (InterruptedException | ExecutionException e) {
+                tryTime--;
+                try {
+                    Thread.sleep(intervalTime);
+                    log.error("调用远程接口失败，正在请求重试~~~~");
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if(tryTime < 0){
+                    log.debug("重试机会已经用完，请重新进行远程调用");
+                    break;
+                }
+                log.error("正在进行第：【{}】次调用",3 - tryTime);
             }
-        });
-
-        //清理 threadLocal
-        YrpcBootstrap.REQUEST_THREAD_LOCAL.remove();
-
-        /**
-         * @see NettyBootstrapInitializer
-         * 5s 后超时 抛出异常
-         * 如果没有地方处理这个 completableFuture，这里会阻塞，等待 complete 方法的执行
-         * 我们需要在那里调用 complete 方法得到结果，就是 pipeline 中最终的 handler 的处理结果
-         * TODO 感觉这里的时间限制应该可以动态修改
-         */
-        return completableFuture.get(5, TimeUnit.SECONDS);
+        }
+        throw new RuntimeException("执行远程方法调用接口失败");
     }
 
 
