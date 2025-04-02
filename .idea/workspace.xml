@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/annotation/TryTimes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/protection/CircuitBreaker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/protection/RateLimiter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/protection/TokenBuketRateLimiter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-api/src/main/java/com/elephant/HelloYrpc.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-api/src/main/java/com/elephant/HelloYrpc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-consumer/src/main/java/com/elephant/ConsumerApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,14 +19,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="AnnotationType" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="AnnotationType" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../../JDK21/graalvm-jdk-21_windows-x64_bin/graalvm-jdk-21.0.3+7.1/lib/src.zip!/java.base/java/lang/reflect/InvocationHandler.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -53,35 +56,37 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Configuration.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ConsumerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.IdGenerator.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ProviderApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;Application.SpiHandler.executor&quot;: &quot;Debug&quot;,
-    &quot;Maven.ElephantRPC [clean].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;应用程序.Application.executor&quot;: &quot;Debug&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Application.executor": "Run",
+    "Application.CircuitBreaker.executor": "Run",
+    "Application.Configuration.executor": "Run",
+    "Application.ConsumerApplication.executor": "Run",
+    "Application.IdGenerator.executor": "Run",
+    "Application.ProviderApplication.executor": "Debug",
+    "Application.SpiHandler.executor": "Debug",
+    "Application.TokenBuketRateLimiter.executor": "Run",
+    "Maven.ElephantRPC [clean].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "jdk.selected.JAVA_MODULE": "21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Beginner/ElephantRPC/rpc-framerwork/rpc-core/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.Application.executor": "Debug"
   }
-}</component>
+}]]></component>
   <component name="RebelAgentSelection">
     <selection>jr</selection>
   </component>
@@ -104,7 +109,20 @@
       <recent name="com.elephant.transport.message" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ProviderApplication">
+  <component name="RunManager" selected="Application.CircuitBreaker">
+    <configuration name="CircuitBreaker" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.elephant.protection.CircuitBreaker" />
+      <module name="rpc-core" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.elephant.protection.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Configuration" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.elephant.config.Configuration" />
       <module name="rpc-core" />
@@ -131,19 +149,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IdGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.elephant.IdGenerator" />
-      <module name="rpc-commer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.elephant.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ProviderApplication" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.elephant.ProviderApplication" />
       <module name="rpc-provider" />
@@ -157,12 +162,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SpiHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.elephant.spi.SpiHandler" />
+    <configuration name="TokenBuketRateLimiter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.elephant.protection.TokenBuketRateLimiter" />
       <module name="rpc-core" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.elephant.spi.*" />
+          <option name="PATTERN" value="com.elephant.protection.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -181,19 +186,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.SpiHandler" />
+      <item itemvalue="Application.CircuitBreaker" />
+      <item itemvalue="Application.TokenBuketRateLimiter" />
       <item itemvalue="Application.Configuration" />
       <item itemvalue="Application.ConsumerApplication" />
-      <item itemvalue="Application.IdGenerator" />
       <item itemvalue="Application.ProviderApplication" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.CircuitBreaker" />
+        <item itemvalue="Application.TokenBuketRateLimiter" />
         <item itemvalue="Application.ProviderApplication" />
         <item itemvalue="Application.Configuration" />
         <item itemvalue="Application.ConsumerApplication" />
-        <item itemvalue="Application.SpiHandler" />
-        <item itemvalue="Application.IdGenerator" />
       </list>
     </recent_temporary>
   </component>
@@ -238,7 +243,8 @@
       <workItem from="1743466882443" duration="4978000" />
       <workItem from="1743473866215" duration="4994000" />
       <workItem from="1743482849948" duration="3032000" />
-      <workItem from="1743558057291" duration="316000" />
+      <workItem from="1743558057291" duration="973000" />
+      <workItem from="1743561343818" duration="3503000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -528,7 +534,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743477497736</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="服务调用放添加重试机制">
+      <option name="closed" value="true" />
+      <created>1743558411951</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1743558411951</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -536,7 +550,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="调整服务调用端通讯的代码" />
     <MESSAGE value="将handler进行抽离" />
     <MESSAGE value="封装服务调用端的请求体和负载" />
     <MESSAGE value="封装服务提供方和服务调用端的解码与编码，并使用反射完成服务提供方的响应" />
@@ -561,7 +574,8 @@
     <MESSAGE value="重构启动核心配置类，将 配置类 重构为单例" />
     <MESSAGE value="核心启动类与核心配置类的融合" />
     <MESSAGE value="服务提供方核心启动类与服务提供方的核心配置类的融合、重构" />
-    <option name="LAST_COMMIT_MESSAGE" value="服务提供方核心启动类与服务提供方的核心配置类的融合、重构" />
+    <MESSAGE value="服务调用放添加重试机制" />
+    <option name="LAST_COMMIT_MESSAGE" value="服务调用放添加重试机制" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
