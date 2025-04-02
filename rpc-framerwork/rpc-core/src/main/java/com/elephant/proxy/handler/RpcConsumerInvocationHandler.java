@@ -3,11 +3,13 @@ package com.elephant.proxy.handler;
 import com.elephant.NettyBootstrapInitializer;
 import com.elephant.YrpcBootstrap;
 import com.elephant.annotation.TryTimes;
+import com.elephant.channelHandler.ConsumerChannelInitializer;
 import com.elephant.compress.CompressorFactory;
 import com.elephant.discovery.Registry;
 import com.elephant.enumeration.RequestType;
 import com.elephant.exception.DiscoveryException;
 import com.elephant.exception.NetworkException;
+import com.elephant.protection.CircuitBreaker;
 import com.elephant.serialize.SerializerFactory;
 import com.elephant.transport.message.RequestPayload;
 import com.elephant.transport.message.YrpcRequest;
@@ -17,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -77,38 +81,37 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
             intervalTime = tryTimesAnnotation.intervalTime();
         }
 
-
-        /**
-         * ------------------ 封装报文 -------------------------
-         */
-        RequestPayload requestPayload = RequestPayload.builder()
-                .interfaceName(interfaceRef.getName())
-                .methodName(method.getName())
-                .parametersType(method.getParameterTypes())
-                .parametersValue(args)
-                .returnType(method.getReturnType())
-                .build();
-
-        if(requestPayload == null){
-            throw new RuntimeException("为null");
-        }
-
-        /**
-         * ------------------ 生成请求 -------------------------
-         */
-        YrpcRequest yrpcRequest = YrpcRequest.builder()
-                .requestId(YrpcBootstrap.getInstance().configuration.idGenerator.getId())
-                .compressType(CompressorFactory.getCompressor(YrpcBootstrap.getInstance().configuration.getCompressType()).getCode())
-                .requestType(RequestType.REQUEST.getId())
-                .timeStamp(new Date().getTime())
-                .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.getInstance().configuration.getSerializeType()).getCode())
-                .requestPayload(requestPayload)
-                .build();
-
-
         while (true) {
-
             try {
+                /**
+                 * ------------------ 封装报文 -------------------------
+                 */
+                RequestPayload requestPayload = RequestPayload.builder()
+                        .interfaceName(interfaceRef.getName())
+                        .methodName(method.getName())
+                        .parametersType(method.getParameterTypes())
+                        .parametersValue(args)
+                        .returnType(method.getReturnType())
+                        .build();
+
+                if(requestPayload == null){
+                    throw new RuntimeException("为null");
+                }
+
+                /**
+                 * ------------------ 生成请求 -------------------------
+                 */
+                YrpcRequest yrpcRequest = YrpcRequest.builder()
+                        .requestId(YrpcBootstrap.getInstance().configuration.idGenerator.getId())
+                        .compressType(CompressorFactory.getCompressor(YrpcBootstrap.getInstance()
+                                .configuration.getCompressType()).getCode())
+                        .requestType(RequestType.REQUEST.getId())
+                        .timeStamp(new Date().getTime())
+                        .serializeType(SerializerFactory.getSerializer(YrpcBootstrap.getInstance()
+                                .configuration.getSerializeType()).getCode())
+                        .requestPayload(requestPayload)
+                        .build();
+
                 // 将请求存入本地线程 -- 为了负载均衡器可以获取到请求信息
                 YrpcBootstrap.REQUEST_THREAD_LOCAL.set(yrpcRequest);
 
@@ -122,9 +125,17 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                     log.debug("选择了该服务：【{}】下的【{}】节点", interfaceRef.getName(), address);
                 }
 
+                // 获取当前地址所对应的断路器，如果断路器是打开的则不发送请求，抛出异常
+                Map<SocketAddress, CircuitBreaker> everyIpCircuitBreaker = YrpcBootstrap.getInstance()
+                        .getConfiguration().getEveryIpCircuitBreaker();
+                CircuitBreaker circuitBreaker = everyIpCircuitBreaker.get(address);
+                if (circuitBreaker == null) {
+                    circuitBreaker = new CircuitBreaker(10, 0.5F);
+                    everyIpCircuitBreaker.put(address, circuitBreaker);
+                }
+
                 //2.使用 Netty 发起 RPC 调用
                 //应该将 Netty 的连接进行缓存，每一次建立一个新的连接是不合理的
-
                 Channel channel = getAvailableChannel(address);
 
                 //发送请求 每一个 RPC 服务维护着一个 CompletableFuture
@@ -165,7 +176,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                     }
                 });
 
-                //清理 threadLocal
+                // TODO 清理 threadLocal 为什么这里要清理啊？？？
                 YrpcBootstrap.REQUEST_THREAD_LOCAL.remove();
 
                 /**
@@ -252,6 +263,9 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
             // 异步操作
             // CompletableFuture 拿到服务器响应的结果
             CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
+            /**
+             * @see ConsumerChannelInitializer
+             */
             NettyBootstrapInitializer.getBootstrap().connect(address).addListener((ChannelFutureListener) promise -> {
                 if (promise.isDone()) {
                     completableFuture.complete(promise.channel());

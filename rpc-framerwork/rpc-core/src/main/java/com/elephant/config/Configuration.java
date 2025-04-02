@@ -4,8 +4,14 @@ import com.elephant.IdGenerator;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.loadbalancer.LoadBalancer;
 import com.elephant.loadbalancer.impl.RoundRobinLoadBalancer;
+import com.elephant.protection.CircuitBreaker;
+import com.elephant.protection.RateLimiter;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
+import java.net.SocketAddress;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: Elephant-FZY
@@ -51,6 +57,12 @@ public class Configuration {
 
     // 配置信息-->负载均衡策略
     private LoadBalancer loadBalancer = new RoundRobinLoadBalancer();
+
+    // 为每一个ip配置一个限流器
+    private final Map<SocketAddress, RateLimiter> everyIpRateLimiter = new ConcurrentHashMap<>(16);
+    // 为每一个ip配置一个断路器，熔断
+    private final Map<SocketAddress, CircuitBreaker> everyIpCircuitBreaker = new ConcurrentHashMap<>(16);
+
 
     public Configuration() {
         // 1、成员变量的默认配置项

@@ -24,7 +24,7 @@ public class ConsumerChannelInitializer extends ChannelInitializer<SocketChannel
                 .addLast(new YrpcRequestEncoder())
                 // 入栈的解码器
                 .addLast(new YrpcResponseDecoder())
-                // 处理结果
+                // 处理结果 最耗时
                 .addLast(new MySimpleChannelInboundHandler());
     }
 }

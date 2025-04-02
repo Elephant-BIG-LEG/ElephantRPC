@@ -8,18 +8,21 @@ import com.elephant.channelHandler.handler.YrpcResponseEncoder;
 import com.elephant.config.Configuration;
 import com.elephant.core.HeartbeatDetector;
 import com.elephant.discovery.RegistryConfig;
-import com.elephant.loadbalancer.LoadBalancer;
+import com.elephant.protection.CircuitBreaker;
+import com.elephant.protection.RateLimiter;
 import com.elephant.transport.message.YrpcRequest;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,6 +158,7 @@ public class YrpcBootstrap<T> {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
+
                             //TODO 服务提供方处理数据
 //                            new SimpleChannelInboundHandler<>() {
 //                                @Override
@@ -167,10 +171,10 @@ public class YrpcBootstrap<T> {
 //                                }
 //                            }
 
-                            socketChannel.pipeline().addLast(new LoggingHandler())
+                            socketChannel.pipeline().addLast(new LoggingHandler(LogLevel.DEBUG))
                                     // 解码
                                     .addLast(new YrpcRequestDecoder())
-                                    // 根据请求进行方法调用
+                                    // 根据请求进行方法调用 -- 最耗时
                                     .addLast(new MethodCallHandler())
                                     // 编码
                                     .addLast(new YrpcResponseEncoder());
