@@ -89,7 +89,7 @@ public class MySimpleChannelInboundHandler extends SimpleChannelInboundHandler<Y
             if (log.isDebugEnabled()) {
                 log.debug("以寻找到编号为【{}】的completableFuture,处理心跳检测，处理响应结果。", yrpcResponse.getRequestId());
             }
-        } else if (code == RespCode.BECLOSING.getCode()) {
+        } else if (code == RespCode.CLOSING.getCode()) {
             // 优雅停机
 
         }
