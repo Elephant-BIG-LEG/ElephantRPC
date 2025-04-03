@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration SYSTEM "http://elephantclass.com/yrpc-config.dtd">
 <configuration>
-
-    <port>8089</port>
+<!--    TODO -->
+    <port>8090</port>
     <appName>yrpc-default-appName</appName>
     <registry url="zookeeper://127.0.0.1:2181"/>
 

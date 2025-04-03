@@ -27,10 +27,12 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class HeartbeatDetector {
 
-    public static void detectHeartbeat(String serviceName, String group) {
+    public static void detectHeartbeat(String serviceName) {
         // 1、从注册中心拉取服务列表并建立连接
-        Registry registry = YrpcBootstrap.getInstance().getConfiguration().getRegistryConfig().getRegistry(true);
-        List<InetSocketAddress> addresses = registry.lookup(serviceName,group);
+        Registry registry = YrpcBootstrap.getInstance()
+                .getConfiguration().getRegistryConfig().getRegistry(true);
+        List<InetSocketAddress> addresses = registry.lookup(serviceName,
+                YrpcBootstrap.getInstance().getConfiguration().getGroup());
 
         // 将连接进行缓存
         for (InetSocketAddress address : addresses) {

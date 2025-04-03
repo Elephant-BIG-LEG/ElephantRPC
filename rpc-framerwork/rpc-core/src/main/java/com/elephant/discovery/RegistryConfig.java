@@ -20,10 +20,10 @@ public class RegistryConfig {
     //TODO 发现服务、注册服务、下线服务
 
     public Registry getRegistry(boolean isDefault){
-        String registerType = getRegistryType(connectString,true);
+        String registryType = getRegistryType(connectString,true).toLowerCase().trim();
         String host = getRegistryType(connectString,false);
         //TODO 这里使用默认配置 如果后期使用 UI 管理界面可以传入 boolean 参数
-        switch (registerType){
+        switch (registryType){
             case "zookeeper":
                 return new ZookeeperRegistry(connectString,host,isDefault);
             case "nacos":

@@ -2,6 +2,7 @@ package com.elephant;
 
 
 import com.elephant.annotation.ElephantAPI;
+import com.elephant.annotation.YrpcAPi;
 import com.elephant.channelHandler.handler.MethodCallHandler;
 import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
@@ -110,7 +111,6 @@ public class YrpcBootstrap<T> {
         //true 表示使用默认配置
         configuration.setRegistryConfig(registryConfig);
         return this;
-
     }
 
 //    /**
@@ -215,7 +215,8 @@ public class YrpcBootstrap<T> {
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
-                }).filter(clazz -> clazz.getAnnotation(ElephantAPI.class) != null)
+                }).filter(clazz -> clazz.getAnnotation(ElephantAPI.class) != null
+                        && clazz.getAnnotation(YrpcAPi.class) != null)
                 .collect(Collectors.toList());
 
         for (Class<?> clazz : classes) {
@@ -229,12 +230,15 @@ public class YrpcBootstrap<T> {
                 throw new RuntimeException(e);
             }
 
-            // TODO 分组信息
+            // TODO 分组信息 添加分组信息
+            YrpcAPi yrpcAPi = clazz.getAnnotation(YrpcAPi.class);
+            String group = yrpcAPi.group();
 
             for (Class<?> anInterface : interfaces) {
                 ServiceConfig<?> serviceConfig = new ServiceConfig<>();
                 serviceConfig.setInterface(anInterface);
                 serviceConfig.setRef(instance);
+                serviceConfig.setGroup(group);
                 if (log.isDebugEnabled()){
                     log.debug("---->已经通过包扫描，将服务【{}】发布.",anInterface);
                 }
@@ -316,10 +320,11 @@ public class YrpcBootstrap<T> {
         if (log.isDebugEnabled()) {
             log.debug("心跳检测器开始工作");
         }
-        HeartbeatDetector.detectHeartbeat(reference.getInterface().getName(), null);
+        HeartbeatDetector.detectHeartbeat(reference.getInterface().getName());
         log.info("通过核心配置类去完善服务调用端的配置类");
         //将注册中心的实例设置到 reference 中
         reference.setRegistry(configuration.getRegistryConfig().getRegistry(true));
+        reference.setGroup(this.configuration.getGroup());
         return this;
     }
 
@@ -342,5 +347,10 @@ public class YrpcBootstrap<T> {
 
     public Configuration getConfiguration() {
         return configuration;
+    }
+
+    public YrpcBootstrap group(String group) {
+        this.getConfiguration().setGroup(group);
+        return this;
     }
 }

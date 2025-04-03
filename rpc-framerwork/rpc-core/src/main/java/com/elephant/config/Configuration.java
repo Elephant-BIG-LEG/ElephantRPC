@@ -28,8 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class Configuration {
 
-    // 配置信息-->端口号
-    private int port = 8094;
+    // TODO 配置信息-->端口号
+    private int port = 8095;
 
     // 配置信息-->应用程序的名字
     private String appName = "default";

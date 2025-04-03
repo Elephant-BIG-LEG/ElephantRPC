@@ -30,20 +30,17 @@ public class ConsumerApplication {
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 .serialize("hessian")
                 .compress("gzip")
-                //.group("primary")
+                .group("primary")
                 //会将上面的注册中心放到这个核心配置类中
                 .reference(reference);
 
         HelloYrpc helloYrpc = reference.get();
-        /**
-         * 处理网络抖动问题
-         */
         //这里才会去触发 invoke 方法
         String string = helloYrpc.sayHi("你好");
         log.info("成功收到服务提供方发送的数据:{}",string);
 
 
-        // 每个 10 秒进行 10 次调用
+        // 每个 10 秒进行 100 次调用
         while (true) {
             try {
                 Thread.sleep(10000);
@@ -51,7 +48,7 @@ public class ConsumerApplication {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 100; i++) {
                 try {
                     String sayHi = helloYrpc.sayHi("你好yrpc");
                     log.info("sayHi-->{}", sayHi);

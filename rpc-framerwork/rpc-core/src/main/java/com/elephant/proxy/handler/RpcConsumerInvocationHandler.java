@@ -33,6 +33,7 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2025/03/20/14:52
  * @Description: 该类封装了服务调用端通讯的基础逻辑，每一个代理对象的远程调用过程都封装在了 invoke 方法中
  * @function：1.发现可用服务 2.建立连接 3.发送请求 4.得到结果
+ *            对于网络抖动问题：提供重试机制
  */
 @Slf4j
 public class RpcConsumerInvocationHandler implements InvocationHandler {
