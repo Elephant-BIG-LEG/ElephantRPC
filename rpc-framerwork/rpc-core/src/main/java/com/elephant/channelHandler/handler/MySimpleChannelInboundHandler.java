@@ -4,15 +4,12 @@ import com.elephant.YrpcBootstrap;
 import com.elephant.enumeration.RespCode;
 import com.elephant.exception.ResponseException;
 import com.elephant.protection.CircuitBreaker;
-import com.elephant.transport.message.YrpcRequest;
 import com.elephant.transport.message.YrpcResponse;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.SocketAddress;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -92,7 +89,7 @@ public class MySimpleChannelInboundHandler extends SimpleChannelInboundHandler<Y
             if (log.isDebugEnabled()) {
                 log.debug("以寻找到编号为【{}】的completableFuture,处理心跳检测，处理响应结果。", yrpcResponse.getRequestId());
             }
-        } else if (code == RespCode.BECOLSING.getCode()) {
+        } else if (code == RespCode.BECLOSING.getCode()) {
             // 优雅停机
 
         }

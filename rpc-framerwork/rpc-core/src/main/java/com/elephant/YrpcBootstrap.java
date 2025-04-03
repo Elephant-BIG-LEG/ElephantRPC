@@ -8,6 +8,7 @@ import com.elephant.channelHandler.handler.YrpcRequestDecoder;
 import com.elephant.channelHandler.handler.YrpcResponseEncoder;
 import com.elephant.config.Configuration;
 import com.elephant.core.HeartbeatDetector;
+import com.elephant.core.YrpcShutdownHook;
 import com.elephant.discovery.RegistryConfig;
 import com.elephant.protection.CircuitBreaker;
 import com.elephant.protection.RateLimiter;
@@ -146,6 +147,11 @@ public class YrpcBootstrap<T> {
         if (log.isDebugEnabled()) {
             log.debug("服务提供方启用");
         }
+
+        if (log.isDebugEnabled()){
+            log.debug("打开挡板");
+        }
+        Runtime.getRuntime().addShutdownHook(new YrpcShutdownHook());
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(2);
         EventLoopGroup workGroup = new NioEventLoopGroup(10);
