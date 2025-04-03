@@ -23,6 +23,7 @@ public class ProviderApplication {
          */
         YrpcBootstrap.getInstance()
                 .application("first-rpc-provider")
+                // 以下的配置都会覆盖 Configuration 的配置
                 // 配置注册中心
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 .serialize("jdk")

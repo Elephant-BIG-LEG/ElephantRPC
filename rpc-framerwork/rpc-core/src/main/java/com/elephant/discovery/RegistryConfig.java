@@ -46,5 +46,4 @@ public class RegistryConfig {
             return split[1];
         }
     }
-
 }

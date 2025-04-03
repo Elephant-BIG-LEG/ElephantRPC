@@ -104,6 +104,4 @@ public class ZookeeperRegistry extends AbstractRegistry {
         }
         return inetSocketAddresses;
     }
-
-
 }

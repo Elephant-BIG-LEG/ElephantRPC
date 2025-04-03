@@ -27,6 +27,4 @@ public interface Registry {
      * @return 服务的地址
      */
     List<InetSocketAddress> lookup(String serviceName, String group);
-
-
 }

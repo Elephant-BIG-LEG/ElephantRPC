@@ -87,8 +87,6 @@
                 <version>${fastjson2.version}</version>
             </dependency>
 
-
         </dependencies>
     </dependencyManagement>
-
 </project>
