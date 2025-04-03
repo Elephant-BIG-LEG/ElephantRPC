@@ -54,7 +54,7 @@ public class YrpcBootstrap<T> {
     public final Configuration configuration;
 
     //注意：如果使用 InetSocketAddress 作为 key，一定要保证该类重写了 toString 方法和 equals 方法
-    //每一个地址维护一个 channel
+    //每一个地址维护一个 channel 负载均衡器
     public static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
 
     //有序的保存channel的响应时间

@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-provider/src/main/resources/log/error.2025-03-27.0.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/ShutDownHolder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/YrpcShutdownHook.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/YrpcBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MethodCallHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/channelHandler/handler/MySimpleChannelInboundHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/enumeration/RespCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/enumeration/RespCode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +246,7 @@
       <workItem from="1743570049429" duration="3970000" />
       <workItem from="1743646910975" duration="3351000" />
       <workItem from="1743655549968" duration="11393000" />
-      <workItem from="1743670818779" duration="1531000" />
+      <workItem from="1743670818779" duration="2521000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -573,7 +568,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743667398242</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="实现优雅停机">
+      <option name="closed" value="true" />
+      <created>1743672386992</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1743672386992</updated>
+    </task>
+    <task id="LOCAL-00042" summary="实现服务提供方优雅停机">
+      <option name="closed" value="true" />
+      <created>1743672444123</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1743672444123</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -581,8 +592,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="使用工厂设计模式完成序列化与压缩功能并配备异常处理器" />
-    <MESSAGE value="完善压缩和序列化代码" />
     <MESSAGE value="拉取可用服务节点使用负载均衡替代" />
     <MESSAGE value="模板设计模式优化负载均衡代码结构" />
     <MESSAGE value="测试并修改" />
@@ -606,7 +615,9 @@
     <MESSAGE value="新增服务调用端的熔断器和服务提供方的令牌限流" />
     <MESSAGE value="整合并测试服务调用端的熔断器和服务提供方的令牌限流" />
     <MESSAGE value="完成流量隔离" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成流量隔离" />
+    <MESSAGE value="实现优雅停机" />
+    <MESSAGE value="实现服务提供方优雅停机" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现服务提供方优雅停机" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

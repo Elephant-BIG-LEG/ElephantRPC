@@ -3,7 +3,9 @@ package com.elephant.channelHandler.handler;
 import com.elephant.YrpcBootstrap;
 import com.elephant.enumeration.RespCode;
 import com.elephant.exception.ResponseException;
+import com.elephant.loadbalancer.LoadBalancer;
 import com.elephant.protection.CircuitBreaker;
+import com.elephant.transport.message.YrpcRequest;
 import com.elephant.transport.message.YrpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.SocketAddress;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Elephant-FZY
@@ -91,7 +94,19 @@ public class MySimpleChannelInboundHandler extends SimpleChannelInboundHandler<Y
             }
         } else if (code == RespCode.CLOSING.getCode()) {
             // 优雅停机
+            circuitBreaker.recordRequest();
+            completableFuture.complete(null);
+            if (log.isDebugEnabled()) {
+                log.debug("当前服务正在关闭，请选择其他服务");
+            }
+            // 修正负载均衡器
+            YrpcBootstrap.CHANNEL_CACHE.remove(socketAddress);
+            LoadBalancer loadBalancer = YrpcBootstrap.getInstance().getConfiguration().getLoadBalancer();
+            YrpcRequest yrpcRequest = YrpcBootstrap.REQUEST_THREAD_LOCAL.get();
+            loadBalancer.reLoadBalance(yrpcRequest.getRequestPayload().getInterfaceName(),
+                    YrpcBootstrap.CHANNEL_CACHE.keySet().stream().collect(Collectors.toList()));
 
+            throw new ResponseException(code,RespCode.CLOSING.getDesc());
         }
     }
 
