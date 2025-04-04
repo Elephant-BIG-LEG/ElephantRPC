@@ -83,9 +83,6 @@ public class ZookeeperRegistry extends AbstractRegistry {
      */
     @Override
     public List<InetSocketAddress> lookup(String serviceName, String group) {
-        // /elephant-metadata/providers/com.elephant.HelloYrpc/default
-        // /elephant-metadata/providers/com.elephant.HelloYrpc2/primary
-        // /elephant-metadata/providers/com.elephant.HelloYrpc/primary
         String path = Constants.BASE_PROVIDERS_PATH + "/" + serviceName + "/" + group;
         if(ZookeeperUtils.exists(zookeeper,path,null)){
             System.out.println("这个路径存在");

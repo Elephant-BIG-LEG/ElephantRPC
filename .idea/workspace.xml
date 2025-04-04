@@ -5,28 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb791e62-9a98-49bf-bc85-e60498ad4b12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/java/com/elephant/ApplicationProviders.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/java/com/elephant/YrpcStarter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/java/com/elephant/impl/HelloYrpcImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/java/com/elephant/impl/HelloYrpcImpl2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-Springboot-consumer/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-Springboot-consumer/src/main/java/com/elephant/ApplicationConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-Springboot-consumer/src/main/java/com/elephant/YrpcProxyBeanPostProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-Springboot-consumer/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/elephant/annotation/YrpcService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/example/grpc/HelloReply.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/example/grpc/HelloReplyOrBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/example/grpc/HelloRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/example/grpc/HelloRequestOrBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/example/grpc/HelloWorldProto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/src/main/java/com/example/grpc/SimpleGrpc.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/proxy/YrpcProxyFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-demo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-commer/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-Springboot-consumer/src/main/java/com/elephant/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc-demo/rpc-Springboot-consumer/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/java/com/elephant/YrpcStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-demo/rpc-SpringBoot-provider/src/main/java/com/elephant/YrpcStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/impl/ZookeeperRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/discovery/impl/ZookeeperRegistry.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +82,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "Spring Boot.ApplicationConsumer.executor": "Debug",
+    "Spring Boot.ApplicationConsumer.executor": "Run",
     "Spring Boot.ApplicationProvider.executor": "Run",
     "Spring Boot.ApplicationProviders.executor": "Run",
     "jdk.selected.JAVA_MODULE": "21",
@@ -279,7 +262,7 @@
       <workItem from="1743670818779" duration="5213000" />
       <workItem from="1743681425888" duration="5645000" />
       <workItem from="1743732951152" duration="2405000" />
-      <workItem from="1743735847285" duration="4335000" />
+      <workItem from="1743735847285" duration="5017000" />
     </task>
     <task id="LOCAL-00001" summary="RPC项目基本框架">
       <option name="closed" value="true" />
@@ -633,7 +616,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743687451024</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="融合 SpringBoot，但是有 BUG">
+      <option name="closed" value="true" />
+      <created>1743740237675</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1743740237675</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -641,7 +632,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="测试并修改" />
     <MESSAGE value="一致性 Hash 算法的完成并留下 TODO 任务" />
     <MESSAGE value="初步完成心跳检测的编写，需要修改服务调用端与服务提供方之间的心跳检测的绿色通道" />
     <MESSAGE value="完成心跳检测并利用 TreeMap 维护响应时间的 Channel，为最短响应时间做准备" />
@@ -666,7 +656,8 @@
     <MESSAGE value="实现服务提供方优雅停机" />
     <MESSAGE value="完成服务调用端优雅停机" />
     <MESSAGE value="整合 ProtoBuf" />
-    <option name="LAST_COMMIT_MESSAGE" value="整合 ProtoBuf" />
+    <MESSAGE value="融合 SpringBoot，但是有 BUG" />
+    <option name="LAST_COMMIT_MESSAGE" value="融合 SpringBoot，但是有 BUG" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -698,8 +689,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/rpc-framerwork/rpc-core/src/main/java/com/elephant/core/HeartbeatDetector.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="57" />
+          <line>37</line>
+          <option name="timeStamp" value="61" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

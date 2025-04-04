@@ -102,7 +102,7 @@ public class HeartbeatDetector {
                     try {
                         // 阻塞方法，get()方法如果得不到结果，就会一直阻塞
                         // 我们想不一直阻塞可以添加参数
-                        completableFuture.get(1, TimeUnit.SECONDS);
+                        completableFuture.get(5, TimeUnit.SECONDS);
                         endTime = System.currentTimeMillis();
                     } catch (InterruptedException | ExecutionException | TimeoutException e) {
                         // 一旦发生问题，需要优先重试
