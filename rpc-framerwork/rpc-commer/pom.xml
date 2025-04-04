@@ -71,7 +71,6 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <extensions>
             <extension>
@@ -107,6 +106,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
