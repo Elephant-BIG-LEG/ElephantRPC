@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/04/04/11:31
- * @Description: TODO
+ * @Description: SpringBoot 应用启动时会调用
  */
 @Component
 @Slf4j
@@ -31,6 +31,5 @@ public class YrpcStarter implements CommandLineRunner {
                 .scan("com.elephant.impl")
                 // 启动 Netty 服务
                 .start();
-
     }
 }

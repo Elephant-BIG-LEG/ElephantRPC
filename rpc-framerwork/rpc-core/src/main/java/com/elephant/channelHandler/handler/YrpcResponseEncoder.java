@@ -97,8 +97,5 @@ public class YrpcResponseEncoder extends MessageToByteEncoder<YrpcResponse> {
         if(log.isDebugEnabled()){
             log.debug("响应【{}】已经在服务端完成编码工作。",yrpcResponse.getRequestId());
         }
-        
     }
-    
-   
 }

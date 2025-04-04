@@ -34,6 +34,5 @@ public class ProviderApplication {
                 .scan("com.elephant")
                 // 启动 Netty 服务
                 .start();
-
     }
 }

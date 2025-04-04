@@ -9,7 +9,7 @@ import com.elephant.annotation.YrpcAPi;
  * @Author: Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
  * @Date: 2025/03/15/16:16
- * @Description: 响应给服务调用端的数据
+ * @Description: 服务提供方接口的具体实现
  */
 @YrpcAPi(group = "default")
 @ElephantAPI

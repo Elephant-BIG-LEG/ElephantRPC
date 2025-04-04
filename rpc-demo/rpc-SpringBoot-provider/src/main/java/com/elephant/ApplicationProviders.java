@@ -22,5 +22,4 @@ public class ApplicationProviders {
     public String test(){
         return "hi provider test";
     }
-
 }

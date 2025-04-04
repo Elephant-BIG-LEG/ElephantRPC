@@ -3,7 +3,8 @@ package com.elephant;
 /**
  * @author Elephant-FZY
  * @Email: https://github.com/Elephant-BIG-LEG
- * 06-27
+ * @Date: 2025/03/15/14:03
+ * @Description: 服务调用端暴露的接口
  */
 public interface HelloYrpc2 {
 
